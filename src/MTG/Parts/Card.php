@@ -17,6 +17,8 @@ use Discord\Parts\Part;
 
 class Card extends Part
 {
+    use CardAttributes;
+
     /**
      * {@inheritDoc}
      */
@@ -51,6 +53,4 @@ class Card extends Part
         'id',
         'multiverseid',
     ];
-
-    use CardAttributes;
 }

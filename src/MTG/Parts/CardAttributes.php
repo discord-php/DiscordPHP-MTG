@@ -53,7 +53,7 @@ namespace MTG\Parts;
  * @property ?int|null       $page          The page of data to request.
  * @property ?int|null       $pageSize      The amount of data to return in a single request. The default (and max) is 100.
  * @property ?string|null    $orderBy       The field to order by in the response results.
- * @property ?bool|null      $random        Fetch any number of cards (controlled by pageSize) randomly.
+ * @property ?string|null    $random        Fetch any number of cards (controlled by pageSize) randomly.
  * @property ?string|null    $contains      Filter cards based on whether or not they have a specific field available (like imageUrl).
  * @property ?string|null    $id            A unique id for this card. It is made up by doing an SHA1 hash of setCode + cardName + cardImageName.
  * @property ?int|null       $multiverseid  The multiverseid of the card on Wizard’s Gatherer web page. Cards from sets that do not exist on Gatherer will NOT have a multiverseid.
@@ -440,7 +440,9 @@ trait CardAttributes
 
     public function setRandom(?bool $random): self
     {
-        $this->random = $random;
+        if ($random) {
+            $this->random = 'true';
+        }
         return $this;
     }
 

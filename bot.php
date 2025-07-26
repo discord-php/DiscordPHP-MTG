@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace MTG;
 
+use Discord\Helpers\ExCollectionInterface;
 use \Exception;
 //use Clue\React\Redis\Factory as Redis;
 use Discord\Parts\Channel\Channel;
@@ -24,7 +25,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use MTG\Parts\Card;
-use MTG\Repository\CardsRepository;
 use React\EventLoop\Loop;
 
 use function React\Async\async;
@@ -204,14 +204,23 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
 $mtg->on('init', function (MTG $mtg) {
     /** @var Card $card */
     $card = $mtg->getFactory()->part(Card::class);
+    $card->setPageSize(1);
     $card->setRandom(true);
-    //$promise = $mtg->cards->getCardInfo($card);
+    $mtg->cards->getCardInfo($card)->then(function (ExCollectionInterface $cards) {
+        var_dump($cards);
+    });
     
-    /*$mtg->cards->freshen()->then(function (CardsRepository $repository) {
+    $mtg->cards->freshen()->then(function (\MTG\Repository\CardsRepository $repository) {
         var_dump($repository->first());
-    });*/
-
+    });
     $mtg->cards->fetch('5f8287b1-5bb6-5f4c-ad17-316a40d5bb0c')->then(function ($card) {
+        var_dump($card);
+    });
+
+    $mtg->cards->fetch('98445397-a664-59a9-a422-e94879cc2ca4')->then(function ($card) {
+        var_dump($card);
+    });
+    $mtg->cards->fetch('479706')->then(function ($card) {
         var_dump($card);
     });
 });

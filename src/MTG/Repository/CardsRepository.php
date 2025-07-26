@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
+use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Http\Endpoint;
 use MTG\Http\Endpoint as HttpEndpoint;
 use MTG\Parts\Card;
-use Psr\Http\Message\ResponseInterface;
 use React\Promise\PromiseInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WeakReference;
@@ -127,10 +127,20 @@ class CardsRepository extends AbstractRepository
             $endpoint->addQuery($key, $value);
         }
 
-        return $this->mtg_http->get($endpoint)->then(function (ResponseInterface $response) {
-            $data = json_decode((string)$response->getBody(), true);
-            $this->discord->getLogger()->info('Fetched card info', ['response' => $data]);
-            return $data['cards'] ?? []; // @TODO: Probably wrong
+        return $this->mtg_http->get($endpoint)->then(function ($response) {
+            $response = $response->cards;
+
+            $collection = Collection::for($this->class);
+
+            foreach ($response as $cardData) {
+                $card = $this->factory->create($this->class, array_merge($this->vars, (array) $cardData), true);
+                $card->created = true;
+                $this->items[$card->{$this->discrim}] = WeakReference::create($card);
+                $this->cache->set($card->{$this->discrim}, $card);
+                $collection->pushItem($card);
+            }
+
+            return $collection;
         });
     }
 
@@ -154,5 +164,57 @@ class CardsRepository extends AbstractRepository
         }
 
         return $this->cache->setMultiple($items)->then(fn ($success) => $this);
+    }
+
+    /**
+     * Gets a part from the repository or Discord servers.
+     *
+     * @param string $id    The ID to search for.
+     * @param bool   $fresh Whether we should skip checking the cache.
+     *
+     * @throws \Exception
+     *
+     * @return PromiseInterface<Part>
+     */
+    public function fetch(string $id, bool $fresh = false): PromiseInterface
+    {
+        if (! $fresh) {
+            if (isset($this->items[$id])) {
+                $part = $this->items[$id];
+                if ($part instanceof WeakReference) {
+                    $part = $part->get();
+                }
+
+                if ($part) {
+                    $this->items[$id] = $part;
+
+                    return resolve($part);
+                }
+            } else {
+                return $this->cache->get($id)->then(function ($part) use ($id) {
+                    if ($part === null) {
+                        return $this->fetch($id, true);
+                    }
+
+                    return $part;
+                });
+            }
+        }
+
+        if (! isset($this->endpoints['get'])) {
+            return reject(new \Exception('You cannot get this part.'));
+        }
+
+        $part = $this->factory->part($this->class, [$this->discrim => $id]);
+        $endpoint = new Endpoint($this->endpoints['get']);
+        $endpoint->bindAssoc(array_merge($part->getRepositoryAttributes(), $this->vars));
+
+        return $this->mtg_http->get($endpoint)->then(function ($response) use ($part, $id) {
+            $response = $response->card;
+            $part->created = true;
+            $part->fill(array_merge($this->vars, (array) $response));
+
+            return $this->cache->set($id, $part)->then(fn ($success) => $part);
+        });
     }
 }

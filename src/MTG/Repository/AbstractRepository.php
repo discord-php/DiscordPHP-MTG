@@ -14,14 +14,7 @@ declare(strict_types=1);
 namespace MTG\Repository;
 
 use Discord\Repository\AbstractRepository as DiscordAbstractRepository;
-use MTG\Http\Endpoint;
-use MTG\Http\Http;
 use MTG\MTG;
-use React\Promise\PromiseInterface;
-use WeakReference;
-
-use function React\Promise\reject;
-
 /**
  * Repositories provide a way to store and update parts on the Discord server.
  *
