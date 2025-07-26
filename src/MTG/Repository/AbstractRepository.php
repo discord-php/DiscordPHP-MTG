@@ -15,6 +15,7 @@ namespace MTG\Repository;
 
 use Discord\Repository\AbstractRepository as DiscordAbstractRepository;
 use MTG\MTG;
+
 /**
  * Repositories provide a way to store and update parts on the Discord server.
  *

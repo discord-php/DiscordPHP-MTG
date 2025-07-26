@@ -22,9 +22,9 @@ use MTG\Repository\CardsRepository;
 
 /**
  * The MTG client class.
- * 
+ *
  * @version 1.0.0
- * 
+ *
  * @property CardsRepository $cards
  */
 class MTG extends Discord

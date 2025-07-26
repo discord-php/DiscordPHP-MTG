@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace MTG;
 
 use Discord\Helpers\ExCollectionInterface;
-use \Exception;
+use Exception;
 //use Clue\React\Redis\Factory as Redis;
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\User\User;
@@ -45,25 +45,29 @@ ini_set('memory_limit', '-1'); // Unlimited memory usage
 define('MAIN_INCLUDED', 1); // Token and SQL credential files may be protected locally and require this to be defined to access
 
 //if (! $token_included = require getcwd() . '/token.php') // $token
-    //throw new \Exception('Token file not found. Create a file named token.php in the root directory with the bot token.');
+//throw new \Exception('Token file not found. Create a file named token.php in the root directory with the bot token.');
 if (! $autoloader = require file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php') {
     throw new \Exception('Composer autoloader not found. Run `composer update` and try again.');
 }
 
-function loadEnv(string $filePath = __DIR__ . '/.env'): void
+function loadEnv(string $filePath = __DIR__.'/.env'): void
 {
-    if (! file_exists($filePath)) throw new Exception("The .env file does not exist.");
+    if (! file_exists($filePath)) {
+        throw new Exception('The .env file does not exist.');
+    }
 
     $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     $trimmedLines = array_map('trim', $lines);
-    $filteredLines = array_filter($trimmedLines, fn($line) => $line && ! str_starts_with($line, '#'));
+    $filteredLines = array_filter($trimmedLines, fn ($line) => $line && ! str_starts_with($line, '#'));
 
-    array_walk($filteredLines, function($line) {
+    array_walk($filteredLines, function ($line) {
         [$name, $value] = array_map('trim', explode('=', $line, 2));
-        if (! array_key_exists($name, $_ENV)) putenv(sprintf('%s=%s', $name, $value));
+        if (! array_key_exists($name, $_ENV)) {
+            putenv(sprintf('%s=%s', $name, $value));
+        }
     });
 }
-loadEnv(getcwd() . '/.env');
+loadEnv(getcwd().'/.env');
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
 $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
@@ -71,10 +75,9 @@ $logger = new Logger('MTGCARDINFOBOT', [$streamHandler]);
 //file_put_contents('output.log', ''); // Clear the contents of 'output.log'
 //$logger->pushHandler(new StreamHandler('output.log', Level::Debug));
 $logger->info('Loading configurations for the bot...');
-set_rejection_handler(function(\Throwable $e) use ($logger): void
-{
+set_rejection_handler(function (\Throwable $e) use ($logger): void {
     //if ($e->getMessage() === 'Cannot resume a fiber that is not suspended') return;
-    $logger->warning("Unhandled Promise Rejection: {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] " . str_replace('#', '\n#', $e->getTraceAsString()));
+    $logger->warning("Unhandled Promise Rejection: {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('#', '\n#', $e->getTraceAsString()));
 });
 
 $mtg = new MTG([
@@ -109,7 +112,7 @@ $global_error_handler = async(function (int $errno, string $errstr, ?string $err
     if (
         $mtg // If the bot is running
         // fsockopen
-        && ! str_ends_with($errstr, 'Connection timed out') 
+        && ! str_ends_with($errstr, 'Connection timed out')
         && ! str_ends_with($errstr, '(Connection timed out)')
         && ! str_ends_with($errstr, 'Connection refused') // Usually happens if the verifier server doesn't respond quickly enough
         && ! str_contains($errstr, '(Connection refused)') // Usually happens in localServerPlayerCount
@@ -125,9 +128,8 @@ $global_error_handler = async(function (int $errno, string $errstr, ?string $err
         //&& ! str_ends_with($errstr, 'HTTP request failed!')
 
         //&& ! str_contains($errstr, 'Undefined array key')
-    )
-    {
-        $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn($trace) => ($trace['file'] ?? '') . ':' . ($trace['line'] ?? '') . ($trace['function'] ?? ''), debug_backtrace()))));
+    ) {
+        $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn ($trace) => ($trace['file'] ?? '').':'.($trace['line'] ?? '').($trace['function'] ?? ''), debug_backtrace()))));
         if (! getenv('testing')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
@@ -141,28 +143,30 @@ use React\Socket\SocketServer;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use Psr\Http\Message\ServerRequestInterface;
+
 $socket = new SocketServer(
     sprintf('%s:%s', '0.0.0.0', getenv('http_port') ?: 55555),
     [
         'tcp' => [
-            'so_reuseport' => true
-        ]
+            'so_reuseport' => true,
+        ],
     ],
     Loop::get()
 );
 /**
  * Handles the HTTP request using the HttpServiceManager.
  *
- * @param ServerRequestInterface $request The HTTP request object.
- * @return Response The HTTP response object.
+ * @param  ServerRequestInterface $request The HTTP request object.
+ * @return Response               The HTTP response object.
  */
-$webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $request) use (&$mtg, &$logger): Response
-{
+$webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $request) use (&$mtg, &$logger): Response {
     /** @var ?MTG $mtg */
     if (! $mtg || ! $mtg instanceof MTG) {
         $logger->warning('MTG instance not found. Please check the server settings.');
+
         return new Response(Response::STATUS_SERVICE_UNAVAILABLE, ['Content-Type' => 'text/plain'], 'Service Unavailable');
     }
+
     return new Response(Response::STATUS_IM_A_TEAPOT, ['Content-Type' => 'text/plain'], 'Service Not Yet Implemented');
 }));
 
@@ -174,24 +178,29 @@ $webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $re
  * The restart process includes sending a message to a specific Discord channel and closing the socket connection.
  * After a delay of 5 seconds, the script is restarted by calling the 'restart' function and closing the Discord connection.
  *
- * @param Exception $e The exception object representing the error.
+ * @param Exception                               $e       The exception object representing the error.
  * @param \Psr\Http\Message\RequestInterface|null $request The HTTP request object associated with the error, if available.
- * @param object $mtg The main object of the application.
- * @param object $socket The socket object.
- * @param bool $testing Flag indicating if the script is running in testing mode.
- * @return void
+ * @param object                                  $mtg     The main object of the application.
+ * @param object                                  $socket  The socket object.
+ * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
 $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
     if (
         str_starts_with($e->getMessage(), 'Received request with invalid protocol version')
-    ) return; // Ignore this error, it's not important
-    $error = "[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] " . str_replace('\n', PHP_EOL, $e->getTraceAsString());
+    ) {
+        return;
+    } // Ignore this error, it's not important
+    $error = "[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString());
     $logger->error("[WEBAPI] $error");
-    if ($request) $logger->error('[WEBAPI] Request: ' .  preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    if ($request) {
+        $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    }
     if (str_starts_with($e->getMessage(), 'The response callback')) {
         $logger->info('[WEBAPI] ERROR - RESTART');
         /** @var ?MTG $mtg */
-        if (! $mtg) return;
+        if (! $mtg) {
+            return;
+        }
         if (! getenv('testing')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());

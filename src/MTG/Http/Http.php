@@ -15,7 +15,6 @@ namespace MTG\Http;
 
 use Discord\Http\Endpoint;
 use Discord\Http\Http as DiscordHttp;
-use MTG\Http\Request;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
 

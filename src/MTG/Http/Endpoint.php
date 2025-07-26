@@ -22,13 +22,13 @@ class Endpoint extends DiscordEndpoint
     // GET
     public const CARDS = 'cards';
     // GET
-    public const CARD = self::CARDS . '/:id';
+    public const CARD = self::CARDS.'/:id';
     // GET
     public const SETS = 'sets';
     // GET
-    public const SET = self::SETS . '/:id';
+    public const SET = self::SETS.'/:id';
     // GET
-    public const SETS_BOOSTER = self::SETS . '/:id/booster';
+    public const SETS_BOOSTER = self::SETS.'/:id/booster';
     // GET
     public const TYPES = 'types';
     // GET

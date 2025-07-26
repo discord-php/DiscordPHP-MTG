@@ -2,9 +2,17 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is a part of the MTG Card Info App project.
+ *
+ * Copyright (c) 2025-present Valithor Obsidion <valithor@valzargaming.com>
+ *
+ * This file is subject to the MIT license that is bundled
+ * with this source code in the LICENSE.md file.
+ */
+
 namespace Discord;
 
-use Discord\Discord;
 use Discord\Parts\Embed\Embed;
 use Carbon\Carbon;
 
@@ -30,13 +38,14 @@ class Stats
     {
         $instance = new static();
         $instance->init($discord);
+
         return $instance;
     }
     public function init(Discord &$discord): void
     {
         $this->startTime = $this->lastReconnect = Carbon::now();
         
-        $this->discord =& $discord;
+        $this->discord = &$discord;
         $this->discord->on('reconnect', function () {
             $this->lastReconnect = Carbon::now();
         });
@@ -67,6 +76,7 @@ class Stats
     private function getBotVersion(): string
     {
         $parse = `git rev-parse --abbrev-ref HEAD; git log --oneline -1`;
+
         return @str_replace(
             "\n",
             ' ',
@@ -118,4 +128,3 @@ class Stats
         return 'Provides statistics relating to the bots health.';
     }
 }
-?>

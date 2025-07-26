@@ -44,7 +44,7 @@ class CardsRepository extends AbstractRepository
      * Fetch card information by query parameters.
      *
      * @param Card|array $params
-     * 
+     *
      * @return PromiseInterface<Card[]|ExCollectionInterface<Card>>
      */
     public function getCardInfo(Card|array $params): PromiseInterface
@@ -109,11 +109,11 @@ class CardsRepository extends AbstractRepository
 
         // Fields that accept multiple values and can use AND (comma) or OR (pipe)
         $multiValueAndOrFields = [
-            'colors', 'colorIdentity', 'supertypes', 'types', 'subtypes'
+            'colors', 'colorIdentity', 'supertypes', 'types', 'subtypes',
         ];
 
         foreach ($params as $key => $value) {
-            if (is_string($value) && !in_array($key, $multiValueAndOrFields, true) && strpos($value, ',') !== false) {
+            if (is_string($value) && ! in_array($key, $multiValueAndOrFields, true) && strpos($value, ',') !== false) {
                 return reject(new \InvalidArgumentException("Field '{$key}' cannot contain a comma."));
             }
         }
