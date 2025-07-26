@@ -89,15 +89,15 @@ class Card extends Part
      * 
      * @since 0.3.0
      */
-    public function getLegalityAttribute(): ?ExCollectionInterface
+    public function getLegalitiesAttribute(): ?ExCollectionInterface
     {
-        if (!isset($this->attributes['legality']) || !is_array($this->attributes['legality'])) {
+        if (!isset($this->attributes['legalities']) || !is_array($this->attributes['legalities'])) {
             return null;
         }
 
         $collection = Collection::for(Legality::class);
 
-        foreach ($this->attributes['legality'] as $idx => $legality) {
+        foreach ($this->attributes['legalities'] as $idx => $legality) {
             $collection->set($idx, $this->factory->part(Legality::class, (array) $legality));
         }
 
