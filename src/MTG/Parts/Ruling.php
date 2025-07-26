@@ -15,6 +15,14 @@ namespace MTG\Parts;
 
 use Discord\Parts\Part;
 
+/**
+ * Represents a ruling associated with a card.
+ *
+ * @property string $date The date the ruling was issued.
+ * @property string $text The text content of the ruling.
+ * 
+ * @since 0.3.0
+ */
 class Ruling extends Part
 {
     /**
