@@ -101,7 +101,7 @@ class Card extends Part
     /**
      * Converts the card to a container with components.
      * 
-     * @return Container|null
+     * @return ExCollectionInterface<Ruling>|null
      * 
      * @since 0.3.0
      */
@@ -115,6 +115,28 @@ class Card extends Part
 
         foreach ($this->attributes['rulings'] as $idx => $ruling) {
             $collection->set($idx, $this->factory->part(Ruling::class, (array) $ruling));
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Gets the foreign names of the card.
+     * 
+     * @return ExCollectionInterface<ForeignName>|null
+     * 
+     * @since 0.3.0
+     */
+    public function getForeignNamesAttribute(): ?ExCollectionInterface
+    {
+        if (!isset($this->attributes['foreignNames']) || !is_array($this->attributes['foreignNames'])) {
+            return null;
+        }
+
+        $collection = Collection::for(ForeignName::class);
+
+        foreach ($this->attributes['foreignNames'] as $idx => $foreignName) {
+            $collection->set($idx, $this->factory->part(ForeignName::class, (array) $foreignName));
         }
 
         return $collection;
