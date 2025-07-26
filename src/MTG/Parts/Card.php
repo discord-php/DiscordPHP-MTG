@@ -81,6 +81,13 @@ class Card extends Part
         'source'
     ];
 
+    /**
+     * Converts the card to a container with components.
+     * 
+     * @return Container|null
+     * 
+     * @since 0.3.0
+     */
     public function getRulingsAttribute(): ?ExCollectionInterface
     {
         if (! isset($this->attributes['rulings']) || ! is_array($this->attributes['rulings'])) {
@@ -96,6 +103,13 @@ class Card extends Part
         return $collection;
     }
 
+    /**
+     * Converts the card to a container with components.
+     * 
+     * @return Container|null
+     * 
+     * @since 0.3.0
+     */
     public function toContainer(): ?Container
     {
         if (isset($this->attributes['imageUrl'])) {            
