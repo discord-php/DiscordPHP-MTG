@@ -23,9 +23,7 @@ use Discord\Http\Request as DiscordRequest;
 class Request extends DiscordRequest
 {
     /**
-     * Gets the url.
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getUrl(): string
     {
