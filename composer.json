@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": "^8.2.0",
-        "team-reflex/discord-php": "dev-extendable",
+        "team-reflex/discord-php": "dev-master",
         "react/async": "4.x-dev",
         "valzargaming/handler": "dev-main"
     },

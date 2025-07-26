@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Discord;
 
 use Discord\Discord;
@@ -104,9 +107,9 @@ class Stats
             ->addFieldValues('Bot Version', $this->getBotVersion())
             ->addFieldValues('Start time', $this->startTime->longRelativeToNowDiffForHumans(3))
             ->addFieldValues('Last reconnected', $this->lastReconnect->longRelativeToNowDiffForHumans(3))
-            ->addFieldValues('Guild count', $this->discord->guilds->count())
-            ->addFieldValues('Channel count', $this->getChannelCount())
-            ->addFieldValues('User count', $this->discord->users->count())
+            ->addFieldValues('Guild count', (string) $this->discord->guilds->count())
+            ->addFieldValues('Channel count', (string) $this->getChannelCount())
+            ->addFieldValues('User count', (string) $this->discord->users->count())
             ->addFieldValues('Memory usage', $this->getMemoryUsageFriendly());
     }
 
