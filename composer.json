@@ -26,7 +26,8 @@
     },
     "scripts": {
         "cs": "php-cs-fixer fix",
-        "unit": "phpunit"
+        "unit": "phpunit",
+        "phpacker": "phpacker build --src=bot.php"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
