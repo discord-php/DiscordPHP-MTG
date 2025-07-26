@@ -101,8 +101,9 @@ class CardsRepository extends AbstractRepository
                 ->setAllowedTypes('pageSize', ['int'])
                 ->setAllowedTypes('orderBy', ['string'])
                 ->setDefaults([
-                    'language' => 'English',
-                ]);
+                    'pageSize' => 1,
+                ])
+                ->setAllowedValues('pageSize', fn ($value) => $value >= 1 && $value <= 100);
 
             $params = $resolver->resolve($params);
         }
