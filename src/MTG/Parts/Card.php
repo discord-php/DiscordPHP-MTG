@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace MTG\Parts;
 
+use Discord\Builders\Components\Container;
+use Discord\Builders\Components\MediaGallery;
+use Discord\Builders\Components\Separator;
+use Discord\Builders\Components\TextDisplay;
 use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Part;
@@ -90,5 +94,48 @@ class Card extends Part
         }
 
         return $collection;
+    }
+
+    public function toContainer(): ?Container
+    {
+        if (isset($this->attributes['imageUrl'])) {            
+            return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
+        }
+
+        if (!isset($this->attributes['name'])) {
+            return null;
+        }
+
+        $components = [];
+        $components[] = TextDisplay::new("$this->name $this->manaCost");
+        $components[] = Separator::new();
+        $line = '';
+        if (isset($this->attributes['supertypes'])) {
+            $line .= implode(' ', $this->supertypes) . ' ';
+        }
+        if (isset($this->attributes['types'])) {
+            $line = implode(' ', $this->types);
+        }
+        if (isset($this->attributes['subtypes'])) {
+            $line .= ' - ';
+            $line .= implode(' ', $this->subtypes);
+        }
+        if (isset($this->attributes['rarity'])) {
+            $line .= " ($this->rarity)";
+        }
+        $components[] = TextDisplay::new($line);
+        if (isset($this->attributes['text'])) {
+            $components[] = Separator::new();
+            $components[] = TextDisplay::new($this->text);
+        }
+        if (isset($this->attributes['artist'])) {
+            $components[] = Separator::new();
+            $footer = $this->artist;
+            if (isset($this->attributes['power'], $this->attributes['toughness'])) {
+                $footer .= "              ({$this->power}/{$this->toughness})";
+            }
+        }
+
+        return Container::new()->addComponents($components);
     }
 }
