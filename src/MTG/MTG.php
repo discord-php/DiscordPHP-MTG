@@ -16,9 +16,9 @@ namespace MTG;
 use Discord\Discord;
 use Discord\Http\Drivers\React;
 use Discord\Stats;
-use React\Http\Browser;
 use MTG\Http\Http;
 use MTG\Repository\CardsRepository;
+use React\Http\Browser;
 
 /**
  * The MTG client class.
