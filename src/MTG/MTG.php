@@ -16,19 +16,16 @@ namespace MTG;
 use Discord\Discord;
 use Discord\Http\Drivers\React;
 use Discord\Stats;
-use Psr\Http\Message\ResponseInterface;
 use React\Http\Browser;
-use React\Promise\PromiseInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use function React\Promise\reject;
+use MTG\Http\Http;
+use MTG\Repository\CardsRepository;
 
 /**
  * The MTG client class.
  * 
  * @version 1.0.0
  * 
- * @property CardRepository $cards
+ * @property CardsRepository $cards
  */
 class MTG extends Discord
 {
@@ -45,7 +42,7 @@ class MTG extends Discord
      *
      * @var Http Extended Discord HTTP client.
      */
-    protected $http;
+    protected $mtg_http;
 
     /**
      * The extended Client class.
@@ -58,7 +55,7 @@ class MTG extends Discord
     {
         parent::__construct($options);
 
-        $this->http = new Http(
+        $this->mtg_http = new Http(
             'Bot '.$this->token,
             $this->loop,
             $this->options['logger'],
@@ -66,5 +63,37 @@ class MTG extends Discord
         );
         $this->client = $this->factory->part(Client::class, (array) $this->client);
         $this->stats = Stats::new($this);
+    }
+
+    /**
+     * Gets the MTG HTTP client.
+     *
+     * @return Http
+     */
+    public function getMtgHttpClient(): Http
+    {
+        return $this->mtg_http;
+    }
+
+    /**
+     * Handles dynamic get calls to the client.
+     *
+     * @param string $name Variable name.
+     *
+     * @return mixed
+     */
+    public function __get(string $name)
+    {
+        static $allowed = ['loop', 'options', 'logger', 'http', 'mtg_http', 'application_commands'];
+
+        if (in_array($name, $allowed)) {
+            return $this->{$name};
+        }
+
+        if (null === $this->client) {
+            return;
+        }
+
+        return $this->client->{$name};
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace MTG;
 
-use Discord\Discord;
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message\AllowedMentions;
 use Discord\Parts\Embed\Embed;

@@ -11,12 +11,46 @@ declare(strict_types=1);
  * with this source code in the LICENSE.md file.
  */
 
-namespace MTG\Parts\Part;
+namespace MTG\Parts;
 
 use Discord\Parts\Part;
-use MTG\Builders\CardAttributes;
 
 class Card extends Part
 {
+    /**
+     * {@inheritDoc}
+     */
+    protected $fillable = [
+        'name',
+        'layout',
+        'cmc',
+        'colors',
+        'colorIdentity',
+        'type',
+        'supertypes',
+        'types',
+        'subtypes',
+        'rarity',
+        'set',
+        'setName',
+        'text',
+        'flavor',
+        'artist',
+        'number',
+        'power',
+        'toughness',
+        'loyalty',
+        'language',
+        'gameFormat',
+        'legality',
+        'page',
+        'pageSize',
+        'orderBy',
+        'random',
+        'contains',
+        'id',
+        'multiverseid',
+    ];
+
     use CardAttributes;
 }

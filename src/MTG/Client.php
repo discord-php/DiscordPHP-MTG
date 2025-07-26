@@ -19,6 +19,7 @@ use Discord\Repository\GuildRepository;
 use Discord\Repository\PrivateChannelRepository;
 use Discord\Repository\SoundRepository;
 use Discord\Repository\UserRepository;
+use MTG\Repository\CardsRepository;
 
 class Client extends DiscordClient
 {

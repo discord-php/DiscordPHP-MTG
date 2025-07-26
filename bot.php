@@ -23,6 +23,8 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use MTG\Parts\Card;
+use MTG\Repository\CardsRepository;
 use React\EventLoop\Loop;
 
 use function React\Async\async;
@@ -75,7 +77,7 @@ set_rejection_handler(function(\Throwable $e) use ($logger): void
     $logger->warning("Unhandled Promise Rejection: {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] " . str_replace('#', '\n#', $e->getTraceAsString()));
 });
 
-$discord = new MTG([
+$mtg = new MTG([
     'loop' => Loop::get(),
     'logger' => $logger,
     /*
@@ -92,7 +94,7 @@ $discord = new MTG([
         'dns' => '8.8.8.8',
     ],
     'token' => getenv('TOKEN'),
-    'loadAllMembers' => true,
+    //'loadAllMembers' => true,
     'storeMessages' => true, // Only needed if messages need to be stored in the cache
     'intents' => Intents::getDefaultIntents() /*| Intents::GUILD_MEMBERS | Intents::GUILD_PRESENCES*/ | Intents::MESSAGE_CONTENT,
     'useTransportCompression' => false, // Disable zlib-stream
@@ -102,10 +104,10 @@ $discord = new MTG([
 $webapi = null;
 $socket = null;
 
-$global_error_handler = async(function (int $errno, string $errstr, ?string $errfile, ?int $errline) use (&$MTG, &$logger, &$technician_id) {
-    /** @var ?MTG $MTG */
+$global_error_handler = async(function (int $errno, string $errstr, ?string $errfile, ?int $errline) use (&$mtg, &$logger, &$technician_id) {
+    /** @var ?MTG $mtg */
     if (
-        $MTG // If the bot is running
+        $mtg // If the bot is running
         // fsockopen
         && ! str_ends_with($errstr, 'Connection timed out') 
         && ! str_ends_with($errstr, '(Connection timed out)')
@@ -127,7 +129,7 @@ $global_error_handler = async(function (int $errno, string $errstr, ?string $err
     {
         $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn($trace) => ($trace['file'] ?? '') . ':' . ($trace['line'] ?? '') . ($trace['function'] ?? ''), debug_backtrace()))));
         if (! getenv('testing')) {
-            $promise = $MTG->users->fetch($technician_id);
+            $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
             $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent($msg)));
         }
@@ -154,10 +156,10 @@ $socket = new SocketServer(
  * @param ServerRequestInterface $request The HTTP request object.
  * @return Response The HTTP response object.
  */
-$webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $request) use (&$MTG, &$logger): Response
+$webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $request) use (&$mtg, &$logger): Response
 {
-    /** @var ?MTG $MTG */
-    if (! $MTG || ! $MTG instanceof MTG) {
+    /** @var ?MTG $mtg */
+    if (! $mtg || ! $mtg instanceof MTG) {
         $logger->warning('MTG instance not found. Please check the server settings.');
         return new Response(Response::STATUS_SERVICE_UNAVAILABLE, ['Content-Type' => 'text/plain'], 'Service Unavailable');
     }
@@ -174,12 +176,12 @@ $webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $re
  *
  * @param Exception $e The exception object representing the error.
  * @param \Psr\Http\Message\RequestInterface|null $request The HTTP request object associated with the error, if available.
- * @param object $MTG The main object of the application.
+ * @param object $mtg The main object of the application.
  * @param object $socket The socket object.
  * @param bool $testing Flag indicating if the script is running in testing mode.
  * @return void
  */
-$webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$MTG, &$logger, &$socket, $technician_id) {
+$webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
     if (
         str_starts_with($e->getMessage(), 'Received request with invalid protocol version')
     ) return; // Ignore this error, it's not important
@@ -188,10 +190,10 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
     if ($request) $logger->error('[WEBAPI] Request: ' .  preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
     if (str_starts_with($e->getMessage(), 'The response callback')) {
         $logger->info('[WEBAPI] ERROR - RESTART');
-        /** @var ?MTG $MTG */
-        if (! $MTG) return;
+        /** @var ?MTG $mtg */
+        if (! $mtg) return;
         if (! getenv('testing')) {
-            $promise = $MTG->users->fetch($technician_id);
+            $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
             $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
         }
@@ -199,4 +201,19 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
     }
 }));
 
-$MTG->run();
+$mtg->on('init', function (MTG $mtg) {
+    /** @var Card $card */
+    $card = $mtg->getFactory()->part(Card::class);
+    $card->setRandom(true);
+    //$promise = $mtg->cards->getCardInfo($card);
+    
+    /*$mtg->cards->freshen()->then(function (CardsRepository $repository) {
+        var_dump($repository->first());
+    });*/
+
+    $mtg->cards->fetch('5f8287b1-5bb6-5f4c-ad17-316a40d5bb0c')->then(function ($card) {
+        var_dump($card);
+    });
+});
+
+$mtg->run();

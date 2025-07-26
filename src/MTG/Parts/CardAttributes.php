@@ -11,9 +11,7 @@ declare(strict_types=1);
  * with this source code in the LICENSE.md file.
  */
 
-namespace MTG\Builders;
-
-use Symfony\Component\OptionsResolver\OptionsResolver;
+namespace MTG\Parts;
 
 /**
  * This query will return a maximum of 100 cards.
@@ -62,41 +60,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 trait CardAttributes
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected $fillable = [
-        'name',
-        'layout',
-        'cmc',
-        'colors',
-        'colorIdentity',
-        'type',
-        'supertypes',
-        'types',
-        'subtypes',
-        'rarity',
-        'set',
-        'setName',
-        'text',
-        'flavor',
-        'artist',
-        'number',
-        'power',
-        'toughness',
-        'loyalty',
-        'language',
-        'gameFormat',
-        'legality',
-        'page',
-        'pageSize',
-        'orderBy',
-        'random',
-        'contains',
-        'id',
-        'multiverseid',
-    ];
-
     /**
      * Sets the name of the card.
      *
