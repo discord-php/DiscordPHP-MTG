@@ -278,9 +278,20 @@ $mtg->on('init', function (MTG $mtg) {
                 ->then(fn () => $mtg->cards->getCardInfo(array_map(fn($option) => $option->value, $interaction->data->options->toArray())))
                 ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface
                 {
-                    return $interaction->updateOriginalResponse(MTG::createBuilder()
-                        ->addFileFromContent('cards.json', json_encode($cards->first(), JSON_PRETTY_PRINT))
-                    );
+                    $builder = MTG::createBuilder();
+                    if (! $card = $cards->first()) {
+                        return $interaction->updateOriginalResponse($builder->setContent('No cards found matching the search criteria.'));
+                    }
+                    /** @var Card $card */
+                    if (! $container = $card->toContainer()) {
+                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('cards.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
+                    }
+
+                    // @TODO Add an AccentColor to the container based on the card's colors
+                    //$container->setAccentColor();
+                    
+                    return $interaction->updateOriginalResponse($builder->addcomponent($container));
+                    
                 })
             );
         });
