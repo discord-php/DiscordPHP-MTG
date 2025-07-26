@@ -83,6 +83,22 @@ class Card extends Part
     ];
 
     /**
+     * Gets the release date of the card.
+     *
+     * @return ?Carbon|null
+     * 
+     * @since 0.3.0
+     */
+    public function getReleaseDateAttribute(): ?Carbon
+    {
+        if (!isset($this->attributes['releaseDate'])) {
+            return null;
+        }
+
+        return Carbon::parse($this->attributes['releaseDate']);
+    }
+
+    /**
      * Converts the card to a container with components.
      * 
      * @return Container|null
@@ -102,22 +118,6 @@ class Card extends Part
         }
 
         return $collection;
-    }
-
-    /**
-     * Gets the release date of the card.
-     *
-     * @return ?Carbon|null
-     * 
-     * @since 0.3.0
-     */
-    public function getReleaseDateAttribute(): ?Carbon
-    {
-        if (!isset($this->attributes['releaseDate'])) {
-            return null;
-        }
-
-        return Carbon::parse($this->attributes['releaseDate']);
     }
 
     /**
