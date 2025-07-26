@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace MTG\Http;
 
-use Discord\Http\Endpoint as DiscordEndpoint;
+use Discord\Http\EndpointInterface;
+use Discord\Http\EndpointTrait;
 
-class Endpoint extends DiscordEndpoint
+class Endpoint implements EndpointInterface
 {
+    use EndpointTrait;
+
     // GET
     public const GATEWAY = 'gateway';
     // GET
@@ -37,4 +40,54 @@ class Endpoint extends DiscordEndpoint
     public const SUPERTYPES = 'supertypes';
     // GET
     public const FORMATS = 'formats';
+
+    /**
+     * Regex to identify parameters in endpoints.
+     *
+     * @var string
+     */
+    public const REGEX = '/:([^\/]*)/';
+
+    /**
+     * The string version of the endpoint, including all parameters.
+     *
+     * @var string
+     */
+    protected $endpoint;
+
+    /**
+     * Array of placeholders to be replaced in the endpoint.
+     *
+     * @var string[]
+     */
+    protected $vars = [];
+
+    /**
+     * Array of arguments to substitute into the endpoint.
+     *
+     * @var string[]
+     */
+    protected $args = [];
+
+    /**
+     * Array of query data to be appended
+     * to the end of the endpoint with `http_build_query`.
+     *
+     * @var array
+     */
+    protected $query = [];
+
+    /**
+     * Creates an endpoint class.
+     *
+     * @param string $endpoint
+     */
+    public function __construct(string $endpoint)
+    {
+        $this->endpoint = $endpoint;
+
+        if (preg_match_all(self::REGEX, $endpoint, $vars)) {
+            $this->vars = $vars[1] ?? [];
+        }
+    }
 }
