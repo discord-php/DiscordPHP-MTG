@@ -144,7 +144,7 @@ $global_error_handler = async(function (int $errno, string $errstr, ?string $err
         //&& ! str_contains($errstr, 'Undefined array key')
     ) {
         $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn ($trace) => ($trace['file'] ?? '').':'.($trace['line'] ?? '').($trace['function'] ?? ''), debug_backtrace()))));
-        if (! getenv('testing')) {
+        if (! getenv('TESTING')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
             $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent($msg)));
@@ -215,7 +215,7 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
         if (! $mtg) {
             return;
         }
-        if (! getenv('testing')) {
+        if (! getenv('TESTING')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
             $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
