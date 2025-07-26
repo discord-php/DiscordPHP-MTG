@@ -110,7 +110,7 @@ class CardsRepository extends AbstractRepository
 
         // Fields that accept multiple values and can use AND (comma) or OR (pipe)
         $multiValueAndOrFields = [
-            'colors', 'colorIdentity', 'supertypes', 'types', 'subtypes',
+            'name', 'colors', 'colorIdentity', 'supertypes', 'types', 'subtypes',
         ];
 
         foreach ($params as $key => $value) {
