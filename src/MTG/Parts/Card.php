@@ -83,28 +83,6 @@ class Card extends Part
     ];
 
     /**
-     * Gets the legality of the card.
-     * 
-     * @return ExCollectionInterface<Legality>|null
-     * 
-     * @since 0.3.0
-     */
-    public function getLegalitiesAttribute(): ?ExCollectionInterface
-    {
-        if (!isset($this->attributes['legalities']) || !is_array($this->attributes['legalities'])) {
-            return null;
-        }
-
-        $collection = Collection::for(Legality::class);
-
-        foreach ($this->attributes['legalities'] as $idx => $legality) {
-            $collection->set($idx, $this->factory->part(Legality::class, (array) $legality));
-        }
-
-        return $collection;
-    }
-
-    /**
      * Gets the release date of the card.
      *
      * @return ?Carbon|null
@@ -137,6 +115,28 @@ class Card extends Part
 
         foreach ($this->attributes['rulings'] as $idx => $ruling) {
             $collection->set($idx, $this->factory->part(Ruling::class, (array) $ruling));
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Gets the legality of the card.
+     * 
+     * @return ExCollectionInterface<Legality>|null
+     * 
+     * @since 0.3.0
+     */
+    public function getLegalitiesAttribute(): ?ExCollectionInterface
+    {
+        if (!isset($this->attributes['legalities']) || !is_array($this->attributes['legalities'])) {
+            return null;
+        }
+
+        $collection = Collection::for(Legality::class);
+
+        foreach ($this->attributes['legalities'] as $idx => $legality) {
+            $collection->set($idx, $this->factory->part(Legality::class, (array) $legality));
         }
 
         return $collection;
