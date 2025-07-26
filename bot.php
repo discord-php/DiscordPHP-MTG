@@ -13,11 +13,17 @@ declare(strict_types=1);
 
 namespace MTG;
 
+use Discord\Builders\CommandBuilder;
 use Discord\Helpers\ExCollectionInterface;
 use Exception;
 //use Clue\React\Redis\Factory as Redis;
 use Discord\Parts\Channel\Channel;
+use Discord\Parts\Interactions\Command\Command;
+use Discord\Parts\Interactions\Command\Option;
+use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\User\User;
+use Discord\Repository\Interaction\GlobalCommandRepository;
+use Discord\WebSockets\Event;
 //use Discord\Helpers\CacheConfig;
 use Discord\WebSockets\Intents;
 use Monolog\Formatter\LineFormatter;
@@ -157,6 +163,7 @@ use React\Socket\SocketServer;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
 use Psr\Http\Message\ServerRequestInterface;
+use React\Promise\PromiseInterface;
 
 $socket = new SocketServer(
     sprintf('%s:%s', '0.0.0.0', getenv('http_port') ?: 55555),
@@ -173,16 +180,12 @@ $socket = new SocketServer(
  * @param  ServerRequestInterface $request The HTTP request object.
  * @return Response               The HTTP response object.
  */
-$webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $request) use (&$mtg, &$logger): Response {
+$webapi = new HttpServer(Loop::get(), async( fn (ServerRequestInterface $request): Response =>
     /** @var ?MTG $mtg */
-    if (! $mtg || ! $mtg instanceof MTG) {
-        $logger->warning('MTG instance not found. Please check the server settings.');
-
-        return new Response(Response::STATUS_SERVICE_UNAVAILABLE, ['Content-Type' => 'text/plain'], 'Service Unavailable');
-    }
-
-    return new Response(Response::STATUS_IM_A_TEAPOT, ['Content-Type' => 'text/plain'], 'Service Not Yet Implemented');
-}));
+    ($mtg instanceof MTG)
+        ? new Response(Response::STATUS_IM_A_TEAPOT, ['Content-Type' => 'text/plain'], 'Service Not Yet Implemented')
+        : new Response(Response::STATUS_SERVICE_UNAVAILABLE, ['Content-Type' => 'text/plain'], 'Service Unavailable')
+));
 
 /**
  * This code snippet handles the error event of the web API.
@@ -199,22 +202,13 @@ $webapi = new HttpServer(Loop::get(), async(function (ServerRequestInterface $re
  * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
 $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
-    if (
-        str_starts_with($e->getMessage(), 'Received request with invalid protocol version')
-    ) {
-        return;
-    } // Ignore this error, it's not important
-    $error = "[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString());
-    $logger->error("[WEBAPI] $error");
-    if ($request) {
-        $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
-    }
+    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) return;
+    $logger->warning("[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString()));
+    if ($request) $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
     if (str_starts_with($e->getMessage(), 'The response callback')) {
-        $logger->info('[WEBAPI] ERROR - RESTART');
+        $logger->error('[WEBAPI] ERROR - RESTART');        
         /** @var ?MTG $mtg */
-        if (! $mtg) {
-            return;
-        }
+        if (! $mtg instanceof MTG) return;
         if (! getenv('TESTING')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
@@ -225,15 +219,14 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
 }));
 
 $mtg->on('init', function (MTG $mtg) {
-    /** @var Card $card */
+    /*
     $card = $mtg->getFactory()->part(Card::class);
     $card->setPageSize(1);
     $card->setRandom(true);
     $mtg->cards->getCardInfo($card)->then(function (ExCollectionInterface $cards) {
         var_dump($cards);
     });
-    
-    /*
+
     $mtg->cards->freshen()->then(function (\MTG\Repository\CardsRepository $repository) {
         var_dump($repository->first());
     });
@@ -248,6 +241,51 @@ $mtg->on('init', function (MTG $mtg) {
         var_dump($card);
     });
     */
+
+    
+    $func = function () use ($mtg): void
+    {
+        $mtg->application->commands->freshen()->then(function (GlobalCommandRepository $commands) use ($mtg): void {
+            if ($names = array_map(fn($command) => $command->name, iterator_to_array($commands))) {
+                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] ' . implode('`, `', $names));
+            }
+
+            if (! $command = $commands->get('name', $name = 'card_search')) {
+                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND] Creating `card_search` command...');
+
+                $option_name = $mtg->getFactory()->part(Option::class);
+                /** @var Option $option_name */
+                $option_name
+                    ->setName('name')
+                    ->setDescription('The name of the card.')
+                    ->setType(Option::STRING)
+                    ->setRequired(true);
+
+                
+                $commands->save($mtg->application->commands->create(
+                    CommandBuilder::new()
+                        ->setName($name)
+                        ->setType(Command::CHAT_INPUT)
+                        ->setDescription('Search for a card by name or other attributes.')
+                        ->setContext([Interaction::CONTEXT_TYPE_GUILD, Interaction::CONTEXT_TYPE_BOT_DM, Interaction::CONTEXT_TYPE_PRIVATE_CHANNEL])
+                        ->addOption($option_name)
+                ));
+            } else {
+                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND] `card_search` already exists.');
+                //$commands->delete($command);
+            }
+            $mtg->listenCommand($name, fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
+                ->then(fn () => $mtg->cards->getCardInfo(array_map(fn($option) => $option->value, $interaction->data->options->toArray())))
+                ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface
+                {
+                    return $interaction->updateOriginalResponse(MTG::createBuilder()
+                        ->addFileFromContent('cards.json', json_encode($cards->first(), JSON_PRETTY_PRINT))
+                    );
+                })
+            );
+        });
+    };
+    $mtg->getLoop()->addTimer(1, $func);
 });
 
 $mtg->run();
