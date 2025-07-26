@@ -83,6 +83,28 @@ class Card extends Part
     ];
 
     /**
+     * Gets the legality of the card.
+     * 
+     * @return ExCollectionInterface<Legality>|null
+     * 
+     * @since 0.3.0
+     */
+    public function getLegalityAttribute(): ?ExCollectionInterface
+    {
+        if (!isset($this->attributes['legality']) || !is_array($this->attributes['legality'])) {
+            return null;
+        }
+
+        $collection = Collection::for(Legality::class);
+
+        foreach ($this->attributes['legality'] as $idx => $legality) {
+            $collection->set($idx, $this->factory->part(Legality::class, (array) $legality));
+        }
+
+        return $collection;
+    }
+
+    /**
      * Gets the release date of the card.
      *
      * @return ?Carbon|null
