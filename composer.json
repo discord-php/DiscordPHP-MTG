@@ -13,6 +13,10 @@
         "react/async": "4.x-dev",
         "valzargaming/handler": "dev-main"
     },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3",
+        "phpunit/phpunit": "^9.4.4"
+    },
     "suggest": {
         "ext-uv": "For a faster, and more performant loop. PHP >=7 only. Preferred.",
         "ext-libev": "For a faster, and more performant loop.",
@@ -20,8 +24,8 @@
         "ext-mbstring": "For accurate calculations of string length when handling non-english characters."
     },
     "scripts": {
-        "cs": ["./vendor/bin/php-cs-fixer fix"],
-        "unit": ["./vendor/bin/phpunit"]
+        "cs": "php-cs-fixer fix",
+        "unit": "phpunit"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

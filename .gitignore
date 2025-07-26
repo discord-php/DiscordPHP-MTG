@@ -4,3 +4,4 @@ composer.lock
 /linux
 /mac
 /windows
+.php-cs-fixer.cache
