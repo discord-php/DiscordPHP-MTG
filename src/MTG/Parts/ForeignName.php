@@ -24,7 +24,7 @@ use Discord\Parts\Part;
  *
  * @since 0.3.0
  */
-class ForeignNames extends Part
+class ForeignName extends Part
 {
     /**
      * {@inheritDoc}
