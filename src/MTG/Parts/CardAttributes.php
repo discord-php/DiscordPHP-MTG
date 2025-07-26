@@ -57,6 +57,27 @@ namespace MTG\Parts;
  * @property ?string|null   $contains      Filter cards based on whether or not they have a specific field available (like imageUrl).
  * @property ?string|null   $id            A unique id for this card. It is made up by doing an SHA1 hash of setCode + cardName + cardImageName.
  * @property ?int|null      $multiverseid  The multiverseid of the card on Wizard’s Gatherer web page. Cards from sets that do not exist on Gatherer will NOT have a multiverseid.
+ * 
+ * The fields below are also part of the response (if not null), but cannot currently be used as query parameters
+ * @property-read ?array|null  $names
+ * @property-read ?string|null $manaCost
+ * @property-read ?array|null  $variations
+ * @property-read ?string|null $imageUrl
+ * @property-read $watermark
+ * @property-read ?string|null $border
+ * @property-read $timeshifted
+ * @property-read $hand
+ * @property-read $life
+ * @property-read $reserved
+ * @property-read $releaseDate
+ * @property-read $starter
+ * @property-read ?ExCollectionInterface<Rulings>|Rulings[]|null $rulings Array of rulings, each containing "date" and "text".
+ * @property-read $foreignNames
+ * @property-read $printings
+ * @property-read $originalText
+ * @property-read $originalType
+ * @property-read $legalities
+ * @property-read $source
  */
 trait CardAttributes
 {
