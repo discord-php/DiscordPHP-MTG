@@ -69,7 +69,7 @@ namespace MTG\Parts;
  * @property-read $hand
  * @property-read $life
  * @property-read $reserved
- * @property-read $releaseDate
+ * @property-read ?Carbon|null $releaseDate
  * @property-read $starter
  * @property-read ?ExCollectionInterface<Rulings>|Rulings[]|null $rulings Array of rulings, each containing "date" and "text".
  * @property-read $foreignNames

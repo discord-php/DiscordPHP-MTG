@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace MTG\Parts;
 
+use Carbon\Carbon;
 use Discord\Builders\Components\Container;
 use Discord\Builders\Components\MediaGallery;
 use Discord\Builders\Components\Separator;
@@ -101,6 +102,22 @@ class Card extends Part
         }
 
         return $collection;
+    }
+
+    /**
+     * Gets the release date of the card.
+     *
+     * @return ?Carbon|null
+     * 
+     * @since 0.3.0
+     */
+    public function getReleaseDateAttribute(): ?Carbon
+    {
+        if (!isset($this->attributes['releaseDate'])) {
+            return null;
+        }
+
+        return Carbon::parse($this->attributes['releaseDate']);
     }
 
     /**
