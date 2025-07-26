@@ -44,13 +44,17 @@ ini_set('max_execution_time', 0);
 ini_set('memory_limit', '-1'); // Unlimited memory usage
 define('MAIN_INCLUDED', 1); // Token and SQL credential files may be protected locally and require this to be defined to access
 
-//if (! $token_included = require getcwd() . '/token.php') // $token
-//throw new \Exception('Token file not found. Create a file named token.php in the root directory with the bot token.');
-if (! $autoloader = require file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php') {
-    throw new \Exception('Composer autoloader not found. Run `composer update` and try again.');
-}
+$autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? $autoload_path
+    : (file_exists($autoload_path = dirname(__DIR__).'/vendor/autoload.php') ? $autoload_path
+    : (file_exists($autoload_path = realpath(__DIR__.'/../vendor/autoload.php')) ? $autoload_path
+    : (file_exists($autoload_path = realpath(__DIR__.'/../../vendor/autoload.php')) ? $autoload_path
+    : (file_exists($autoload_path = realpath(dirname(__DIR__).'/../vendor/autoload.php')) ? $autoload_path
+    : (file_exists($autoload_path = realpath(dirname(__DIR__).'/../../vendor/autoload.php')) ? $autoload_path
+    : null
+)))));
+$autoload_path ? require ($autoload_path) : throw new Exception('Composer autoloader not found. Run `composer update` and try again.');
 
-function loadEnv(string $filePath = __DIR__.'/.env'): void
+function loadEnv(string $filePath): void
 {
     if (! file_exists($filePath)) {
         throw new Exception('The .env file does not exist.');
@@ -67,7 +71,17 @@ function loadEnv(string $filePath = __DIR__.'/.env'): void
         }
     });
 }
-loadEnv(getcwd().'/.env');
+
+$env_path = file_exists($env_path = getcwd().'/.env') ? $env_path
+    : (file_exists($env_path = dirname(getcwd()).'/.env') ? $env_path
+    : (file_exists($env_path = realpath(getcwd().'/../.env')) ? $env_path
+    : (file_exists($env_path = realpath(getcwd().'/../../.env')) ? $env_path
+    : (file_exists($env_path = realpath(dirname(getcwd()).'/../.env')) ? $env_path
+    : (file_exists($env_path = realpath(dirname(getcwd()).'/../../.env')) ? $env_path
+    : null
+)))));
+$env_path ? loadEnv($env_path) : throw new Exception('The .env file does not exist. Please create one in the root directory.');
+
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
 $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
@@ -219,6 +233,7 @@ $mtg->on('init', function (MTG $mtg) {
         var_dump($cards);
     });
     
+    /*
     $mtg->cards->freshen()->then(function (\MTG\Repository\CardsRepository $repository) {
         var_dump($repository->first());
     });
@@ -232,6 +247,7 @@ $mtg->on('init', function (MTG $mtg) {
     $mtg->cards->fetch('479706')->then(function ($card) {
         var_dump($card);
     });
+    */
 });
 
 $mtg->run();
