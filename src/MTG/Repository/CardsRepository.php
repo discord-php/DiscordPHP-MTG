@@ -22,6 +22,7 @@ use React\Promise\PromiseInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use WeakReference;
 
+use function Discord\studly;
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
@@ -52,6 +53,13 @@ class CardsRepository extends AbstractRepository
         if ($params instanceof Card) {
             $params = $params->jsonSerialize();
         } else {
+             // Convert underscore_case keys to camelCase
+            foreach ($params as $key => $value) {                
+                $newKey = lcfirst(studly($key));
+                unset($params[$key]);
+                $params[$newKey] = $value;
+            }
+
             $resolver = new OptionsResolver();
             $resolver
                 ->setDefined([
