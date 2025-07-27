@@ -21,6 +21,7 @@ use Discord\Parts\Channel\Channel;
 use Discord\Parts\Interactions\Command\Command;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
+use Discord\Parts\OAuth\Application;
 use Discord\Parts\User\User;
 use Discord\Repository\Interaction\GlobalCommandRepository;
 use Discord\WebSockets\Event;
@@ -251,37 +252,111 @@ $mtg->on('init', function (MTG $mtg) {
             }
 
             if (! $command = $commands->get('name', $name = 'card_search')) {
-                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND] Creating `card_search` command...');
+                $mtg->logger->debug("[GLOBAL APPLICATION COMMAND] Creating `$name` command...");
 
                 $option_name = $mtg->getFactory()->part(Option::class);
                 /** @var Option $option_name */
                 $option_name
                     ->setName('name')
-                    ->setDescription('The name of the card.')
+                    ->setDescription('nissa, worldwaker|jace|ajani, caller.')
                     ->setType(Option::STRING)
-                    ->setRequired(true);
+                    ->setRequired(false);
 
+                $option_cmc = $mtg->getFactory()->part(Option::class);
+                /** @var Option $option_cmc */
+                $option_cmc
+                    ->setName('cmc')
+                    ->setDescription('Converted mana cost.')
+                    ->setType(Option::INTEGER)
+                    ->setRequired(false);
                 
-                $commands->save($mtg->application->commands->create(
-                    CommandBuilder::new()
-                        ->setName($name)
-                        ->setType(Command::CHAT_INPUT)
-                        ->setDescription('Search for a card by name or other attributes.')
-                        ->setContext([Interaction::CONTEXT_TYPE_GUILD, Interaction::CONTEXT_TYPE_BOT_DM, Interaction::CONTEXT_TYPE_PRIVATE_CHANNEL])
-                        ->addOption($option_name)
-                ));
-            } else {
-                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND] `card_search` already exists.');
-                //$commands->delete($command);
-            }
+                $option_colorIdentity = $mtg->getFactory()->part(Option::class);
+                /** @var Option $option_colorIdentity */
+                $option_colorIdentity
+                    ->setName('color_identity')
+                    ->setDescription('W, U, B, R, G.')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+
+                $option_types = $mtg->getFactory()->part(Option::class);
+                /** @var Option $option_types */
+                $option_types
+                    ->setName('types')
+                    ->setDescription('Creature, Instant, Enchantment.')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+                
+                $options_subtypes = $mtg->getFactory()->part(Option::class);
+                /** @var Option $options_subtypes */
+                $options_subtypes
+                    ->setName('subtypes')
+                    ->setDescription('Elf, Goblin, Dragon.')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+
+                $options_gameFormat = $mtg->getFactory()->part(Option::class);
+                /** @var Option $options_gameFormat */
+                $options_gameFormat
+                    ->setName('game_format')
+                    ->setDescription('Standard, Modern, Legacy, Vintage, Commander.')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+
+                $options_contains = $mtg->getFactory()->part(Option::class);
+                /** @var Option $options_contains */
+                $options_contains
+                    ->setName('contains')
+                    ->setDescription('Filter cards based on whether or not they have a specific field available (like imageUrl).')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+
+                $options_multiverseid = $mtg->getFactory()->part(Option::class);
+                /** @var Option $options_multiverseid */
+                $options_multiverseid
+                    ->setName('multiverseid')
+                    ->setDescription('The multiverse ID of the card.')
+                    ->setType(Option::INTEGER)
+                    ->setRequired(false);
+
+                $options_legality = $mtg->getFactory()->part(Option::class);
+                /** @var Option $options_legality */
+                $options_legality
+                    ->setName('legality')
+                    ->setDescription('Legal, Banned or Restricted.')
+                    ->setType(Option::STRING)
+                    ->setRequired(false);
+                
+                $builder = CommandBuilder::new()
+                    ->setName($name)
+                    ->setType(Command::CHAT_INPUT)
+                    ->setDescription('Search for a card. See docs.magicthegathering.io/#api_v1cards_list for details.')
+                    ->setContext([Interaction::CONTEXT_TYPE_GUILD, Interaction::CONTEXT_TYPE_BOT_DM, Interaction::CONTEXT_TYPE_PRIVATE_CHANNEL])
+                    ->addIntegrationType(Application::INTEGRATION_TYPE_GUILD_INSTALL)
+                    ->addIntegrationType(Application::INTEGRATION_TYPE_USER_INSTALL)
+                    ->addOption($option_name)
+                    ->addOption($option_cmc)
+                    ->addOption($option_colorIdentity)
+                    ->addOption($option_types)
+                    ->addOption($options_subtypes)
+                    ->addOption($options_gameFormat)
+                    ->addOption($options_contains)
+                    ->addOption($options_multiverseid)
+                    ->addOption($options_legality);
+                //$mtg->logger->info(json_encode($builder->jsonSerialize()));
+                $commands->save($mtg->application->commands->create($builder->toArray()));
+                
+            } //else $commands->delete($command);
+
             $mtg->listenCommand($name, fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
                 ->then(fn () => $mtg->cards->getCardInfo(array_map(fn($option) => $option->value, $interaction->data->options->toArray())))
                 ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface
                 {
                     $builder = MTG::createBuilder();
+
                     if (! $card = $cards->first()) {
                         return $interaction->updateOriginalResponse($builder->setContent('No cards found matching the search criteria.'));
                     }
+
                     /** @var Card $card */
                     if (! $container = $card->toContainer()) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('cards.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
@@ -291,12 +366,11 @@ $mtg->on('init', function (MTG $mtg) {
                     //$container->setAccentColor();
                     
                     return $interaction->updateOriginalResponse($builder->addcomponent($container));
-                    
                 })
             );
         });
     };
-    $mtg->getLoop()->addTimer(1, $func);
+    $mtg->getLoop()->addTimer(2, $func);
 });
 
 $mtg->run();
