@@ -370,7 +370,7 @@ $mtg->on('init', function (MTG $mtg) {
             );
         });
     };
-    $mtg->getLoop()->addTimer(2, $func);
+    $mtg->getLoop()->addTimer(2, $func); // Workaround for Client's application_id not always being set on init
 });
 
 $mtg->run();
