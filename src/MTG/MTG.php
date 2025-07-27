@@ -18,8 +18,6 @@ use Discord\Http\Drivers\React;
 use Discord\Stats;
 use MTG\Http\Http;
 use MTG\Repository\CardsRepository;
-use React\Http\Browser;
-
 /**
  * The MTG client class.
  *
@@ -32,8 +30,6 @@ class MTG extends Discord
     use HelperTrait;
 
     public const string EMBED_FOOTER = '';
-
-    protected Browser $browser;
 
     protected Stats $stats;
 
