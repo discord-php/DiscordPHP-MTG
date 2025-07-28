@@ -29,7 +29,7 @@ use function React\Promise\resolve;
 class CardsRepository extends AbstractRepository
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $endpoints = [
         'all' => HttpEndpoint::CARDS,
@@ -37,7 +37,7 @@ class CardsRepository extends AbstractRepository
     ];
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $class = Card::class;
 
