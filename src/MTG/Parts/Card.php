@@ -195,6 +195,9 @@ class Card extends Part
             $line .= ' - ';
             $line .= implode(' ', $this->subtypes);
         }
+        if (isset($this->attributes['set'])) {
+            $line .= " $this->set";
+        }
         if (isset($this->attributes['rarity'])) {
             $line .= " ($this->rarity)";
         }
