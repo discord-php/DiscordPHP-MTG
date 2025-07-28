@@ -18,7 +18,8 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
         "phpunit/phpunit": "^9.4.4",
-        "laravel/pint": "^1.21"
+        "laravel/pint": "^1.21",
+        "wyrihaximus/react-cache-redis": "^4.5"
     },
     "suggest": {
         "ext-gmp": "For 64 bit calculations on x86 (32 bit) PHP.",
