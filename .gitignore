@@ -5,3 +5,5 @@ composer.lock
 /mac
 /windows
 .php-cs-fixer.cache
+phpunit.log
+/.phpunit.cache
