@@ -55,8 +55,8 @@ class MTG extends Discord
         $this->mtg_http = new Http(
             'Bot '.$this->token,
             $this->loop,
-            $this->options['logger'],
-            new React($this->loop, $options['socket_options'])
+            $this->options['logger'] ?? null,
+            new React($this->loop, $options['socket_options'] ?? [])
         );
         $this->client = $this->factory->part(Client::class, (array) $this->client);
         $this->stats = Stats::new($this);
