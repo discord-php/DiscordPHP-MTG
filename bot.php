@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is a part of the MTG Card Info App project.
  *
- * Copyright (c) 2025-present Valithor Obsidion <valithor@valzargaming.com>
+ * Copyright (c) 2025-present Valithor Obsidion <valithor@discordphp.org>
  *
  * This file is subject to the MIT license that is bundled
  * with this source code in the LICENSE.md file.
@@ -354,12 +354,12 @@ $mtg->on('init', function (MTG $mtg) {
                     $builder = MTG::createBuilder();
 
                     if (! $card = $cards->first()) {
-                        return $interaction->updateOriginalResponse($builder->setContent('No cards found matching the search criteria.'));
+                        return $interaction->updateOriginalResponse($builder->setContent('No card found matching the search criteria.'));
                     }
 
                     /** @var Card $card */
                     if (! $container = $card->toContainer()) {
-                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('cards.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
+                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
                     }
 
                     // @TODO Add an AccentColor to the container based on the card's colors

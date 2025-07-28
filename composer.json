@@ -1,32 +1,43 @@
 {
     "name": "valgorithms/mtg-card-info-app",
     "description": "DiscordPHP bot for Magic: The Gathering card lookup and search.",
+    "license": "MIT",
     "authors": [
         {
             "name": "Valithor Obsidion",
-            "email": "valithor@valzargaming.com"
+            "email": "valithor@discordphp.org"
         }
     ],
     "require": {
         "php": "^8.2.0",
-        "team-reflex/discord-php": "dev-master",
+        "team-reflex/discord-php": "^10.18.18",
         "discord-php/http": "^10.4.6",
         "react/async": "4.x-dev",
         "valzargaming/handler": "dev-main"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
-        "phpunit/phpunit": "^9.4.4"
+        "phpunit/phpunit": "^9.4.4",
+        "laravel/pint": "^1.21"
     },
     "suggest": {
+        "ext-gmp": "For 64 bit calculations on x86 (32 bit) PHP.",
         "ext-uv": "For a faster, and more performant loop. PHP >=7 only. Preferred.",
-        "ext-libev": "For a faster, and more performant loop.",
+        "ext-ev": "For a faster, and more performant loop.",
         "ext-event": "For a faster, and more performant loop.",
-        "ext-mbstring": "For accurate calculations of string length when handling non-english characters."
+        "ext-mbstring": "For accurate calculations of string length when handling non-english characters.",
+        "ext-fileinfo": "For function mime_content_type()."
     },
     "scripts": {
+        "pint": ["./vendor/bin/pint --config ./pint.json ./src"],
         "cs": "php-cs-fixer fix",
         "unit": "phpunit",
+        "coverage": ["XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html coverage --testdox"],
+        "php8.0": ["docker-compose run php8.0 sh"],
+        "php8.1": ["docker-compose run php8.1 sh"],
+        "php8.2": ["docker-compose run php8.2 sh"],
+        "php8.3": ["docker-compose run php8.3 sh"],
+        "php8.4": ["docker-compose run php8.4 sh"],
         "phpacker": "phpacker build --src=bot.php"
     },
     "minimum-stability": "dev",
