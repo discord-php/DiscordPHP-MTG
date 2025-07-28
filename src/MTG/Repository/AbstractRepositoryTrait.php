@@ -740,7 +740,7 @@ trait AbstractRepositoryTrait
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function jsonSerialize(): array
     {

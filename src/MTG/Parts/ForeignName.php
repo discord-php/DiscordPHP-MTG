@@ -27,7 +27,7 @@ use Discord\Parts\Part;
 class ForeignName extends Part
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $fillable = [
         'language',

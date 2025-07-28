@@ -27,7 +27,7 @@ class Card extends Part
     use CardAttributes;
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $fillable = [
         'name',
@@ -79,7 +79,7 @@ class Card extends Part
         'originalText',
         'originalType',
         'legalities',
-        'source'
+        'source',
     ];
 
     /**
@@ -91,7 +91,7 @@ class Card extends Part
      */
     public function getReleaseDateAttribute(): ?Carbon
     {
-        if (!isset($this->attributes['releaseDate'])) {
+        if (! isset($this->attributes['releaseDate'])) {
             return null;
         }
 
@@ -129,7 +129,7 @@ class Card extends Part
      */
     public function getForeignNamesAttribute(): ?ExCollectionInterface
     {
-        if (!isset($this->attributes['foreignNames']) || !is_array($this->attributes['foreignNames'])) {
+        if (! isset($this->attributes['foreignNames']) || ! is_array($this->attributes['foreignNames'])) {
             return null;
         }
 
@@ -151,7 +151,7 @@ class Card extends Part
      */
     public function getLegalitiesAttribute(): ?ExCollectionInterface
     {
-        if (!isset($this->attributes['legalities']) || !is_array($this->attributes['legalities'])) {
+        if (! isset($this->attributes['legalities']) || ! is_array($this->attributes['legalities'])) {
             return null;
         }
 
@@ -177,7 +177,7 @@ class Card extends Part
             return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
         }
 
-        if (!isset($this->attributes['name'])) {
+        if (! isset($this->attributes['name'])) {
             return null;
         }
 
@@ -186,7 +186,7 @@ class Card extends Part
         $components[] = Separator::new();
         $line = '';
         if (isset($this->attributes['supertypes'])) {
-            $line .= implode(' ', $this->supertypes) . ' ';
+            $line .= implode(' ', $this->supertypes).' ';
         }
         if (isset($this->attributes['types'])) {
             $line = implode(' ', $this->types);

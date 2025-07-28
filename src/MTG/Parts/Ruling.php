@@ -26,7 +26,7 @@ use Discord\Parts\Part;
 class Ruling extends Part
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     protected $fillable = [
         'date',

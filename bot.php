@@ -56,9 +56,10 @@ $autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? 
     : (file_exists($autoload_path = realpath(__DIR__.'/../vendor/autoload.php')) ? $autoload_path
     : (file_exists($autoload_path = realpath(__DIR__.'/../../vendor/autoload.php')) ? $autoload_path
     : (file_exists($autoload_path = realpath(dirname(__DIR__).'/../vendor/autoload.php')) ? $autoload_path
-    : (file_exists($autoload_path = realpath(dirname(__DIR__).'/../../vendor/autoload.php')) ? $autoload_path
+    : (
+        file_exists($autoload_path = realpath(dirname(__DIR__).'/../../vendor/autoload.php')) ? $autoload_path
     : null
-)))));
+    )))));
 $autoload_path ? require ($autoload_path) : throw new Exception('Composer autoloader not found. Run `composer update` and try again.');
 
 function loadEnv(string $filePath): void
@@ -84,11 +85,11 @@ $env_path = file_exists($env_path = getcwd().'/.env') ? $env_path
     : (file_exists($env_path = realpath(getcwd().'/../.env')) ? $env_path
     : (file_exists($env_path = realpath(getcwd().'/../../.env')) ? $env_path
     : (file_exists($env_path = realpath(dirname(getcwd()).'/../.env')) ? $env_path
-    : (file_exists($env_path = realpath(dirname(getcwd()).'/../../.env')) ? $env_path
+    : (
+        file_exists($env_path = realpath(dirname(getcwd()).'/../../.env')) ? $env_path
     : null
-)))));
+    )))));
 $env_path ? loadEnv($env_path) : throw new Exception('The .env file does not exist. Please create one in the root directory.');
-
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
 $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
@@ -181,7 +182,8 @@ $socket = new SocketServer(
  * @param  ServerRequestInterface $request The HTTP request object.
  * @return Response               The HTTP response object.
  */
-$webapi = new HttpServer(Loop::get(), async( fn (ServerRequestInterface $request): Response =>
+$webapi = new HttpServer(Loop::get(), async(
+    fn (ServerRequestInterface $request): Response =>
     /** @var ?MTG $mtg */
     ($mtg instanceof MTG)
         ? new Response(Response::STATUS_IM_A_TEAPOT, ['Content-Type' => 'text/plain'], 'Service Not Yet Implemented')
@@ -203,13 +205,19 @@ $webapi = new HttpServer(Loop::get(), async( fn (ServerRequestInterface $request
  * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
 $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
-    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) return;
+    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) {
+        return;
+    }
     $logger->warning("[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString()));
-    if ($request) $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    if ($request) {
+        $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    }
     if (str_starts_with($e->getMessage(), 'The response callback')) {
-        $logger->error('[WEBAPI] ERROR - RESTART');        
+        $logger->error('[WEBAPI] ERROR - RESTART');
         /** @var ?MTG $mtg */
-        if (! $mtg instanceof MTG) return;
+        if (! $mtg instanceof MTG) {
+            return;
+        }
         if (! getenv('TESTING')) {
             $promise = $mtg->users->fetch($technician_id);
             $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
@@ -243,12 +251,10 @@ $mtg->on('init', function (MTG $mtg) {
     });
     */
 
-    
-    $func = function () use ($mtg): void
-    {
+    $func = function () use ($mtg): void {
         $mtg->application->commands->freshen()->then(function (GlobalCommandRepository $commands) use ($mtg): void {
-            if ($names = array_map(fn($command) => $command->name, iterator_to_array($commands))) {
-                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] ' . implode('`, `', $names));
+            if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
+                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] '.implode('`, `', $names));
             }
 
             if (! $command = $commands->get('name', $name = 'card_search')) {
@@ -344,13 +350,13 @@ $mtg->on('init', function (MTG $mtg) {
                     ->addOption($options_legality);
                 //$mtg->logger->info(json_encode($builder->jsonSerialize()));
                 $commands->save($mtg->application->commands->create($builder->toArray()));
-                
             } //else $commands->delete($command);
 
-            $mtg->listenCommand($name, fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
-                ->then(fn () => $mtg->cards->getCardInfo(array_map(fn($option) => $option->value, $interaction->data->options->toArray())))
-                ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface
-                {
+            $mtg->listenCommand(
+                $name,
+                fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
+                ->then(fn () => $mtg->cards->getCardInfo(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
+                ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface {
                     $builder = MTG::createBuilder();
 
                     if (! $card = $cards->first()) {
