@@ -381,8 +381,8 @@ $mtg->on('init', function (MTG $mtg) {
                                     Button::new(Button::STYLE_SECONDARY, 'search_card_id')
                                         ->setListener(
                                             fn () => $interaction->sendFollowUpMessage(
-                                                MTG::createBuilder()
-                                                    ->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT))
+                                                MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
+                                                true
                                             ),
                                             $mtg
                                         )
