@@ -86,7 +86,7 @@ class Card extends Part
      * Gets the release date of the card.
      *
      * @return ?Carbon|null
-     * 
+     *
      * @since 0.3.0
      */
     public function getReleaseDateAttribute(): ?Carbon
@@ -100,9 +100,9 @@ class Card extends Part
 
     /**
      * Converts the card to a container with components.
-     * 
+     *
      * @return ExCollectionInterface<Ruling>|null
-     * 
+     *
      * @since 0.3.0
      */
     public function getRulingsAttribute(): ?ExCollectionInterface
@@ -122,9 +122,9 @@ class Card extends Part
 
     /**
      * Gets the foreign names of the card.
-     * 
+     *
      * @return ExCollectionInterface<ForeignName>|null
-     * 
+     *
      * @since 0.3.0
      */
     public function getForeignNamesAttribute(): ?ExCollectionInterface
@@ -144,9 +144,9 @@ class Card extends Part
 
     /**
      * Gets the legality of the card.
-     * 
+     *
      * @return ExCollectionInterface<Legality>|null
-     * 
+     *
      * @since 0.3.0
      */
     public function getLegalitiesAttribute(): ?ExCollectionInterface
@@ -166,14 +166,14 @@ class Card extends Part
 
     /**
      * Converts the card to a container with components.
-     * 
+     *
      * @return Container|null
-     * 
+     *
      * @since 0.3.0
      */
     public function toContainer(): ?Container
     {
-        if (isset($this->attributes['imageUrl'])) {            
+        if (isset($this->attributes['imageUrl'])) {
             return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
         }
 

@@ -18,6 +18,7 @@ use Discord\Http\Drivers\React;
 use Discord\Stats;
 use MTG\Http\Http;
 use MTG\Repository\CardsRepository;
+
 /**
  * The MTG client class.
  *

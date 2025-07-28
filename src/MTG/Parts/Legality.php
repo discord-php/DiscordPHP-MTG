@@ -20,7 +20,7 @@ use Discord\Parts\Part;
  *
  * @property string $format   The format of the card.
  * @property string $legality The legality status of the card in the format.
- * 
+ *
  * @since 0.3.0
  */
 class Legality extends Part

@@ -143,8 +143,8 @@ class Http implements HttpInterface
         $this->loop = $loop;
         $this->logger = $logger;
         $this->driver = $driver;
-        $this->queue = new SplQueue;
-        $this->interactionQueue = new SplQueue;
+        $this->queue = new SplQueue();
+        $this->interactionQueue = new SplQueue();
     }
 
     /**

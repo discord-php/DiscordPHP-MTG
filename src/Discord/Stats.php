@@ -31,7 +31,7 @@ class Stats
      * @var Carbon
      */
     protected $lastReconnect;
-    
+
     protected Discord $discord;
 
     public static function new(Discord &$discord): static
@@ -44,7 +44,7 @@ class Stats
     public function init(Discord &$discord): void
     {
         $this->startTime = $this->lastReconnect = Carbon::now();
-        
+
         $this->discord = &$discord;
         $this->discord->on('reconnect', function () {
             $this->lastReconnect = Carbon::now();

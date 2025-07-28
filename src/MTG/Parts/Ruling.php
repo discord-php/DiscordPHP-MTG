@@ -20,7 +20,7 @@ use Discord\Parts\Part;
  *
  * @property string $date The date the ruling was issued.
  * @property string $text The text content of the ruling.
- * 
+ *
  * @since 0.3.0
  */
 class Ruling extends Part
