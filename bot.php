@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace MTG;
 
 use Discord\Builders\CommandBuilder;
+use Discord\Builders\Components\ActionRow;
+use Discord\Builders\Components\Button;
 use Discord\Helpers\ExCollectionInterface;
 use Exception;
 //use Clue\React\Redis\Factory as Redis;
@@ -356,7 +358,7 @@ $mtg->on('init', function (MTG $mtg) {
                 $name,
                 fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
                 ->then(fn () => $mtg->cards->getCardInfo(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
-                ->then(function (ExCollectionInterface $cards) use ($interaction): PromiseInterface {
+                ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
                     $builder = MTG::createBuilder();
 
                     if (! $card = $cards->first()) {
@@ -370,8 +372,25 @@ $mtg->on('init', function (MTG $mtg) {
 
                     // @TODO Add an AccentColor to the container based on the card's colors
                     //$container->setAccentColor();
-                    
-                    return $interaction->updateOriginalResponse($builder->addcomponent($container));
+
+                    return $interaction->updateOriginalResponse(
+                        $builder->addComponent(
+                            $container
+                            ->addComponent(
+                                ActionRow::new()->addComponent(
+                                    Button::new(Button::STYLE_SECONDARY, 'search_card_id')
+                                        ->setListener(
+                                            fn () => $interaction->sendFollowUpMessage(
+                                                MTG::createBuilder()
+                                                    ->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT))
+                                            ),
+                                            $mtg
+                                        )
+                                        ->setLabel('JSON')
+                                )
+                            )
+                        )
+                    );
                 })
             );
         });
