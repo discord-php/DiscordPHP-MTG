@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "php": "^8.2.0",
         "team-reflex/discord-php": "^10.18.18"
     },
     "require-dev": {
