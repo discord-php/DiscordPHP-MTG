@@ -230,29 +230,6 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
 }));
 
 $mtg->on('init', function (MTG $mtg) {
-    /*
-    $card = $mtg->getFactory()->part(Card::class);
-    $card->setPageSize(1);
-    $card->setRandom(true);
-    $mtg->cards->getCardInfo($card)->then(function (ExCollectionInterface $cards) {
-        var_dump($cards);
-    });
-
-    $mtg->cards->freshen()->then(function (\MTG\Repository\CardsRepository $repository) {
-        var_dump($repository->first());
-    });
-    $mtg->cards->fetch('5f8287b1-5bb6-5f4c-ad17-316a40d5bb0c')->then(function ($card) {
-        var_dump($card);
-    });
-
-    $mtg->cards->fetch('98445397-a664-59a9-a422-e94879cc2ca4')->then(function ($card) {
-        var_dump($card);
-    });
-    $mtg->cards->fetch('479706')->then(function ($card) {
-        var_dump($card);
-    });
-    */
-
     $func = function () use ($mtg): void {
         $mtg->application->commands->freshen()->then(function (GlobalCommandRepository $commands) use ($mtg): void {
             if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
@@ -375,10 +352,10 @@ $mtg->on('init', function (MTG $mtg) {
 
                     return $interaction->updateOriginalResponse(
                         $builder->addComponent(
-                            $container
-                            ->addComponent(
+                            $container->addComponent(
                                 ActionRow::new()->addComponent(
                                     Button::new(Button::STYLE_SECONDARY, 'search_card_id')
+                                        ->setLabel('JSON')
                                         ->setListener(
                                             fn () => $interaction->sendFollowUpMessage(
                                                 MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
@@ -388,7 +365,6 @@ $mtg->on('init', function (MTG $mtg) {
                                             false, // Not a one-time listener
                                             300 // delete listener after 5 minutes
                                         )
-                                        ->setLabel('JSON')
                                 )
                             )
                         )
