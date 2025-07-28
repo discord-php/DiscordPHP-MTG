@@ -384,7 +384,9 @@ $mtg->on('init', function (MTG $mtg) {
                                                 MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
                                                 true
                                             ),
-                                            $mtg
+                                            $mtg,
+                                            false, // Not a one-time listener
+                                            300 // delete listener after 5 minutes
                                         )
                                         ->setLabel('JSON')
                                 )
