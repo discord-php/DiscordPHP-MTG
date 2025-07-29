@@ -46,9 +46,9 @@ class CardsRepository extends AbstractRepository
      *
      * @param Card|array $params
      *
-     * @return PromiseInterface<Card[]|ExCollectionInterface<Card>>
+     * @return PromiseInterface<ExCollectionInterface<Card>|Card[]>
      */
-    public function getCardInfo(Card|array $params): PromiseInterface
+    public function getCards(Card|array $params): PromiseInterface
     {
         if ($params instanceof Card) {
             $params = $params->jsonSerialize();

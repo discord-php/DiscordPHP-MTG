@@ -24,7 +24,7 @@ final class MTGTest extends TestCase
             /** @var Card $card */
             $card = $mtg->getFactory()->part(Card::class);
             $card->setPageSize(1);
-            $mtg->cards->getCardInfo(['name' => 'Black Lotus'])->then(function (ExCollectionInterface $cards) {
+            $mtg->cards->getCards(['name' => 'Black Lotus'])->then(function (ExCollectionInterface $cards) {
                 $this->assertInstanceOf(ExCollectionInterface::class, $cards);
                 $this->assertInstanceOf(Card::class, $cards->first());
             })->then($resolve, $resolve);

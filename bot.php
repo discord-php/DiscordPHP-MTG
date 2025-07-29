@@ -333,7 +333,7 @@ $mtg->on('init', function (MTG $mtg) {
             $mtg->listenCommand(
                 $name,
                 fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
-                ->then(fn () => $mtg->cards->getCardInfo(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
+                ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
                 ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
                     $builder = MTG::createBuilder();
 
