@@ -26,7 +26,6 @@ use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\OAuth\Application;
 use Discord\Parts\User\User;
 use Discord\Repository\Interaction\GlobalCommandRepository;
-use Discord\WebSockets\Event;
 //use Discord\Helpers\CacheConfig;
 use Discord\WebSockets\Intents;
 use Monolog\Formatter\LineFormatter;
@@ -230,8 +229,8 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
 }));
 
 $mtg->on('init', function (MTG $mtg) {
-    $func = function () use ($mtg): void {
-        $mtg->application->commands->freshen()->then(function (GlobalCommandRepository $commands) use ($mtg): void {
+    $func = fn (): PromiseInterface => $mtg->application->commands->freshen()
+        ->then(function (GlobalCommandRepository $commands) use ($mtg): void {
             if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
                 $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] '.implode('`, `', $names));
             }
@@ -372,7 +371,6 @@ $mtg->on('init', function (MTG $mtg) {
                 })
             );
         });
-    };
     $mtg->getLoop()->addTimer(2, $func); // Workaround for Client's application_id not always being set on init
 });
 
