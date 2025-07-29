@@ -22,8 +22,14 @@ use Discord\Builders\Components\Separator;
 use Discord\Builders\Components\TextDisplay;
 use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
+use Discord\Parts\Embed\Embed;
 use Discord\Parts\Part;
 
+/**
+ * Represents a Magic: The Gathering card.
+ *
+ * @property-read ?Embed image_embed The image for the card.
+ */
 class Card extends Part
 {
     use CardAttributes;
@@ -192,11 +198,27 @@ class Card extends Part
         return null;
     }
 
+    public function getImageEmbedAttribute(): ?Embed
+    {
+        if (! isset($this->attributes['imageUrl'])) {
+            return null;
+        }
+
+        $embed = new Embed($this->discord);
+
+        return $embed
+            ->setTitle($this->name ?? 'Untitled')
+            ->setImage($this->attributes['imageUrl']);
+    }
+
     public function normalLayoutContainer(): Container
     {
-        $components = [];
-        $components[] = TextDisplay::new("$this->name $this->manaCost");
-        $components[] = Separator::new();
+        $components = [
+            Section::new()
+                ->addComponent(TextDisplay::new($this->name))
+                ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')->setLabel($this->manaCost)->setDisabled(true)),
+            Separator::new(),
+        ];
 
         $text = '';
         if (isset($this->attributes['supertypes'])) {
@@ -224,13 +246,14 @@ class Card extends Part
             $components[] = Separator::new();
             $components[] = TextDisplay::new($this->text);
         }
-        if (isset($this->attributes['artist'])) {
-            $components[] = Separator::new();
-            $footer = $this->artist;
-            if (isset($this->attributes['power'], $this->attributes['toughness'])) {
-                $footer .= "              ({$this->power}/{$this->toughness})";
-            }
-        }
+
+        $components[] = Separator::new();
+        $artist_textdisplay = TextDisplay::new($this->attributes['artist'] ?? 'No Artist Attribution');
+        $components[] = isset($this->attributes['power'], $this->attributes['toughness'])
+            ? Section::new()
+                ->addComponent($artist_textdisplay)
+                ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'power_toughness')->setLabel("({$this->power}/{$this->toughness})")->setDisabled(true))
+            : $artist_textdisplay;
 
         return Container::new()->addComponents($components);
     }

@@ -16,6 +16,7 @@ namespace MTG;
 use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
+use Discord\Builders\Components\Separator;
 use Discord\Helpers\ExCollectionInterface;
 use Exception;
 //use Clue\React\Redis\Factory as Redis;
@@ -342,30 +343,46 @@ $mtg->on('init', function (MTG $mtg) {
                     }
 
                     /** @var Card $card */
-                    if (! $container = $card->toContainer()) {
+                    if (! $container = $card->toContainer(false)) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
                     }
 
                     // @TODO Add an AccentColor to the container based on the card's colors
                     //$container->setAccentColor();
 
+                    $buttons = [Button::new(Button::STYLE_SECONDARY, 'search_card_id')
+                        ->setLabel('JSON')
+                        ->setListener(
+                            fn () => $interaction->sendFollowUpMessage(
+                                MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
+                                true
+                            ),
+                            $mtg,
+                            true, // One-time listener
+                            300 // delete listener after 5 minutes
+                        ),
+                    ];
+
+                    if ($image_embed = $card->image_embed) {
+                        $buttons[] = Button::new(Button::STYLE_SECONDARY, 'view_image_embed')
+                            ->setLabel('View Image')
+                            ->setListener(
+                                fn () => $interaction->sendFollowUpMessage(
+                                    MTG::createBuilder()->addEmbed($image_embed),
+                                    true
+                                ),
+                                $mtg,
+                                true, // One-time listener
+                                300 // delete listener after 5 minutes
+                            );
+                    }
+
                     return $interaction->updateOriginalResponse(
                         $builder->addComponent(
-                            $container->addComponent(
-                                ActionRow::new()->addComponent(
-                                    Button::new(Button::STYLE_SECONDARY, 'search_card_id')
-                                        ->setLabel('JSON')
-                                        ->setListener(
-                                            fn () => $interaction->sendFollowUpMessage(
-                                                MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
-                                                true
-                                            ),
-                                            $mtg,
-                                            false, // Not a one-time listener
-                                            300 // delete listener after 5 minutes
-                                        )
-                                )
-                            )
+                            $container->addComponents([
+                                Separator::new(),
+                                ActionRow::new()->addComponents($buttons),
+                            ])
                         )
                     );
                 })
