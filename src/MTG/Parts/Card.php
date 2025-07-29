@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace MTG\Parts;
 
 use Carbon\Carbon;
+use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Container;
 use Discord\Builders\Components\MediaGallery;
+use Discord\Builders\Components\Section;
 use Discord\Builders\Components\Separator;
 use Discord\Builders\Components\TextDisplay;
 use Discord\Helpers\Collection;
@@ -184,24 +186,29 @@ class Card extends Part
         $components = [];
         $components[] = TextDisplay::new("$this->name $this->manaCost");
         $components[] = Separator::new();
-        $line = '';
+
+        $text = '';
         if (isset($this->attributes['supertypes'])) {
-            $line .= implode(' ', $this->supertypes).' ';
+            $text .= implode(' ', $this->supertypes).' ';
         }
         if (isset($this->attributes['types'])) {
-            $line = implode(' ', $this->types);
+            $text .= implode(' ', $this->types);
         }
         if (isset($this->attributes['subtypes'])) {
-            $line .= ' - ';
-            $line .= implode(' ', $this->subtypes);
+            $text .= ' - ';
+            $text .= implode(' ', $this->subtypes);
         }
+        $label = '';
         if (isset($this->attributes['set'])) {
-            $line .= " $this->set";
+            $label .= " $this->set";
         }
         if (isset($this->attributes['rarity'])) {
-            $line .= " ($this->rarity)";
+            $label .= " ($this->rarity)";
         }
-        $components[] = TextDisplay::new($line);
+        $components[] = Section::new()
+            ->addComponent(TextDisplay::new($text))
+            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'search_card_set')->setLabel($label)->setDisabled(true));
+
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new($this->text);
