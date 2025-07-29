@@ -173,9 +173,9 @@ class Card extends Part
      *
      * @since 0.3.0
      */
-    public function toContainer(): ?Container
+    public function toContainer(bool $image_only = true): ?Container
     {
-        if (isset($this->attributes['imageUrl'])) {
+        if (isset($this->attributes['imageUrl']) && $image_only) {
             return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
         }
 
@@ -183,6 +183,17 @@ class Card extends Part
             return null;
         }
 
+        if (isset($this->attributes['layout'])) {
+            if ($this->layout === 'normal') {
+                return $this->normalLayoutContainer();
+            }
+        }
+        
+        return null;
+    }
+
+    public function normalLayoutContainer(): Container
+    {
         $components = [];
         $components[] = TextDisplay::new("$this->name $this->manaCost");
         $components[] = Separator::new();
