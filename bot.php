@@ -26,6 +26,7 @@ use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\OAuth\Application;
 use Discord\Parts\User\User;
+use Discord\Repository\EmojiRepository;
 use Discord\Repository\Interaction\GlobalCommandRepository;
 //use Discord\Helpers\CacheConfig;
 use Discord\WebSockets\Intents;
@@ -230,7 +231,8 @@ $webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInt
 }));
 
 $mtg->on('init', function (MTG $mtg) {
-    $func = fn (): PromiseInterface => $mtg->application->commands->freshen()
+    $func = fn (): PromiseInterface => $mtg->emojis->freshen()
+        ->then(fn (EmojiRepository $emojis) => $mtg->application->commands->freshen())
         ->then(function (GlobalCommandRepository $commands) use ($mtg): void {
             if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
                 $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] '.implode('`, `', $names));

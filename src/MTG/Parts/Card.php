@@ -24,6 +24,7 @@ use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Part;
+use MTG\HelperTrait;
 
 /**
  * Represents a Magic: The Gathering card.
@@ -198,6 +199,13 @@ class Card extends Part
         return null;
     }
 
+    /**
+     * Generates an Embed object for the card's image.
+     *
+     * @return Embed|null
+     *
+     * @since 0.4.0
+     */
     public function getImageEmbedAttribute(): ?Embed
     {
         if (! isset($this->attributes['imageUrl'])) {
@@ -211,40 +219,51 @@ class Card extends Part
             ->setImage($this->attributes['imageUrl']);
     }
 
+    /**
+     * Builds and returns a Container representing the normal layout for a Magic: The Gathering card.
+     *
+     * @return Container
+     *
+     * @since 0.4.0
+     */
     public function normalLayoutContainer(): Container
     {
-        $components = [
-            Section::new()
-                ->addComponent(TextDisplay::new($this->name))
-                ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')->setLabel($this->manaCost)->setDisabled(true)),
+        /** @var HelperTrait $discord */
+        $discord = $this->discord;
+        $components = [Section::new()
+            ->addComponent(TextDisplay::new($this->name))
+            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')
+                ->setLabel(($this->mana_cost === null || $this->mana_cost === '{0}') ? '​' : $this->mana_cost)
+                ->setEmoji(($this->mana_cost === null || $this->mana_cost === '{0}') ? $this->discord->emojis->get('name', '0_') : null)
+                ->setDisabled(true)),
             Separator::new(),
         ];
 
-        $text = '';
+        $type_text = '';
         if (isset($this->attributes['supertypes'])) {
-            $text .= implode(' ', $this->supertypes).' ';
+            $type_text .= implode(' ', $this->supertypes).' ';
         }
         if (isset($this->attributes['types'])) {
-            $text .= implode(' ', $this->types);
+            $type_text .= implode(' ', $this->types);
         }
         if (isset($this->attributes['subtypes'])) {
-            $text .= ' - ';
-            $text .= implode(' ', $this->subtypes);
+            $type_text .= ' - ';
+            $type_text .= implode(' ', $this->subtypes);
         }
-        $label = '';
+        $set_rarity_text = '';
         if (isset($this->attributes['set'])) {
-            $label .= " $this->set";
+            $set_rarity_text .= " $this->set";
         }
         if (isset($this->attributes['rarity'])) {
-            $label .= " ($this->rarity)";
+            $set_rarity_text .= " ($this->rarity)";
         }
         $components[] = Section::new()
-            ->addComponent(TextDisplay::new($text))
-            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'search_card_set')->setLabel($label)->setDisabled(true));
+            ->addComponent(TextDisplay::new($type_text))
+            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'search_card_set')->setLabel($set_rarity_text)->setDisabled(true));
 
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
-            $components[] = TextDisplay::new($this->text);
+            $components[] = TextDisplay::new($discord->encapsulatedSymbolsToEmojis($this->text));
         }
 
         $components[] = Separator::new();
