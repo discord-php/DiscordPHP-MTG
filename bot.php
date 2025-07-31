@@ -349,7 +349,6 @@ $mtg->on('init', function (MTG $mtg) {
                     }
 
                     $card_ci = $card->colorIdentity;
-                    var_dump($card_ci);
                     if ($ci = (! is_array($card_ci)
                         ? $mtg->colorIdentityToInteger(null)
                         : ((count($card_ci) === 1)

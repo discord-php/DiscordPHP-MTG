@@ -238,8 +238,8 @@ class Card extends Part
                 ? "$ci_emoji {$this->name}"
                 : $this->name))
             ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')
-                ->setLabel(($this->mana_cost === null || $this->mana_cost === '{0}') ? '​' : $this->mana_cost)
-                ->setEmoji(($this->mana_cost === null || $this->mana_cost === '{0}') ? $this->discord->emojis->get('name', '0_') : null)
+                ->setLabel(($this->manaCost === null || $this->manaCost === '{0}') ? '​' : $this->manaCost)
+                ->setEmoji(($this->manaCost === null || $this->manaCost === '{0}') ? $this->discord->emojis->get('name', '0_') : null)
                 ->setDisabled(true)),
             Separator::new(),
         ];

@@ -85,16 +85,16 @@ trait HelperTrait
                 if (str_starts_with($search, '{')) {
                     continue;
                 }
-                if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
-                    $subject = $replaced;
-                    continue;
-                }
-                if (is_numeric($search)) {
+                /*if (is_numeric($search)) {
                     if ($replaced = str_replace('{'.$search.'}', $this->__createColorless($search), $subject)) {
                         $subject = $replaced;
                     }
                     continue;
-                }
+                }*/
+                if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
+                    $subject = $replaced;
+                    continue;
+                }                
             }
         }
 
