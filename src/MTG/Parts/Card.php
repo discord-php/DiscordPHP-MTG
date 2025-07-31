@@ -252,27 +252,31 @@ class Card extends Part
         if (isset($this->attributes['rarity'])) {
             $type_text .= " ($this->rarity)";
         }
-        $set = '???';
         if (isset($this->attributes['set'])) {
-            $set = $this->attributes['set'];
+            $components[] = Separator::new();
+            $components[] = Section::new()
+                ->addComponent(TextDisplay::new($type_text))
+                ->setAccessory(Button::new(Button::STYLE_SECONDARY, "SET_{$this->set}")
+                    ->setLabel($this->set)
+                    ->setDisabled(true));
         }
-        $components[] = Separator::new();
-        $components[] = Section::new()
-            ->addComponent(TextDisplay::new($type_text))
-            ->setAccessory(Button::new(Button::STYLE_SECONDARY, "SET_{$set}")->setLabel($set)->setDisabled(true));
+        
 
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new($mtg->encapsulatedSymbolsToEmojis($this->text));
         }
 
-        $components[] = Separator::new();
-        $artist_textdisplay = TextDisplay::new($this->attributes['artist'] ?? 'No Artist Attribution');
-        $components[] = isset($this->attributes['power'], $this->attributes['toughness'])
-            ? Section::new()
-                ->addComponent($artist_textdisplay)
-                ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'power_toughness')->setLabel("({$this->power}/{$this->toughness})")->setDisabled(true))
-            : $artist_textdisplay;
+        if (isset($this->attributes['power'], $this->attributes['toughness'])) {
+            $components[] = Separator::new();
+            $components[] = TextDisplay::new(
+                '(' .
+                str_replace('*', '\*', $this->power) .
+                '/' .
+                str_replace('*', '\*', $this->toughness) .
+                ')'
+            );
+        }
 
         return Container::new()->addComponents($components);
     }
