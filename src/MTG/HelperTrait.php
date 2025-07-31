@@ -29,6 +29,8 @@ trait HelperTrait
      * @param bool $prevent_mentions Whether to prevent mentions in the message. Defaults to false.
      *
      * @return MessageBuilder
+     * 
+     * @since 0.1.0
      */
     public static function createBuilder(bool $prevent_mentions = false): MessageBuilder
     {
@@ -47,6 +49,8 @@ trait HelperTrait
      * @param int       $color  The color to set for the embed. Defaults to 0xE1452D.
      *
      * @return Embed
+     * 
+     * @since 0.1.0
      */
     public function createEmbed(?bool $footer = true, int $color = 0xE1452D): Embed
     {
@@ -102,6 +106,8 @@ trait HelperTrait
      * @param string $search  The symbol name to search for and replace with its emoji.
      *
      * @return string|null The string with symbols replaced by emojis, or null if no emoji is found.
+     *
+     * @since 0.4.0
      */
     public function __encapsulatedSymbolsToEmojis(string $subject, string $search): ?string
     {
@@ -121,6 +127,8 @@ trait HelperTrait
      * @param string $numeric The numeric value representing the amount of colorless mana.
      *
      * @return string|null The string of colorless mana emojis, or null if emojis are not found.
+     *
+     * @since 0.4.0
      */
     protected function __createColorless(string $numeric): ?string
     {
@@ -150,12 +158,23 @@ trait HelperTrait
      * @param Emoji  $emoji  The Emoji object whose string representation will replace the placeholder.
 
      * @return string The resulting string with the placeholder replaced by the emoji.
+     * 
+     * @since 0.4.0
      */
     public static function encapsulated_emoji_str_replace(string $search, Emoji $emoji, string $subject): string
     {
         return str_replace('{'.$search.'}', (string) $emoji, $subject);
     }
 
+    /**
+     * Converts a color identity string to its corresponding integer representation.
+     *
+     * @param string|null $identity The color identity string to convert.
+     *
+     * @return int|null
+     * 
+     * @since 0.4.0
+     */
     public static function colorIdentityToInteger(?string $identity): ?int
     {
         switch($identity) {
