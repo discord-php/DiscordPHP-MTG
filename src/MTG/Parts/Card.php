@@ -249,17 +249,17 @@ class Card extends Part
             $type_text .= ' - ';
             $type_text .= implode(' ', $this->subtypes);
         }
-        $set_rarity_text = '';
-        if (isset($this->attributes['set'])) {
-            $set_rarity_text .= " $this->set";
-        }
         if (isset($this->attributes['rarity'])) {
-            $set_rarity_text .= " ($this->rarity)";
+            $type_text .= " ($this->rarity)";
+        }
+        $set = '???';
+        if (isset($this->attributes['set'])) {
+            $set = $this->attributes['set'];
         }
         $components[] = Separator::new();
         $components[] = Section::new()
             ->addComponent(TextDisplay::new($type_text))
-            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'search_card_set')->setLabel($set_rarity_text)->setDisabled(true));
+            ->setAccessory(Button::new(Button::STYLE_SECONDARY, "SET_{$set}")->setLabel($set)->setDisabled(true));
 
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
