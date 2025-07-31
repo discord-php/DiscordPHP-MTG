@@ -155,4 +155,24 @@ trait HelperTrait
     {
         return str_replace('{'.$search.'}', (string) $emoji, $subject);
     }
+
+    public static function colorIdentityToInteger(?string $identity): ?int
+    {
+        switch($identity) {
+            case null:
+                return \Discord\COLORTABLE['gray'];
+            case 'W':
+                return \Discord\COLORTABLE['white'];
+            case 'U':
+                return \Discord\COLORTABLE['blue'];
+            case 'B':
+                return \Discord\COLORTABLE['black'];
+            case 'R':
+                return \Discord\COLORTABLE['red'];
+            case 'G':
+                return \Discord\COLORTABLE['green'];
+        }
+
+        return null;
+    }
 }

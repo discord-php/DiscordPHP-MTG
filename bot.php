@@ -200,7 +200,7 @@ $webapi = new HttpServer(Loop::get(), async(
  * The restart process includes sending a message to a specific Discord channel and closing the socket connection.
  * After a delay of 5 seconds, the script is restarted by calling the 'restart' function and closing the Discord connection.
  *
- * @param \Exception                               $e       The \exception object representing the error.
+ * @param \Exception                              $e       The \exception object representing the error.
  * @param \Psr\Http\Message\RequestInterface|null $request The HTTP request object associated with the error, if available.
  * @param object                                  $mtg     The main object of the application.
  * @param object                                  $socket  The socket object.
@@ -348,8 +348,16 @@ $mtg->on('init', function (MTG $mtg) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
                     }
 
-                    // @TODO Add an AccentColor to the container based on the card's colors
-                    //$container->setAccentColor();
+                    $card_ci = $card->colorIdentity;
+                    var_dump($card_ci);
+                    if ($ci = (! is_array($card_ci)
+                        ? $mtg->colorIdentityToInteger(null)
+                        : ((count($card_ci) === 1)
+                            ? $mtg->colorIdentityToInteger($card_ci[0])
+                            : null))
+                    ) {
+                        $container->setAccentColor($ci);
+                    }
 
                     $buttons = [Button::new(Button::STYLE_SECONDARY, "JSON_{$card->id}")
                         ->setLabel('JSON')

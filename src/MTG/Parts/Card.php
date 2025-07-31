@@ -191,8 +191,10 @@ class Card extends Part
         }
 
         if (isset($this->attributes['layout'])) {
-            if ($this->layout === 'normal') {
-                return $this->normalLayoutContainer();
+            switch ($this->layout) {
+                case 'normal':
+                case 'meld':
+                    return $this->normalLayoutContainer();
             }
         }
         
@@ -228,10 +230,13 @@ class Card extends Part
      */
     public function normalLayoutContainer(): Container
     {
-        /** @var HelperTrait $discord */
-        $discord = $this->discord;
+        /** @var HelperTrait $mtg */
+        $mtg = $this->discord;
+
         $components = [Section::new()
-            ->addComponent(TextDisplay::new($this->name))
+            ->addComponent(TextDisplay::new(($ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : null))
+                ? "$ci_emoji {$this->name}"
+                : $this->name))
             ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')
                 ->setLabel(($this->mana_cost === null || $this->mana_cost === '{0}') ? '​' : $this->mana_cost)
                 ->setEmoji(($this->mana_cost === null || $this->mana_cost === '{0}') ? $this->discord->emojis->get('name', '0_') : null)
@@ -263,7 +268,7 @@ class Card extends Part
 
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
-            $components[] = TextDisplay::new($discord->encapsulatedSymbolsToEmojis($this->text));
+            $components[] = TextDisplay::new($mtg->encapsulatedSymbolsToEmojis($this->text));
         }
 
         $components[] = Separator::new();
