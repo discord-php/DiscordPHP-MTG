@@ -233,16 +233,10 @@ class Card extends Part
         /** @var HelperTrait $mtg */
         $mtg = $this->discord;
 
-        $components = [Section::new()
-            ->addComponent(TextDisplay::new(($ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : null))
-                ? "$ci_emoji {$this->name}"
-                : $this->name))
-            ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'mana_cost')
-                ->setLabel(($this->manaCost === null || $this->manaCost === '{0}') ? '​' : $this->manaCost)
-                ->setEmoji(($this->manaCost === null || $this->manaCost === '{0}') ? $this->discord->emojis->get('name', '0_') : null)
-                ->setDisabled(true)),
-            Separator::new(),
-        ];
+        $ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : null);
+        $mana_cost = $mtg->encapsulatedSymbolsToEmojis($this->manaCost ?? '');
+
+        $components = [TextDisplay::new("$ci_emoji {$this->name} $mana_cost")];
 
         $type_text = '';
         if (isset($this->attributes['supertypes'])) {
@@ -262,6 +256,7 @@ class Card extends Part
         if (isset($this->attributes['rarity'])) {
             $set_rarity_text .= " ($this->rarity)";
         }
+        $components[] = Separator::new();
         $components[] = Section::new()
             ->addComponent(TextDisplay::new($type_text))
             ->setAccessory(Button::new(Button::STYLE_SECONDARY, 'search_card_set')->setLabel($set_rarity_text)->setDisabled(true));

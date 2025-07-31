@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "team-reflex/discord-php": "^10.18.19"
+        "team-reflex/discord-php": "^10.18.24"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
