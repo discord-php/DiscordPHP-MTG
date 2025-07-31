@@ -206,7 +206,7 @@ $webapi = new HttpServer(Loop::get(), async(
  * @param object                                  $socket  The socket object.
  * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
-$webapi->on('error', async(function (Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
+$webapi->on('error', async(function (\Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
     if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) {
         return;
     }
