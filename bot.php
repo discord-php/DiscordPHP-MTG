@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace MTG;
 
+//use Clue\React\Redis\Factory as Redis;
 use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
+//use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
-use Exception;
-//use Clue\React\Redis\Factory as Redis;
 use Discord\Parts\Channel\Channel;
 use Discord\Parts\Interactions\Command\Command;
 use Discord\Parts\Interactions\Command\Option;
@@ -28,7 +28,6 @@ use Discord\Parts\OAuth\Application;
 use Discord\Parts\User\User;
 use Discord\Repository\EmojiRepository;
 use Discord\Repository\Interaction\GlobalCommandRepository;
-//use Discord\Helpers\CacheConfig;
 use Discord\WebSockets\Intents;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
@@ -63,12 +62,12 @@ $autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? 
         file_exists($autoload_path = realpath(dirname(__DIR__).'/../../vendor/autoload.php')) ? $autoload_path
     : null
     )))));
-$autoload_path ? require ($autoload_path) : throw new Exception('Composer autoloader not found. Run `composer update` and try again.');
+$autoload_path ? require ($autoload_path) : throw new \Exception('Composer autoloader not found. Run `composer update` and try again.');
 
 function loadEnv(string $filePath): void
 {
     if (! file_exists($filePath)) {
-        throw new Exception('The .env file does not exist.');
+        throw new \Exception('The .env file does not exist.');
     }
 
     $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -92,7 +91,7 @@ $env_path = file_exists($env_path = getcwd().'/.env') ? $env_path
         file_exists($env_path = realpath(dirname(getcwd()).'/../../.env')) ? $env_path
     : null
     )))));
-$env_path ? loadEnv($env_path) : throw new Exception('The .env file does not exist. Please create one in the root directory.');
+$env_path ? loadEnv($env_path) : throw new \Exception('The .env file does not exist. Please create one in the root directory.');
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
 $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
@@ -201,7 +200,7 @@ $webapi = new HttpServer(Loop::get(), async(
  * The restart process includes sending a message to a specific Discord channel and closing the socket connection.
  * After a delay of 5 seconds, the script is restarted by calling the 'restart' function and closing the Discord connection.
  *
- * @param Exception                               $e       The exception object representing the error.
+ * @param \Exception                               $e       The \exception object representing the error.
  * @param \Psr\Http\Message\RequestInterface|null $request The HTTP request object associated with the error, if available.
  * @param object                                  $mtg     The main object of the application.
  * @param object                                  $socket  The socket object.
@@ -352,7 +351,7 @@ $mtg->on('init', function (MTG $mtg) {
                     // @TODO Add an AccentColor to the container based on the card's colors
                     //$container->setAccentColor();
 
-                    $buttons = [Button::new(Button::STYLE_SECONDARY, 'search_card_id')
+                    $buttons = [Button::new(Button::STYLE_SECONDARY, "JSON_{$card->id}")
                         ->setLabel('JSON')
                         ->setListener(
                             fn () => $interaction->sendFollowUpMessage(
@@ -366,7 +365,7 @@ $mtg->on('init', function (MTG $mtg) {
                     ];
 
                     if ($image_embed = $card->image_embed) {
-                        $buttons[] = Button::new(Button::STYLE_SECONDARY, 'view_image_embed')
+                        $buttons[] = Button::new(Button::STYLE_SECONDARY, "VIEW_IMAGE_{$card->id}")
                             ->setLabel('View Image')
                             ->setListener(
                                 fn () => $interaction->sendFollowUpMessage(
