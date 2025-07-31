@@ -74,6 +74,8 @@ trait HelperTrait
      * @param string $name The encapsulated name to convert, e.g. {U}.
      *
      * @return string The emoji representation of the encapsulated name.
+     * 
+     * @since 0.4.0
      */
     public function encapsulatedSymbolsToEmojis(string $subject): string
     {
