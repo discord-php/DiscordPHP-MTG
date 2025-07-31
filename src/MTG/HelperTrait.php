@@ -29,7 +29,7 @@ trait HelperTrait
      * @param bool $prevent_mentions Whether to prevent mentions in the message. Defaults to false.
      *
      * @return MessageBuilder
-     * 
+     *
      * @since 0.1.0
      */
     public static function createBuilder(bool $prevent_mentions = false): MessageBuilder
@@ -49,7 +49,7 @@ trait HelperTrait
      * @param int       $color  The color to set for the embed. Defaults to 0xE1452D.
      *
      * @return Embed
-     * 
+     *
      * @since 0.1.0
      */
     public function createEmbed(?bool $footer = true, int $color = 0xE1452D): Embed
@@ -74,7 +74,7 @@ trait HelperTrait
      * @param string $name The encapsulated name to convert, e.g. {U}.
      *
      * @return string The emoji representation of the encapsulated name.
-     * 
+     *
      * @since 0.4.0
      */
     public function encapsulatedSymbolsToEmojis(string $subject): string
@@ -88,7 +88,7 @@ trait HelperTrait
                 if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
                     $subject = $replaced;
                     continue;
-                }                
+                }
             }
         }
 
@@ -125,7 +125,7 @@ trait HelperTrait
      * @param Emoji  $emoji  The Emoji object whose string representation will replace the placeholder.
 
      * @return string The resulting string with the placeholder replaced by the emoji.
-     * 
+     *
      * @since 0.4.0
      */
     public static function encapsulated_emoji_str_replace(string $search, Emoji $emoji, string $subject): string
@@ -139,7 +139,7 @@ trait HelperTrait
      * @param string|null $identity The color identity string to convert.
      *
      * @return int|null
-     * 
+     *
      * @since 0.4.0
      */
     public static function colorIdentityToInteger(?string $identity): ?int
