@@ -85,12 +85,6 @@ trait HelperTrait
                 if (str_starts_with($search, '{')) {
                     continue;
                 }
-                /*if (is_numeric($search)) {
-                    if ($replaced = str_replace('{'.$search.'}', $this->__createColorless($search), $subject)) {
-                        $subject = $replaced;
-                    }
-                    continue;
-                }*/
                 if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
                     $subject = $replaced;
                     continue;
@@ -121,35 +115,6 @@ trait HelperTrait
         }
 
         return self::encapsulated_emoji_str_replace($search, $emoji, $subject);
-    }
-
-    /**
-     * Generates a string representation of colorless mana symbols based on the given numeric value.
-     *
-     * @param string $numeric The numeric value representing the amount of colorless mana.
-     *
-     * @return string|null The string of colorless mana emojis, or null if emojis are not found.
-     *
-     * @since 0.4.0
-     */
-    protected function __createColorless(string $numeric): ?string
-    {
-        /** @var EmojiRepository $emojis */
-        $emojis = $this->emojis;
-
-        if (! $zero = $emojis->get('name', '0_')) {
-            return null;
-        }
-        
-        if (! $colorless = $emojis->get('name', 'C_')) {
-            return null;
-        }
-
-        /** @var Emoji $zero */
-        /** @var Emoji $colorless */
-        return ($numeric === 0)
-            ? (string) $zero
-            : str_repeat((string) $colorless, (int) $numeric);
     }
 
     /**
