@@ -27,6 +27,7 @@ use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\Part;
 use MTG\HelperTrait;
 use MTG\MTG;
+use React\Promise\PromiseInterface;
 
 /**
  * Represents a Magic: The Gathering card.
@@ -186,12 +187,8 @@ class Card extends Part
      *
      * @since 0.3.0
      */
-    public function toContainer(bool $image_only = true): ?Container
+    public function toContainer(?Interaction $interaction = null): ?Container
     {
-        if (isset($this->attributes['imageUrl']) && $image_only) {
-            return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
-        }
-
         if (! isset($this->attributes['name'])) {
             return null;
         }
@@ -200,10 +197,14 @@ class Card extends Part
             switch ($this->layout) {
                 case 'normal':
                 case 'meld':
-                    return $this->normalLayoutContainer();
+                    return $this->normalLayoutContainer($interaction);
             }
         }
-        
+
+        if (isset($this->attributes['imageUrl'])) {
+            return Container::new()->addComponent(MediaGallery::new()->addItem($this->imageUrl));
+        }
+
         return null;
     }
 
@@ -234,7 +235,7 @@ class Card extends Part
      *
      * @since 0.4.0
      */
-    public function normalLayoutContainer(): Container
+    public function normalLayoutContainer(?Interaction $interaction): Container
     {
         /** @var HelperTrait $mtg */
         $mtg = $this->discord;
@@ -262,11 +263,9 @@ class Card extends Part
             $components[] = Separator::new();
             $components[] = Section::new()
                 ->addComponent(TextDisplay::new($type_text))
-                ->setAccessory(Button::new(Button::STYLE_SECONDARY, "SET_{$this->set}")
-                    ->setLabel($this->set)
-                    ->setDisabled(true));
+                ->setAccessory($this->getSetButton($interaction));
         }
-        
+
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new($mtg->encapsulatedSymbolsToEmojis($this->text));
@@ -286,6 +285,15 @@ class Card extends Part
         return Container::new()->addComponents($components);
     }
 
+    /**
+     * Gets a button to view the raw JSON of the card
+     *
+     * @param Interaction|null $interaction
+     * 
+     * @return Button|null
+     * 
+     * @since 0.5.0
+     */
     public function getJsonButton(Interaction $interaction): Button
     {
         return Button::new(Button::STYLE_SECONDARY, "JSON_{$this->id}")
@@ -301,6 +309,15 @@ class Card extends Part
             );
     }
 
+    /**
+     * Gets a button to view the image of the card
+     *
+     * @param Interaction|null $interaction
+     * 
+     * @return Button|null
+     * 
+     * @since 0.5.0
+     */
     public function getViewImageButton(Interaction $interaction): ?Button
     {
         if (! isset($this->attributes['imageUrl'])) {
@@ -318,5 +335,46 @@ class Card extends Part
                 true, // One-time listener
                 300 // delete listener after 5 minutes
             );
+    }
+
+    /**
+     * Gets a button to view the set the card belongs to.
+     *
+     * @param Interaction|null $interaction
+     * 
+     * @return Button|null
+     * 
+     * @since 0.5.0
+     */
+    public function getSetButton(?Interaction $interaction = null): ?Button
+    {
+        if (! isset($this->attributes['setName'])) {
+            return null;
+        }
+
+        /** @var MTG $mtg */
+        $mtg = $this->discord;
+
+        $button = Button::new(Button::STYLE_SECONDARY, "SET_{$this->setName}")->setLabel("{$this->set} - {$this->setName}");
+
+        if ($interaction) {
+            $button->setListener(
+                fn () => $mtg->sets->getSets($this)->then(
+                    fn (ExCollectionInterface $sets): PromiseInterface => $interaction->sendFollowUpMessage(
+                        ($container = $sets->first()?->toContainer($interaction))
+                            ? MTG::createBuilder()->addComponent($container)
+                            : MTG::createBuilder()->setContent('No sets found.'),
+                        true
+                    ),
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
+        } else {
+            $button->setDisabled(true);
+        }
+
+        return $button;
     }
 }

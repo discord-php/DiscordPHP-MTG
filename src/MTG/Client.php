@@ -20,6 +20,7 @@ use Discord\Repository\PrivateChannelRepository;
 use Discord\Repository\SoundRepository;
 use Discord\Repository\UserRepository;
 use MTG\Repository\CardRepository;
+use MTG\Repository\SetRepository;
 
 class Client extends DiscordClient
 {
@@ -33,5 +34,6 @@ class Client extends DiscordClient
         'sounds' => SoundRepository::class,
         'users' => UserRepository::class,
         'cards' => CardRepository::class,
+        'sets' => SetRepository::class,
     ];
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace MTG\Parts;
 
+use Carbon\Carbon;
+use Discord\Builders\Components\Container;
+use Discord\Builders\Components\TextDisplay;
 use Discord\Parts\Part;
 
 /**
@@ -39,4 +42,53 @@ class Set extends Part
         'onlineOnly',
         'booster',
     ];
+
+    /**
+     * Gets the release date of the set.
+     *
+     * @return ?Carbon|null
+     *
+     * @since 0.5.0
+     */
+    public function getReleaseDateAttribute(): ?Carbon
+    {
+        if (! isset($this->attributes['releaseDate'])) {
+            return null;
+        }
+
+        return Carbon::parse($this->attributes['releaseDate']);
+    }
+
+    /**
+     * Converts the set to a container with components.
+     *
+     * @return Container|null
+     *
+     * @since 0.5.0
+     */
+    public function toContainer(): ?Container
+    {
+        if (! isset($this->attributes['name'])) {
+            return null;
+        }
+
+        $components = [
+            TextDisplay::new('Code: '.$this->code),
+            TextDisplay::new('Name: '.$this->name)
+        ];
+
+        if (isset($this->attributes['block'])) {
+            $components[] = TextDisplay::new('Block: '.$this->block);
+        }
+
+        if (isset($this->attributes['releaseDate'])) {
+            $components[] = TextDisplay::new('Release Date: '.$this->attributes['releaseDate']);
+        }
+
+        if (isset($this->attributes['onlineOnly'])) {
+            $components[] = TextDisplay::new('Online Only: '.($this->attributes['onlineOnly'] ? 'Yes' : 'No'));
+        }
+
+        return Container::new()->addComponents($components);
+    }
 }

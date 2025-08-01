@@ -144,7 +144,7 @@ trait HelperTrait
      */
     public static function colorIdentityToInteger(?string $identity): ?int
     {
-        switch($identity) {
+        switch ($identity) {
             case null:
                 return \Discord\COLORTABLE['gray'];
             case 'W':

@@ -33,6 +33,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use MTG\Parts\Card;
+use MTG\Parts\Set;
 use React\EventLoop\Loop;
 
 use function React\Async\async;
@@ -343,7 +344,7 @@ $mtg->on('init', function (MTG $mtg) {
                     }
 
                     /** @var Card $card */
-                    if (! $container = $card->toContainer(false)) {
+                    if (! $container = $card->toContainer($interaction)) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
                     }
 

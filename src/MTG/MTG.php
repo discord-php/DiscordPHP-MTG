@@ -25,6 +25,7 @@ use MTG\Repository\CardRepository;
  * @version 1.0.0
  *
  * @property CardRepository $cards
+ * @property SetRepository  $sets
  */
 class MTG extends Discord
 {
