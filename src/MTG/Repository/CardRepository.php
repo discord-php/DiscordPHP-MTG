@@ -121,17 +121,6 @@ class CardRepository extends AbstractRepository
             $params = $resolver->resolve($params);
         }
 
-        // Fields that accept multiple values and can use AND (comma) or OR (pipe)
-        /*$multiValueAndOrFields = [
-            'name', 'colors', 'colorIdentity', 'supertypes', 'types', 'subtypes',
-        ];
-
-        foreach ($params as $key => $value) {
-            if (is_string($value) && ! in_array($key, $multiValueAndOrFields, true) && strpos($value, ',') !== false) {
-                return reject(new \InvalidArgumentException("Field '{$key}' cannot contain a comma."));
-            }
-        }*/
-
         $endpoint = new Endpoint($this->endpoints['all']);
 
         foreach ($params as $key => $value) {
