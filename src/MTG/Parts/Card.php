@@ -23,13 +23,17 @@ use Discord\Builders\Components\TextDisplay;
 use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Embed\Embed;
+use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\Part;
 use MTG\HelperTrait;
+use MTG\MTG;
 
 /**
  * Represents a Magic: The Gathering card.
  *
- * @property-read ?Embed image_embed The image for the card.
+ * @property-read Embed|null  $image_embed       The image for the card as an embed.
+ * @property-read Button      $json_button       The button to view the card as JSON.
+ * @property-read Button|null $view_image_button The button to view the card image.
  */
 class Card extends Part
 {
@@ -261,7 +265,6 @@ class Card extends Part
                     ->setDisabled(true));
         }
         
-
         if (isset($this->attributes['text'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new($mtg->encapsulatedSymbolsToEmojis($this->text));
@@ -270,14 +273,48 @@ class Card extends Part
         if (isset($this->attributes['power'], $this->attributes['toughness'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new(
-                '(' .
-                str_replace('*', '\*', $this->power) .
-                '/' .
-                str_replace('*', '\*', $this->toughness) .
+                '('.
+                str_replace('*', '\*', $this->power).
+                '/'.
+                str_replace('*', '\*', $this->toughness).
                 ')'
             );
         }
 
         return Container::new()->addComponents($components);
+    }
+
+    public function getJsonButton(Interaction $interaction): Button
+    {
+        return Button::new(Button::STYLE_SECONDARY, "JSON_{$this->id}")
+            ->setLabel('JSON')
+            ->setListener(
+                fn () => $interaction->sendFollowUpMessage(
+                    MTG::createBuilder()->addFileFromContent("{$this->id}.json", json_encode($this, JSON_PRETTY_PRINT)),
+                    true
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
+    }
+
+    public function getViewImageButton(Interaction $interaction): ?Button
+    {
+        if (! isset($this->attributes['imageUrl'])) {
+            return null;
+        }
+
+        return Button::new(Button::STYLE_SECONDARY, "VIEW_IMAGE_{$this->id}")
+            ->setLabel('View Image')
+            ->setListener(
+                fn () => $interaction->sendFollowUpMessage(
+                    MTG::createBuilder()->addEmbed($this->image_embed),
+                    true
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
     }
 }

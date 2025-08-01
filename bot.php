@@ -16,7 +16,6 @@ namespace MTG;
 //use Clue\React\Redis\Factory as Redis;
 use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
-use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
 //use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
@@ -358,31 +357,9 @@ $mtg->on('init', function (MTG $mtg) {
                         $container->setAccentColor($ci);
                     }
 
-                    $buttons = [Button::new(Button::STYLE_SECONDARY, "JSON_{$card->id}")
-                        ->setLabel('JSON')
-                        ->setListener(
-                            fn () => $interaction->sendFollowUpMessage(
-                                MTG::createBuilder()->addFileFromContent("{$card->id}.json", json_encode($card, JSON_PRETTY_PRINT)),
-                                true
-                            ),
-                            $mtg,
-                            true, // One-time listener
-                            300 // delete listener after 5 minutes
-                        ),
-                    ];
-
-                    if ($image_embed = $card->image_embed) {
-                        $buttons[] = Button::new(Button::STYLE_SECONDARY, "VIEW_IMAGE_{$card->id}")
-                            ->setLabel('View Image')
-                            ->setListener(
-                                fn () => $interaction->sendFollowUpMessage(
-                                    MTG::createBuilder()->addEmbed($image_embed),
-                                    true
-                                ),
-                                $mtg,
-                                true, // One-time listener
-                                300 // delete listener after 5 minutes
-                            );
+                    $buttons = [$card->getJsonButton($interaction)];
+                    if ($view_image_button = $card->getViewImageButton($interaction)) {
+                        $buttons[] = $view_image_button;
                     }
 
                     return $interaction->updateOriginalResponse(
