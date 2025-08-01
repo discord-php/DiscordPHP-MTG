@@ -34,6 +34,8 @@ use MTG\MTG;
  * @property-read Embed|null  $image_embed       The image for the card as an embed.
  * @property-read Button      $json_button       The button to view the card as JSON.
  * @property-read Button|null $view_image_button The button to view the card image.
+ *
+ * @since 0.4.0
  */
 class Card extends Part
 {

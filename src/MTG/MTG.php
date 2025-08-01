@@ -17,14 +17,14 @@ use Discord\Discord;
 use Discord\Http\Drivers\React;
 use Discord\Stats;
 use MTG\Http\Http;
-use MTG\Repository\CardsRepository;
+use MTG\Repository\CardRepository;
 
 /**
  * The MTG client class.
  *
  * @version 1.0.0
  *
- * @property CardsRepository $cards
+ * @property CardRepository $cards
  */
 class MTG extends Discord
 {

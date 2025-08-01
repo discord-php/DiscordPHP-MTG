@@ -26,7 +26,12 @@ use function Discord\studly;
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
-class CardsRepository extends AbstractRepository
+/**
+ * Repository for managing Magic: The Gathering cards.
+ *
+ * @since 0.3.0
+ */
+class CardRepository extends AbstractRepository
 {
     /**
      * @inheritDoc
