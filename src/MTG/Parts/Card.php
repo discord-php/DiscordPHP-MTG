@@ -55,8 +55,8 @@ class Card extends Part
         'types',
         'subtypes',
         'rarity',
-        'set',
-        'setName',
+        'set', // Short name
+        'setName', // Full name, can be used to query /sets
         'text',
         'flavor',
         'artist',
