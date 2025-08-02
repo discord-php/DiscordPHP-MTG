@@ -1,6 +1,6 @@
 {
-    "name": "valgorithms/mtg-card-info-app",
-    "description": "DiscordPHP bot for Magic: The Gathering card lookup and search.",
+    "name": "valgorithms/discordphp-mtg",
+    "description": "API Library for api.magicthegathering.io built on top of DiscordPHP.",
     "license": "MIT",
     "authors": [
         {
@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "team-reflex/discord-php": "^10.18.24"
+        "team-reflex/discord-php": "^10.18.25"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",

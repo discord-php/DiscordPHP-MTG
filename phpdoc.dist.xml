@@ -5,7 +5,7 @@
         xmlns="https://www.phpdoc.org"
         xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd"
 >
-	<title>MTG Card Info App Documentation</title>
+	<title>DiscordPHP-MTG Documentation</title>
 	<paths>
 		<output>build</output>
 	</paths>

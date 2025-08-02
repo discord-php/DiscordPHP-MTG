@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is a part of the MTG Card Info App project.
+ * This file is a part of the DiscordPHP-MTG project.
  *
  * Copyright (c) 2025-present Valithor Obsidion <valithor@discordphp.org>
  *
