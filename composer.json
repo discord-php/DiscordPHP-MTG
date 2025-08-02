@@ -17,14 +17,6 @@
         "laravel/pint": "^1.21",
         "wyrihaximus/react-cache-redis": "^4.5"
     },
-    "suggest": {
-        "ext-gmp": "For 64 bit calculations on x86 (32 bit) PHP.",
-        "ext-uv": "For a faster, and more performant loop. PHP >=7 only. Preferred.",
-        "ext-ev": "For a faster, and more performant loop.",
-        "ext-event": "For a faster, and more performant loop.",
-        "ext-mbstring": "For accurate calculations of string length when handling non-english characters.",
-        "ext-fileinfo": "For function mime_content_type()."
-    },
     "scripts": {
         "pint": ["./vendor/bin/pint --config ./pint.json ./src"],
         "cs": "php-cs-fixer fix",
