@@ -15,13 +15,13 @@ A Magic: The Gathering API Library and bot for Discord, built using [DiscordPHP]
 ## Installation
 
 1. Clone the repository:
-   ```powershell
+   ```cmd
    git clone https://github.com/Valgorithms/DiscordPHP-MTG.git
    cd DiscordPHP-MTG
    ```
 
 2. Install dependencies:
-   ```powershell
+   ```cmd
    composer install
    ```
 
@@ -29,7 +29,7 @@ A Magic: The Gathering API Library and bot for Discord, built using [DiscordPHP]
 
 1. Copy and rename `.env.example` to `.env` and configure your bot token.
 2. Run the bot:
-   ```powershell
+   ```cmd
    php bot.php
    ```
 3. Alternatively, package the bot into an executable binary:
