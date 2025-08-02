@@ -315,8 +315,7 @@ $mtg->on('init', function (MTG $mtg) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
                     }
 
-                    $card_ci = $card->colorIdentity;
-                    if ($ci = (! is_array($card_ci)
+                    if ($ci = (! is_array($card_ci = $card->colorIdentity)
                         ? $mtg->colorIdentityToInteger(null)
                         : ((count($card_ci) === 1)
                             ? $mtg->colorIdentityToInteger($card_ci[0])
