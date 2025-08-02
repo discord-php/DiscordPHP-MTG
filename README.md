@@ -16,7 +16,7 @@ A Magic: The Gathering API Library and bot for Discord, built using [DiscordPHP]
 
 1. Clone the repository:
    ```cmd
-   git clone https://github.com/Valgorithms/DiscordPHP-MTG.git
+   git clone https://github.com/discord-php-extended/discordphp-mtg.git
    cd DiscordPHP-MTG
    ```
 

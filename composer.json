@@ -1,5 +1,5 @@
 {
-    "name": "valgorithms/discordphp-mtg",
+    "name": "discord-php-extended/discordphp-mtg",
     "description": "API Library for api.magicthegathering.io built on top of DiscordPHP.",
     "license": "MIT",
     "authors": [
