@@ -184,26 +184,17 @@ $webapi = new HttpServer(Loop::get(), async(
  * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
 $webapi->on('error', async(function (\Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
-    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) {
-        return;
-    }
+    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) return;
     $logger->warning("[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString()));
-    if ($request) {
-        $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
-    }
-    if (str_starts_with($e->getMessage(), 'The response callback')) {
-        $logger->error('[WEBAPI] ERROR - RESTART');
-        /** @var ?MTG $mtg */
-        if (! $mtg instanceof MTG) {
-            return;
-        }
-        if (! getenv('TESTING')) {
-            $promise = $mtg->users->fetch($technician_id);
-            $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
-            $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
-        }
-        $socket->close();
-    }
+    if ($request) $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    if (! str_starts_with($e->getMessage(), 'The response callback')) return;
+    $logger->error('[WEBAPI] ERROR - RESTART');
+    if (! $mtg instanceof MTG) return;
+    $socket->close();
+    if (getenv('TESTING')) return;
+    $promise = $mtg->users->fetch($technician_id);
+    $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
+    $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
 }));
 
 $mtg->on('init', function (MTG $mtg) {
