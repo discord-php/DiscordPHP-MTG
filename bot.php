@@ -33,7 +33,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use MTG\Parts\Card;
-use MTG\Parts\Set;
 use React\EventLoop\Loop;
 
 use function React\Async\async;
@@ -107,6 +106,15 @@ set_rejection_handler(function (\Throwable $e) use ($logger): void {
 $mtg = new MTG([
     'loop' => Loop::get(),
     'logger' => $logger,
+    'socket_options' => [
+        'dns' => '8.8.8.8',
+    ],
+    'token' => getenv('TOKEN'),
+    'storeMessages' => true, // Only needed if messages need to be stored in the cache
+    'intents' => Intents::getDefaultIntents() /*| Intents::GUILD_MEMBERS | Intents::GUILD_PRESENCES | Intents::MESSAGE_CONTENT*/,
+    'useTransportCompression' => false, // Disable zlib-stream
+    'usePayloadCompression' => true, // RFC1950 2.2
+    //'loadAllMembers' => true,
     /*
     'cache' => new CacheConfig(
         $interface = new RedisCache(
@@ -117,49 +125,18 @@ $mtg = new MTG([
         $sweep = false // Disable automatic cache sweeping if desired
     ),
     */
-    'socket_options' => [
-        'dns' => '8.8.8.8',
-    ],
-    'token' => getenv('TOKEN'),
-    //'loadAllMembers' => true,
-    'storeMessages' => true, // Only needed if messages need to be stored in the cache
-    'intents' => Intents::getDefaultIntents() /*| Intents::GUILD_MEMBERS | Intents::GUILD_PRESENCES*/ | Intents::MESSAGE_CONTENT,
-    'useTransportCompression' => false, // Disable zlib-stream
-    'usePayloadCompression' => true,
 ]);
 
 $webapi = null;
 $socket = null;
 
 $global_error_handler = async(function (int $errno, string $errstr, ?string $errfile, ?int $errline) use (&$mtg, &$logger, &$technician_id) {
-    /** @var ?MTG $mtg */
-    if (
-        $mtg // If the bot is running
-        // fsockopen
-        && ! str_ends_with($errstr, 'Connection timed out')
-        && ! str_ends_with($errstr, '(Connection timed out)')
-        && ! str_ends_with($errstr, 'Connection refused') // Usually happens if the verifier server doesn't respond quickly enough
-        && ! str_contains($errstr, '(Connection refused)') // Usually happens in localServerPlayerCount
-        //&& ! str_ends_with($errstr, 'Network is unreachable')
-        //&& ! str_ends_with($errstr, '(Network is unreachable)')
-        && ! str_ends_with($errstr, '(A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond)')
-
-        // Connectivity issues
-        && ! str_ends_with($errstr, 'No route to host') // Usually happens if the verifier server is down
-        && ! str_ends_with($errstr, 'No address associated with hostname') // Either the DNS or the VPS is acting up
-        && ! str_ends_with($errstr, 'Temporary failure in name resolution') // Either the DNS or the VPS is acting up
-        && ! str_ends_with($errstr, 'Bad Gateway') // Usually happens if the verifier server's PHP-CGI is down
-        //&& ! str_ends_with($errstr, 'HTTP request failed!')
-
-        //&& ! str_contains($errstr, 'Undefined array key')
-    ) {
-        $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn ($trace) => ($trace['file'] ?? '').':'.($trace['line'] ?? '').($trace['function'] ?? ''), debug_backtrace()))));
-        if (! getenv('TESTING')) {
-            $promise = $mtg->users->fetch($technician_id);
-            $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
-            $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent($msg)));
-        }
-    }
+    if (! $mtg instanceof MTG) return;
+    $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn ($trace) => ($trace['file'] ?? '').':'.($trace['line'] ?? '').($trace['function'] ?? ''), debug_backtrace()))));
+    if (getenv('TESTING')) return;
+    $promise = $mtg->users->fetch($technician_id);
+    $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
+    $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent($msg)));
 });
 set_error_handler($global_error_handler);
 
@@ -328,7 +305,6 @@ $mtg->on('init', function (MTG $mtg) {
                     ->addOption($options_contains)
                     ->addOption($options_multiverseid)
                     ->addOption($options_legality);
-                //$mtg->logger->info(json_encode($builder->jsonSerialize()));
                 $commands->save($mtg->application->commands->create($builder->toArray()));
             } //else $commands->delete($command);
 
