@@ -74,7 +74,7 @@ class Set extends Part
 
         $components = [
             TextDisplay::new('Code: '.$this->code),
-            TextDisplay::new('Name: '.$this->name)
+            TextDisplay::new('Name: '.$this->name),
         ];
 
         if (isset($this->attributes['block'])) {

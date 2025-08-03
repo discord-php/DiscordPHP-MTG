@@ -32,6 +32,10 @@ use React\Promise\PromiseInterface;
 /**
  * Represents a Magic: The Gathering card.
  *
+ * @property ExCollectionInterface<Legality>    $legalities
+ * @property ExCollectionInterface<Ruling>      $rulings
+ * @property ExCollectionInterface<ForeignName> $foreignNames
+ *
  * @property-read Embed|null  $image_embed       The image for the card as an embed.
  * @property-read Button      $json_button       The button to view the card as JSON.
  * @property-read Button|null $view_image_button The button to view the card image.
@@ -117,17 +121,17 @@ class Card extends Part
     /**
      * Converts the card to a container with components.
      *
-     * @return ExCollectionInterface<Ruling>|null
+     * @return ExCollectionInterface<Ruling>
      *
      * @since 0.3.0
      */
-    public function getRulingsAttribute(): ?ExCollectionInterface
+    public function getRulingsAttribute(): ExCollectionInterface
     {
-        if (! isset($this->attributes['rulings']) || ! is_array($this->attributes['rulings'])) {
-            return null;
-        }
-
         $collection = Collection::for(Ruling::class);
+
+        if (! isset($this->attributes['rulings']) || ! is_array($this->attributes['rulings'])) {
+            return $collection;
+        }
 
         foreach ($this->attributes['rulings'] as $idx => $ruling) {
             $collection->set($idx, $this->factory->part(Ruling::class, (array) $ruling));
@@ -139,17 +143,17 @@ class Card extends Part
     /**
      * Gets the foreign names of the card.
      *
-     * @return ExCollectionInterface<ForeignName>|null
+     * @return ExCollectionInterface<ForeignName>
      *
      * @since 0.3.0
      */
-    public function getForeignNamesAttribute(): ?ExCollectionInterface
+    public function getForeignNamesAttribute(): ExCollectionInterface
     {
-        if (! isset($this->attributes['foreignNames']) || ! is_array($this->attributes['foreignNames'])) {
-            return null;
-        }
-
         $collection = Collection::for(ForeignName::class);
+
+        if (! isset($this->attributes['foreignNames']) || ! is_array($this->attributes['foreignNames'])) {
+            return $collection;
+        }
 
         foreach ($this->attributes['foreignNames'] as $idx => $foreignName) {
             $collection->set($idx, $this->factory->part(ForeignName::class, (array) $foreignName));
@@ -161,17 +165,17 @@ class Card extends Part
     /**
      * Gets the legality of the card.
      *
-     * @return ExCollectionInterface<Legality>|null
+     * @return ExCollectionInterface<Legality>
      *
      * @since 0.3.0
      */
-    public function getLegalitiesAttribute(): ?ExCollectionInterface
+    public function getLegalitiesAttribute(): ExCollectionInterface
     {
-        if (! isset($this->attributes['legalities']) || ! is_array($this->attributes['legalities'])) {
-            return null;
-        }
-
         $collection = Collection::for(Legality::class);
+        
+        if (! isset($this->attributes['legalities']) || ! is_array($this->attributes['legalities'])) {
+            return $collection;
+        }
 
         foreach ($this->attributes['legalities'] as $idx => $legality) {
             $collection->set($idx, $this->factory->part(Legality::class, (array) $legality));
@@ -286,12 +290,12 @@ class Card extends Part
     }
 
     /**
-     * Gets a button to view the raw JSON of the card
+     * Gets a button to view the raw JSON of the card.
      *
      * @param Interaction|null $interaction
-     * 
+     *
      * @return Button|null
-     * 
+     *
      * @since 0.5.0
      */
     public function getJsonButton(Interaction $interaction): Button
@@ -310,12 +314,12 @@ class Card extends Part
     }
 
     /**
-     * Gets a button to view the image of the card
+     * Gets a button to view the image of the card.
      *
      * @param Interaction|null $interaction
-     * 
+     *
      * @return Button|null
-     * 
+     *
      * @since 0.5.0
      */
     public function getViewImageButton(Interaction $interaction): ?Button
@@ -341,9 +345,9 @@ class Card extends Part
      * Gets a button to view the set the card belongs to.
      *
      * @param Interaction|null $interaction
-     * 
+     *
      * @return Button|null
-     * 
+     *
      * @since 0.5.0
      */
     public function getSetButton(?Interaction $interaction = null): ?Button
@@ -376,5 +380,49 @@ class Card extends Part
         }
 
         return $button;
+    }
+
+    /**
+     * Gets a button to view the legal formats for the card.
+     *
+     * @param Interaction $interaction
+     *
+     * @return Button|null
+     *
+     * @since 0.6.0
+     */
+    public function getLegalitiesButton(Interaction $interaction): ?Button
+    {
+        if (! isset($this->attributes['legalities'])) {
+            return null;
+        }
+
+        if (! $legalities = $this->legalities->reduce(function ($carry, $legality) {
+            /** @var Legality $legality */
+            $carry[$legality->legality][] = $legality->format;
+
+            return $carry;
+        }, [])) {
+            return null;
+        }
+
+        /** @var ExCollectionInterface $legalities */
+        $legalities_text = implode(PHP_EOL, array_map(
+            fn ($formats, $legality) => "$legality: ".implode(', ', $formats),
+            $legalities->toArray(),
+            $legalities->keys()
+        ));
+        
+        return Button::new(Button::STYLE_SECONDARY, "LEGALITIES_{$this->id}")
+            ->setLabel('Legalities')
+            ->setListener(
+                fn () => $interaction->sendFollowUpMessage(
+                    MTG::createBuilder()->setContent($legalities_text),
+                    true
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
     }
 }

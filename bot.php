@@ -131,9 +131,13 @@ $webapi = null;
 $socket = null;
 
 $global_error_handler = async(function (int $errno, string $errstr, ?string $errfile, ?int $errline) use (&$mtg, &$logger, &$technician_id) {
-    if (! $mtg instanceof MTG) return;
+    if (! $mtg instanceof MTG) {
+        return;
+    }
     $logger->error($msg = sprintf("[%d] Fatal error on `%s:%d`: %s\nBacktrace:\n```\n%s\n```", $errno, $errfile, $errline, $errstr, implode("\n", array_map(fn ($trace) => ($trace['file'] ?? '').':'.($trace['line'] ?? '').($trace['function'] ?? ''), debug_backtrace()))));
-    if (getenv('TESTING')) return;
+    if (getenv('TESTING')) {
+        return;
+    }
     $promise = $mtg->users->fetch($technician_id);
     $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
     $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent($msg)));
@@ -184,14 +188,24 @@ $webapi = new HttpServer(Loop::get(), async(
  * @param bool                                    $testing Flag indicating if the script is running in testing mode.
  */
 $webapi->on('error', async(function (\Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
-    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) return;
+    if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) {
+        return;
+    }
     $logger->warning("[WEBAPI] {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('\n', PHP_EOL, $e->getTraceAsString()));
-    if ($request) $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
-    if (! str_starts_with($e->getMessage(), 'The response callback')) return;
+    if ($request) {
+        $logger->error('[WEBAPI] Request: '.preg_replace('/(?<=key=)[^&]+/', '********', $request->getRequestTarget()));
+    }
+    if (! str_starts_with($e->getMessage(), 'The response callback')) {
+        return;
+    }
     $logger->error('[WEBAPI] ERROR - RESTART');
-    if (! $mtg instanceof MTG) return;
+    if (! $mtg instanceof MTG) {
+        return;
+    }
     $socket->close();
-    if (getenv('TESTING')) return;
+    if (getenv('TESTING')) {
+        return;
+    }
     $promise = $mtg->users->fetch($technician_id);
     $promise = $promise->then(fn (User $user) => $user->getPrivateChannel());
     $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
@@ -327,6 +341,9 @@ $mtg->on('init', function (MTG $mtg) {
                     $buttons = [$card->getJsonButton($interaction)];
                     if ($view_image_button = $card->getViewImageButton($interaction)) {
                         $buttons[] = $view_image_button;
+                    }
+                    if ($legalities_button = $card->getLegalitiesButton($interaction)) {
+                        $buttons[] = $legalities_button;
                     }
 
                     return $interaction->updateOriginalResponse(
