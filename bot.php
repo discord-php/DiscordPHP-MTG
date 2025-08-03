@@ -16,6 +16,7 @@ namespace MTG;
 //use Clue\React\Redis\Factory as Redis;
 use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
+use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
 use Discord\Builders\Components\TextDisplay;
 //use Discord\Helpers\CacheConfig;
@@ -353,7 +354,7 @@ $mtg->on('init', function (MTG $mtg) {
                                 Separator::new(),
                                 ActionRow::new()->addComponents($buttons),
                                 Separator::new(),
-                                TextDisplay::new('[Source Code]('.MTG::GITHUB.')'),
+                                Button::link(MTG::GITHUB)->setLabel('GitHub'),
                             ])
                         )
                     );
