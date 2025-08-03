@@ -244,7 +244,7 @@ class Card extends Part
         /** @var HelperTrait $mtg */
         $mtg = $this->discord;
 
-        $ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : null);
+        $ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : '');
         $mana_cost = $mtg->encapsulatedSymbolsToEmojis($this->manaCost ?? '');
 
         $components = [TextDisplay::new("$ci_emoji {$this->name} $mana_cost")];
