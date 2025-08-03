@@ -17,6 +17,7 @@ namespace MTG;
 use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Separator;
+use Discord\Builders\Components\TextDisplay;
 //use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Channel\Channel;
@@ -351,6 +352,8 @@ $mtg->on('init', function (MTG $mtg) {
                             $container->addComponents([
                                 Separator::new(),
                                 ActionRow::new()->addComponents($buttons),
+                                Separator::new(),
+                                TextDisplay::new('[Source Code]('.MTG::GITHUB.')'),
                             ])
                         )
                     );

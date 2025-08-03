@@ -31,7 +31,7 @@ class MTG extends Discord
 {
     use HelperTrait;
 
-    public const string EMBED_FOOTER = '';
+    public const string GITHUB = 'https://github.com/discord-php/DiscordPHP-MTG';
 
     protected Stats $stats;
 

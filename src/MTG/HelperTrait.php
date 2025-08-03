@@ -15,7 +15,6 @@ namespace MTG;
 
 use Discord\Builders\MessageBuilder;
 use Discord\Parts\Channel\Message\AllowedMentions;
-use Discord\Parts\Embed\Embed;
 use Discord\Parts\Guild\Emoji;
 use Discord\Repository\EmojiRepository;
 
@@ -40,31 +39,6 @@ trait HelperTrait
         }
 
         return $builder;
-    }
-
-    /**
-     * Creates and returns a new Embed instance with optional footer, color, timestamp, and URL.
-     *
-     * @param bool|null $footer Whether to include the default footer in the embed. Defaults to true.
-     * @param int       $color  The color to set for the embed. Defaults to 0xE1452D.
-     *
-     * @return Embed
-     *
-     * @since 0.1.0
-     */
-    public function createEmbed(?bool $footer = true, int $color = 0xE1452D): Embed
-    {
-        assert($this instanceof MTG);
-
-        $embed = new Embed($this);
-        if ($footer) {
-            $embed->setFooter(MTG::EMBED_FOOTER);
-        }
-
-        return $embed
-            ->setColor($color)
-            ->setTimestamp()
-            ->setURL('');
     }
 
     /**
