@@ -349,6 +349,9 @@ $mtg->on('init', function (MTG $mtg) {
                     if ($rulings_button = $card->getRulingsButton($interaction)) {
                         $buttons[] = $rulings_button;
                     }
+                    if ($foreign_button = $card->getForeignNamesButton($interaction)) {
+                        $buttons[] = $foreign_button;
+                    }
 
                     return $interaction->updateOriginalResponse(
                         $builder->addComponent(

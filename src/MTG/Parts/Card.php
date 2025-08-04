@@ -385,6 +385,50 @@ class Card extends Part
     }
 
     /**
+     * Gets a button to view the foreign names for the card.
+     *
+     * @param Interaction $interaction
+     *
+     * @return Button|null
+     *
+     * @since 0.7.0
+     */
+    public function getForeignNamesButton(Interaction $interaction): ?Button
+    {
+        if (! isset($this->attributes['foreignNames'])) {
+            return null;
+        }
+
+        if (! $foreign = $this->foreignNames->reduce(function ($carry, $fn) {
+            /** @var ForeignName $fn */
+            $carry[$fn->language][] = $fn->name;
+
+            return $carry;
+        }, [])) {
+            return null;
+        }
+
+        /** @var ExCollectionInterface $foreign */
+        $foreign_text = implode(PHP_EOL, array_map(
+            fn ($name, $language) => "$language: ".implode(', ', $name),
+            $foreign->toArray(),
+            $foreign->keys()
+        ));
+
+        return Button::new(Button::STYLE_SECONDARY, "FOREIGN_NAMES_{$this->id}")
+            ->setLabel('Foreign Names')
+            ->setListener(
+                fn () => $interaction->sendFollowUpMessage(
+                    MTG::createBuilder()->setContent($foreign_text),
+                    true
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
+    }
+
+    /**
      * Gets a button to view the legal formats for the card.
      *
      * @param Interaction $interaction
