@@ -287,6 +287,10 @@ class Card extends Part
                 ')'
             );
         }
+        if (isset($this->attributes['loyalty'], $this->attributes['loyalty'])) {
+            $components[] = Separator::new();
+            $components[] = TextDisplay::new("[{$this->loyalty}]");
+        }
 
         return Container::new()->addComponents($components);
     }
