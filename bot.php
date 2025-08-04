@@ -18,7 +18,6 @@ use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
-use Discord\Builders\Components\TextDisplay;
 //use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Channel\Channel;
@@ -346,6 +345,9 @@ $mtg->on('init', function (MTG $mtg) {
                     }
                     if ($legalities_button = $card->getLegalitiesButton($interaction)) {
                         $buttons[] = $legalities_button;
+                    }
+                    if ($rulings_button = $card->getRulingsButton($interaction)) {
+                        $buttons[] = $rulings_button;
                     }
 
                     return $interaction->updateOriginalResponse(

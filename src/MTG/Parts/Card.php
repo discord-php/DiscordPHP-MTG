@@ -201,6 +201,8 @@ class Card extends Part
             switch ($this->layout) {
                 case 'normal':
                 case 'meld':
+                case 'transform':
+                case 'default':
                     return $this->normalLayoutContainer($interaction);
             }
         }
@@ -418,6 +420,41 @@ class Card extends Part
             ->setListener(
                 fn () => $interaction->sendFollowUpMessage(
                     MTG::createBuilder()->setContent($legalities_text),
+                    true
+                ),
+                $this->getDiscord(),
+                true, // One-time listener
+                300 // delete listener after 5 minutes
+            );
+    }
+
+    public function getRulingsButton(Interaction $interaction): ?Button
+    {
+        if (! isset($this->attributes['rulings'])) {
+            return null;
+        }
+
+        if (! $rulings = $this->rulings->reduce(function ($carry, $ruling) {
+            /** @var Ruling $ruling */
+            $carry[$ruling->date][] = $ruling->text;
+
+            return $carry;
+        }, [])) {
+            return null;
+        }
+
+        /** @var ExCollectionInterface $rulings */
+        $rulings_text = implode(PHP_EOL, array_map(
+            fn ($formats, $ruling) => PHP_EOL."$ruling: ".PHP_EOL.'- '.implode(PHP_EOL.'- ', $formats),
+            $rulings->toArray(),
+            $rulings->keys()
+        ));
+
+        return Button::new(Button::STYLE_SECONDARY, "RULINGS_{$this->id}")
+            ->setLabel('Rulings')
+            ->setListener(
+                fn () => $interaction->sendFollowUpMessage(
+                    MTG::createBuilder()->setContent($rulings_text),
                     true
                 ),
                 $this->getDiscord(),
