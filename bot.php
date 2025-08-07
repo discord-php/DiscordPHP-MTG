@@ -212,13 +212,65 @@ $webapi->on('error', async(function (\Exception $e, ?\Psr\Http\Message\RequestIn
     $promise = $promise->then(fn (Channel $channel) => $channel->sendMessage(MTG::createBuilder()->setContent('Restarting due to error in HttpServer API...')));
 }));
 
-$mtg->on('init', function (MTG $mtg) {
-    $func = fn (): PromiseInterface => $mtg->emojis->freshen()
+$func = function (MTG $mtg) {
+    $mtg->emojis->freshen()
         ->then(fn (EmojiRepository $emojis) => $mtg->application->commands->freshen())
         ->then(function (GlobalCommandRepository $commands) use ($mtg): void {
             if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
                 $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] '.implode('`, `', $names));
             }
+
+            $mtg->listenCommand(
+                $name = 'card_search',
+                fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
+                ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
+                ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
+                    $builder = MTG::createBuilder();
+
+                    if (! $card = $cards->first()) {
+                        return $interaction->updateOriginalResponse($builder->setContent('No card found matching the search criteria.'));
+                    }
+
+                    // @var Card $card
+                    if (! $container = $card->toContainer($interaction)) {
+                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
+                    }
+
+                    if ($ci = (! is_array($card_ci = $card->colorIdentity)
+                        ? $mtg->colorIdentityToInteger(null)
+                        : ((count($card_ci) === 1)
+                            ? $mtg->colorIdentityToInteger($card_ci[0])
+                            : null))
+                    ) {
+                        $container->setAccentColor($ci);
+                    }
+
+                    $buttons = [$card->getJsonButton($interaction)];
+                    if ($view_image_button = $card->getViewImageButton($interaction)) {
+                        $buttons[] = $view_image_button;
+                    }
+                    if ($legalities_button = $card->getLegalitiesButton($interaction)) {
+                        $buttons[] = $legalities_button;
+                    }
+                    if ($rulings_button = $card->getRulingsButton($interaction)) {
+                        $buttons[] = $rulings_button;
+                    }
+                    if ($foreign_button = $card->getForeignNamesButton($interaction)) {
+                        $buttons[] = $foreign_button;
+                    }
+
+                    return $interaction->updateOriginalResponse(
+                        $builder->addComponent(
+                            $container->addComponents([
+                                Separator::new(),
+                                ActionRow::new()->addComponents($buttons),
+                                Separator::new(),
+                                Button::link(MTG::GITHUB)->setLabel('GitHub'),
+                            ])
+                        )
+                    );
+                })
+            );
 
             if (! $command = $commands->get('name', $name = 'card_search')) {
                 $mtg->logger->debug("[GLOBAL APPLICATION COMMAND] Creating `$name` command...");
@@ -312,61 +364,29 @@ $mtg->on('init', function (MTG $mtg) {
                     ->addOption($options_multiverseid)
                     ->addOption($options_legality);
                 $commands->save($mtg->application->commands->create($builder->toArray()));
-            } //else $commands->delete($command);
-
-            $mtg->listenCommand(
-                $name,
-                fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
-                ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
-                ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
-                    $builder = MTG::createBuilder();
-
-                    if (! $card = $cards->first()) {
-                        return $interaction->updateOriginalResponse($builder->setContent('No card found matching the search criteria.'));
-                    }
-
-                    /** @var Card $card */
-                    if (! $container = $card->toContainer($interaction)) {
-                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
-                    }
-
-                    if ($ci = (! is_array($card_ci = $card->colorIdentity)
-                        ? $mtg->colorIdentityToInteger(null)
-                        : ((count($card_ci) === 1)
-                            ? $mtg->colorIdentityToInteger($card_ci[0])
-                            : null))
-                    ) {
-                        $container->setAccentColor($ci);
-                    }
-
-                    $buttons = [$card->getJsonButton($interaction)];
-                    if ($view_image_button = $card->getViewImageButton($interaction)) {
-                        $buttons[] = $view_image_button;
-                    }
-                    if ($legalities_button = $card->getLegalitiesButton($interaction)) {
-                        $buttons[] = $legalities_button;
-                    }
-                    if ($rulings_button = $card->getRulingsButton($interaction)) {
-                        $buttons[] = $rulings_button;
-                    }
-                    if ($foreign_button = $card->getForeignNamesButton($interaction)) {
-                        $buttons[] = $foreign_button;
-                    }
-
-                    return $interaction->updateOriginalResponse(
-                        $builder->addComponent(
-                            $container->addComponents([
-                                Separator::new(),
-                                ActionRow::new()->addComponents($buttons),
-                                Separator::new(),
-                                Button::link(MTG::GITHUB)->setLabel('GitHub'),
-                            ])
-                        )
-                    );
-                })
-            );
+            }
+            //var_dump($command);
+            //$commands->delete($command);
         });
-    $mtg->getLoop()->addTimer(3, $func); // Workaround for Client's application_id not always being set on init
+};
+
+$init_called = false;
+$application_init_called = false;
+$mtg->once('init', function (MTG $mtg) use (&$init_called, &$application_init_called, &$func) {
+    $init_called = true;
+    if (! $application_init_called) {
+        return;
+    }
+    $func($mtg);
+    unset($func, $init_called, $application_init_called);
+});
+$mtg->once('application-init', function (MTG $mtg) use (&$init_called, &$application_init_called, &$func) {
+    $application_init_called = true;
+    if (! $init_called) {
+        return;
+    }
+    $func($mtg);
+    unset($func, $init_called, $application_init_called);
 });
 
 $mtg->run();
