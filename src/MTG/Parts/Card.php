@@ -172,7 +172,7 @@ class Card extends Part
     public function getLegalitiesAttribute(): ExCollectionInterface
     {
         $collection = Collection::for(Legality::class);
-        
+
         if (! isset($this->attributes['legalities']) || ! is_array($this->attributes['legalities'])) {
             return $collection;
         }
@@ -462,7 +462,7 @@ class Card extends Part
             $legalities->toArray(),
             $legalities->keys()
         ));
-        
+
         return Button::new(Button::STYLE_SECONDARY, "LEGALITIES_{$this->id}")
             ->setLabel('Legalities')
             ->setListener(
