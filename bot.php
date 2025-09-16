@@ -231,7 +231,7 @@ $func = function (MTG $mtg) {
                         return $interaction->updateOriginalResponse($builder->setContent('No card found matching the search criteria.'));
                     }
 
-                    // @var Card $card
+                    /** @var Card $card */
                     if (! $container = $card->toContainer($interaction)) {
                         return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($card, JSON_PRETTY_PRINT)));
                     }
@@ -280,72 +280,63 @@ $func = function (MTG $mtg) {
                 $option_name
                     ->setName('name')
                     ->setDescription('nissa, worldwaker|jace|ajani, caller.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
 
                 $option_cmc = $mtg->getFactory()->part(Option::class);
                 /** @var Option $option_cmc */
                 $option_cmc
                     ->setName('cmc')
                     ->setDescription('Converted mana cost.')
-                    ->setType(Option::INTEGER)
-                    ->setRequired(false);
+                    ->setType(Option::INTEGER);
                 
                 $option_colorIdentity = $mtg->getFactory()->part(Option::class);
                 /** @var Option $option_colorIdentity */
                 $option_colorIdentity
                     ->setName('color_identity')
                     ->setDescription('W, U, B, R, G.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
 
                 $option_types = $mtg->getFactory()->part(Option::class);
                 /** @var Option $option_types */
                 $option_types
                     ->setName('types')
                     ->setDescription('Creature, Instant, Enchantment.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
                 
                 $options_subtypes = $mtg->getFactory()->part(Option::class);
                 /** @var Option $options_subtypes */
                 $options_subtypes
                     ->setName('subtypes')
                     ->setDescription('Elf, Goblin, Dragon.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
 
                 $options_gameFormat = $mtg->getFactory()->part(Option::class);
                 /** @var Option $options_gameFormat */
                 $options_gameFormat
                     ->setName('game_format')
                     ->setDescription('Standard, Modern, Legacy, Vintage, Commander.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
 
                 $options_contains = $mtg->getFactory()->part(Option::class);
                 /** @var Option $options_contains */
                 $options_contains
                     ->setName('contains')
                     ->setDescription('Filter cards based on whether or not they have a specific field available (like imageUrl).')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
 
                 $options_multiverseid = $mtg->getFactory()->part(Option::class);
                 /** @var Option $options_multiverseid */
                 $options_multiverseid
                     ->setName('multiverseid')
                     ->setDescription('The multiverse ID of the card.')
-                    ->setType(Option::INTEGER)
-                    ->setRequired(false);
+                    ->setType(Option::INTEGER);
 
                 $options_legality = $mtg->getFactory()->part(Option::class);
                 /** @var Option $options_legality */
                 $options_legality
                     ->setName('legality')
                     ->setDescription('Legal, Banned or Restricted.')
-                    ->setType(Option::STRING)
-                    ->setRequired(false);
+                    ->setType(Option::STRING);
                 
                 $builder = CommandBuilder::new()
                     ->setName($name)
