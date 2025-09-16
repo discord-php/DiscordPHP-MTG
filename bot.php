@@ -233,7 +233,7 @@ $func = function (MTG $mtg) {
 
                     // @var Card $card
                     if (! $container = $card->toContainer($interaction)) {
-                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($cards->first(), JSON_PRETTY_PRINT)));
+                        return $interaction->updateOriginalResponse($builder->setContent('A card was found, but it is not supported for display.')->addFileFromContent('card.json', json_encode($card, JSON_PRETTY_PRINT)));
                     }
 
                     if ($ci = (! is_array($card_ci = $card->colorIdentity)
