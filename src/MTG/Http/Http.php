@@ -116,7 +116,7 @@ class Http implements HttpInterface
      *
      * @var SplQueue
      */
-    protected $interactionQueue;
+    protected $unboundQueue;
 
     /**
      * Number of requests that are waiting for a response.
@@ -144,7 +144,7 @@ class Http implements HttpInterface
         $this->logger = $logger;
         $this->driver = $driver;
         $this->queue = new SplQueue();
-        $this->interactionQueue = new SplQueue();
+        $this->unboundQueue = new SplQueue();
     }
 
     /**
