@@ -217,7 +217,7 @@ $func = function (MTG $mtg) {
         ->then(fn (EmojiRepository $emojis) => $mtg->application->commands->freshen())
         ->then(function (GlobalCommandRepository $commands) use ($mtg): void {
             if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
-                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] '.implode('`, `', $names));
+                $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] `'.implode('`, `', $names) . '`');
             }
 
             $mtg->listenCommand(
