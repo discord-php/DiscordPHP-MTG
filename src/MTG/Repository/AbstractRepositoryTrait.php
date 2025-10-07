@@ -58,9 +58,7 @@ trait AbstractRepositoryTrait
         __unserialize as __unserialize;
         __debugInfo as __debugInfo;
 
-        // 'Parent' methods
-        __construct as __Collection____construct;
-        get as __Collection__get;
+        // 'Parent' methods        get as __Collection__get;
         set as __Collection__set;
         pull as __Collection__pull;
         pushItem as __Collection__pushItem;
