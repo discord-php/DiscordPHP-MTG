@@ -84,11 +84,11 @@ function loadEnv(string $filePath): void
 
 $env_path = file_exists($env_path = getcwd().'/.env') ? $env_path
     : (file_exists($env_path = dirname(getcwd()).'/.env') ? $env_path
-    : (file_exists($env_path = realpath(getcwd().'/../.env')) ? $env_path
-    : (file_exists($env_path = realpath(getcwd().'/../../.env')) ? $env_path
-    : (file_exists($env_path = realpath(dirname(getcwd()).'/../.env')) ? $env_path
+    : (file_exists($env_path = realpath(getcwd().'/../.env') ?: '') ? $env_path
+    : (file_exists($env_path = realpath(getcwd().'/../../.env') ?: '') ? $env_path
+    : (file_exists($env_path = realpath(dirname(getcwd()).'/../.env') ?: '') ? $env_path
     : (
-        file_exists($env_path = realpath(dirname(getcwd()).'/../../.env')) ? $env_path
+        file_exists($env_path = realpath(dirname(getcwd()).'/../../.env') ?: '') ? $env_path
     : null
     )))));
 $env_path ? loadEnv($env_path) : throw new \Exception('The .env file does not exist. Please create one in the root directory.');
