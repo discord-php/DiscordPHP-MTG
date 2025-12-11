@@ -354,10 +354,11 @@ $func = function (MTG $mtg) {
                     ->addOption($options_contains)
                     ->addOption($options_multiverseid)
                     ->addOption($options_legality);
-                $commands->save($mtg->application->commands->create($builder->toArray()));
+                $commands->save($builder->create($commands));
+            } else {
+                //var_dump($command);
+                //$commands->delete($command);
             }
-            //var_dump($command);
-            //$commands->delete($command);
         });
 };
 
