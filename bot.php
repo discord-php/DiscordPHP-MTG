@@ -354,9 +354,10 @@ $func = function (MTG $mtg) {
                     ->addOption($options_contains)
                     ->addOption($options_multiverseid)
                     ->addOption($options_legality);
+                //$mtg->logger->debug($name, ['command builder ' . $builder::class => json_encode($builder, JSON_PRETTY_PRINT)]);
                 $commands->save($builder->create($commands));
             } else {
-                //var_dump($command);
+                //$mtg->logger->debug($name, ['command ' . $command::class => json_encode($command, JSON_PRETTY_PRINT)]);
                 //$commands->delete($command);
             }
         });
