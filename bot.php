@@ -18,6 +18,7 @@ use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
+use MTG\Helpers\Collection;
 //use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Channel\Channel;
@@ -126,6 +127,7 @@ $mtg = new MTG([
         $sweep = false // Disable automatic cache sweeping if desired
     ),
     */
+    'collection' => Collection::class,
 ]);
 
 $webapi = null;
@@ -356,10 +358,9 @@ $func = function (MTG $mtg) {
                     ->addOption($options_legality);
                 //$mtg->logger->debug($name, ['command builder ' . $builder::class => json_encode($builder, JSON_PRETTY_PRINT)]);
                 $commands->save($builder->create($commands));
-            } else {
-                //$mtg->logger->debug($name, ['command ' . $command::class => json_encode($command, JSON_PRETTY_PRINT)]);
-                //$commands->delete($command);
             }
+            //$mtg->logger->debug($name, ['command ' . $command::class => json_encode($command, JSON_PRETTY_PRINT)]);
+            //$commands->delete($command);
         });
 };
 
