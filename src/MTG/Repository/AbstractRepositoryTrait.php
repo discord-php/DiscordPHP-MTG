@@ -13,22 +13,32 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
-use Discord\Factory\Factory;
-use Discord\Helpers\CacheWrapper;
-use Discord\Helpers\Collection;
-use Discord\Helpers\ExCollectionInterface;
 use Discord\Helpers\CollectionTrait;
-use MTG\Http\Endpoint;
-use MTG\Http\Http;
+use Discord\Helpers\ExCollectionInterface;
+use Discord\Http\Http;
 use Discord\Parts\Part;
+use MTG\Http\Endpoint;
+use MTG\Http\Http as MTGHttp;
 use React\Promise\PromiseInterface;
-use Traversable;
-use WeakReference;
 
 use function Discord\nowait;
 use function React\Promise\reject;
 use function React\Promise\resolve;
 
+/**
+ * Provides common functionality for all repositories.
+ *
+ * @property Discord      $discord   The Discord client instance.
+ * @property string       $discrim   The collection discriminator.
+ * @property array        $items     The items contained in the collection.
+ * @property string       $class     Class type allowed into the collection.
+ * @property Http         $http  The HTTP client.
+ * @property MTGHttp      $mtg_http  The extended HTTP client.
+ * @property Factory      $factory   The parts factory.
+ * @property array        $endpoints Endpoints for interacting with the Discord servers.
+ * @property array        $vars      Variables that are related to the repository.
+ * @property CacheWrapper $cache     The react/cache wrapper.
+ */
 trait AbstractRepositoryTrait
 {
     use CollectionTrait
@@ -58,7 +68,8 @@ trait AbstractRepositoryTrait
         __unserialize as __unserialize;
         __debugInfo as __debugInfo;
 
-        // 'Parent' methods        get as __Collection__get;
+        // 'Parent' methods
+        get as __Collection__get;
         set as __Collection__set;
         pull as __Collection__pull;
         pushItem as __Collection__pushItem;
@@ -77,39 +88,6 @@ trait AbstractRepositoryTrait
         jsonSerialize as __Collection__jsonSerialize;
         getIterator as __Collection__getIterator;
     }
-
-    /**
-     * The extended HTTP client.
-     *
-     * @var Http Client.
-     */
-    protected $mtg_http;
-
-    /**
-     * The parts factory.
-     *
-     * @var Factory Parts factory.
-     */
-    protected $factory;
-
-    /**
-     * Endpoints for interacting with the Discord servers.
-     *
-     * @var array Endpoints.
-     */
-    protected $endpoints = [];
-
-    /**
-     * Variables that are related to the repository.
-     *
-     * @var array Variables.
-     */
-    protected $vars = [];
-
-    /**
-     * @var CacheWrapper
-     */
-    protected $cache;
 
     /**
      * Freshens the repository cache.
@@ -137,8 +115,8 @@ trait AbstractRepositoryTrait
             foreach ($this->items as $offset => $value) {
                 if ($value === null) {
                     unset($this->items[$offset]);
-                } elseif (! ($this->items[$offset] instanceof WeakReference)) {
-                    $this->items[$offset] = WeakReference::create($value);
+                } elseif (! ($this->items[$offset] instanceof \WeakReference)) {
+                    $this->items[$offset] = \WeakReference::create($value);
                 }
                 $this->cache->delete($offset);
             }
@@ -156,7 +134,7 @@ trait AbstractRepositoryTrait
     {
         foreach ($response as $value) {
             $value = array_merge($this->vars, (array) $value);
-            $part = $this->factory->create($this->class, $value, true);
+            $part = $this->factory->part($this->class, $value, true);
             $items[$part->{$this->discrim}] = $part;
         }
 
@@ -193,6 +171,8 @@ trait AbstractRepositoryTrait
      * @return PromiseInterface<Part>
      *
      * @throws \Exception
+     *
+     * @deprecated 10.38.0 Use `Part->save($reason)` to ensure permissions are checked.
      */
     public function save(Part $part, ?string $reason = null): PromiseInterface
     {
@@ -229,10 +209,9 @@ trait AbstractRepositoryTrait
 
                     return $this->cache->set($part->{$this->discrim}, $part)->then(fn ($success) => $part);
                 default: // Create new part
-                    $newPart = $this->factory->create($this->class, (array) $response, true);
-                    $newPart->created = true;
+                    $newPart = $this->factory->part($this->class, (array) $response, true);
 
-                    return $this->cache->set($newPart->{$this->discrim}, $this->factory->create($this->class, (array) $response, true))->then(fn ($success) => $newPart);
+                    return $this->cache->set($newPart->{$this->discrim}, $newPart)->then(fn ($success) => $newPart);
             }
         });
     }
@@ -332,7 +311,7 @@ trait AbstractRepositoryTrait
         if (! $fresh) {
             if (isset($this->items[$id])) {
                 $part = $this->items[$id];
-                if ($part instanceof WeakReference) {
+                if ($part instanceof \WeakReference) {
                     $part = $part->get();
                 }
 
@@ -382,7 +361,7 @@ trait AbstractRepositoryTrait
             return null;
         }
 
-        if ($discrim == $this->discrim) {
+        if ($discrim === $this->discrim) {
             if ($item = $this->offsetGet($key)) {
                 return $item;
             }
@@ -505,7 +484,7 @@ trait AbstractRepositoryTrait
     public function first()
     {
         foreach ($this->items as $offset => $item) {
-            if ($item instanceof WeakReference) {
+            if ($item instanceof \WeakReference) {
                 if (! $item = $item->get()) {
                     // Attempt to get resolved value if promise is resolved without waiting
                     $item = nowait($this->cache->get($offset));
@@ -530,7 +509,7 @@ trait AbstractRepositoryTrait
         $items = array_reverse($this->items, true);
 
         foreach ($items as $offset => $item) {
-            if ($item instanceof WeakReference) {
+            if ($item instanceof \WeakReference) {
                 if (! $item = $item->get()) {
                     // Attempt to get resolved value if promise is resolved without waiting
                     $item = nowait($this->cache->get($offset));
@@ -577,10 +556,11 @@ trait AbstractRepositoryTrait
      */
     public function filter(callable $callback)
     {
-        $collection = new Collection([], $this->discrim, $this->class);
+        /** @var ExCollectionInterface $collection */
+        $collection = new $this->discord->getCollectionClass()([], $this->discrim, $this->class);
 
         foreach ($this->items as $offset => $item) {
-            if ($item instanceof WeakReference) {
+            if ($item instanceof \WeakReference) {
                 if (! $item = $item->get()) {
                     // Attempt to get resolved value if promise is resolved without waiting
                     $item = nowait($this->cache->get($offset));
@@ -635,6 +615,8 @@ trait AbstractRepositoryTrait
 
     /**
      * Converts the weak caches to array.
+     *
+     * @deprecated 10.42.0 Use `jsonSerialize`
      *
      * @return array
      */
@@ -692,7 +674,7 @@ trait AbstractRepositoryTrait
     {
         $item = $this->__Collection__offsetGet($offset);
 
-        if ($item instanceof WeakReference) {
+        if ($item instanceof \WeakReference) {
             $item = $item->get();
         }
 
@@ -736,7 +718,7 @@ trait AbstractRepositoryTrait
         $items = [];
 
         foreach ($this->items as $offset => $item) {
-            if ($item instanceof WeakReference) {
+            if ($item instanceof \WeakReference) {
                 $item = $item->get();
             }
             $assoc
@@ -750,12 +732,12 @@ trait AbstractRepositoryTrait
     /**
      * Returns an iterator for the cache.
      *
-     * @return Traversable
+     * @return \Traversable
      */
-    public function &getIterator(): Traversable
+    public function &getIterator(): \Traversable
     {
         foreach ($this->items as $offset => &$item) {
-            if ($item instanceof WeakReference) {
+            if ($item instanceof \WeakReference) {
                 // Attempt to get resolved value if promise is resolved without waiting
                 $item = $item->get() ?? nowait($this->cache->get($offset));
             }

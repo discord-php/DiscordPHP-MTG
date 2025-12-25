@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace MTG\Repository;
 
 use Discord\Repository\AbstractRepository as DiscordAbstractRepository;
+use MTG\Http\Http;
 use MTG\MTG;
 
 /**
@@ -24,6 +25,13 @@ use MTG\MTG;
 abstract class AbstractRepository extends DiscordAbstractRepository
 {
     use AbstractRepositoryTrait;
+
+    /**
+     * The extended HTTP client.
+     *
+     * @var Http Client.
+     */
+    protected $mtg_http;
 
     /**
      * AbstractRepository constructor.
