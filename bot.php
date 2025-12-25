@@ -18,7 +18,6 @@ use Discord\Builders\CommandBuilder;
 use Discord\Builders\Components\ActionRow;
 use Discord\Builders\Components\Button;
 use Discord\Builders\Components\Separator;
-use MTG\Helpers\Collection;
 //use Discord\Helpers\CacheConfig;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Channel\Channel;
@@ -34,6 +33,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use MTG\Helpers\Collection;
 use MTG\Parts\Card;
 use React\EventLoop\Loop;
 
