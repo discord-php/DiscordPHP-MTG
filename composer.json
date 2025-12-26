@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "team-reflex/discord-php": "^v10.43.1"
+        "team-reflex/discord-php": "^10.44.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3",
