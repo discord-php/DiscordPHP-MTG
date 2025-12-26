@@ -222,8 +222,9 @@ $func = function (MTG $mtg) {
                 $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] `'.implode('`, `', $names).'`');
             }
 
+            $name = 'card_search';
             $mtg->listenCommand(
-                $name = 'card_search',
+                $name,
                 fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
                 ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
                 ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
@@ -274,7 +275,7 @@ $func = function (MTG $mtg) {
                 })
             );
 
-            if (! $command = $commands->get('name', $name = 'card_search')) {
+            if (! $command = $commands->get('name', $name)) {
                 $mtg->logger->debug("[GLOBAL APPLICATION COMMAND] Creating `$name` command...");
 
                 $option_name = $mtg->getFactory()->part(Option::class);
