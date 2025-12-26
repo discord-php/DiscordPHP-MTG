@@ -33,7 +33,6 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use MTG\Helpers\Collection;
 use MTG\Parts\Card;
 use React\EventLoop\Loop;
 
@@ -127,7 +126,7 @@ $mtg = new MTG([
         $sweep = false // Disable automatic cache sweeping if desired
     ),
     */
-    'collection' => Collection::class,
+    //'collection' => \MTG\Helpers\Collection::class,
 ]);
 
 $webapi = null;
