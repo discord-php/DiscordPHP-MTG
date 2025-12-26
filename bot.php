@@ -150,6 +150,7 @@ set_error_handler($global_error_handler);
 use React\Socket\SocketServer;
 use React\Http\HttpServer;
 use React\Http\Message\Response;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
 
@@ -184,13 +185,13 @@ $webapi = new HttpServer(Loop::get(), async(
  * The restart process includes sending a message to a specific Discord channel and closing the socket connection.
  * After a delay of 5 seconds, the script is restarted by calling the 'restart' function and closing the Discord connection.
  *
- * @param \Exception                              $e       The \exception object representing the error.
- * @param \Psr\Http\Message\RequestInterface|null $request The HTTP request object associated with the error, if available.
- * @param object                                  $mtg     The main object of the application.
- * @param object                                  $socket  The socket object.
- * @param bool                                    $testing Flag indicating if the script is running in testing mode.
+ * @param \Exception            $e       The \exception object representing the error.
+ * @param RequestInterface|null $request The HTTP request object associated with the error, if available.
+ * @param object                $mtg     The main object of the application.
+ * @param object                $socket  The socket object.
+ * @param bool                  $testing Flag indicating if the script is running in testing mode.
  */
-$webapi->on('error', async(function (\Exception $e, ?\Psr\Http\Message\RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
+$webapi->on('error', async(function (\Exception $e, ?RequestInterface $request = null) use (&$mtg, &$logger, &$socket, $technician_id) {
     if (str_starts_with($e->getMessage(), 'Received request with invalid protocol version')) {
         return;
     }
