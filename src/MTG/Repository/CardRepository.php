@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
-use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Http\Endpoint;
 use MTG\Http\Endpoint as HttpEndpoint;
@@ -133,7 +132,7 @@ class CardRepository extends AbstractRepository
         return $this->mtg_http->get($endpoint)->then(function ($response) {
             $response = $response->cards;
 
-            $collection = Collection::for($this->class);
+            $collection = ($this->discord->getCollectionClass())::for($this->class);
 
             foreach ($response as $cardData) {
                 $card = $this->factory->create($this->class, array_merge($this->vars, (array) $cardData), true);

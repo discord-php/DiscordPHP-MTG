@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
-use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Http\Endpoint;
 use MTG\Http\Endpoint as HttpEndpoint;
@@ -110,7 +109,7 @@ class SetRepository extends AbstractRepository
         return $this->mtg_http->get($endpoint)->then(function ($response) {
             $response = $response->sets;
 
-            $collection = Collection::for($this->class, $this->discrim);
+            $collection = ($this->discord->getCollectionClass())::for($this->class, $this->discrim);
 
             foreach ($response as $setData) {
                 $set = $this->factory->create($this->class, array_merge($this->vars, (array) $setData), true);

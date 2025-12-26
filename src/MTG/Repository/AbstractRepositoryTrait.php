@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
+use Discord\Discord;
 use Discord\Helpers\CollectionTrait;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Http\Http;
 use Discord\Parts\Part;
 use MTG\Http\Endpoint;
 use MTG\Http\Http as MTGHttp;
+use MTG\MTG;
 use React\Promise\PromiseInterface;
 
 use function Discord\nowait;
@@ -28,11 +30,11 @@ use function React\Promise\resolve;
 /**
  * Provides common functionality for all repositories.
  *
- * @property Discord      $discord   The Discord client instance.
+ * @property MTG|Discord  $discord   The Discord client instance.
  * @property string       $discrim   The collection discriminator.
  * @property array        $items     The items contained in the collection.
  * @property string       $class     Class type allowed into the collection.
- * @property Http         $http  The HTTP client.
+ * @property Http         $http      The HTTP client.
  * @property MTGHttp      $mtg_http  The extended HTTP client.
  * @property Factory      $factory   The parts factory.
  * @property array        $endpoints Endpoints for interacting with the Discord servers.
@@ -557,7 +559,7 @@ trait AbstractRepositoryTrait
     public function filter(callable $callback)
     {
         /** @var ExCollectionInterface $collection */
-        $collection = new $this->discord->getCollectionClass()([], $this->discrim, $this->class);
+        $collection = new ($this->discord->getCollectionClass())([], $this->discrim, $this->class);
 
         foreach ($this->items as $offset => $item) {
             if ($item instanceof \WeakReference) {

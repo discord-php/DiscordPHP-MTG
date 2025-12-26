@@ -36,12 +36,12 @@ abstract class AbstractRepository extends DiscordAbstractRepository
     /**
      * AbstractRepository constructor.
      *
-     * @param MTG   $mtg
-     * @param array $vars An array of variables used for the endpoint.
+     * @param MTG|Discord $discord
+     * @param array       $vars    An array of variables used for the endpoint.
      */
-    public function __construct(protected $mtg, array $vars = [])
+    public function __construct(protected $discord, array $vars = [])
     {
-        parent::__construct($mtg, $vars);
-        $this->mtg_http = $mtg->getMtgHttpClient();
+        parent::__construct($discord, $vars);
+        $this->mtg_http = $discord->getMtgHttpClient();
     }
 }

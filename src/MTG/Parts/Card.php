@@ -20,12 +20,10 @@ use Discord\Builders\Components\MediaGallery;
 use Discord\Builders\Components\Section;
 use Discord\Builders\Components\Separator;
 use Discord\Builders\Components\TextDisplay;
-use Discord\Helpers\Collection;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Parts\Embed\Embed;
 use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\Part;
-use MTG\HelperTrait;
 use MTG\MTG;
 use React\Promise\PromiseInterface;
 
@@ -127,7 +125,7 @@ class Card extends Part
      */
     public function getRulingsAttribute(): ExCollectionInterface
     {
-        $collection = Collection::for(Ruling::class);
+        $collection = ($this->discord->getCollectionClass())::for(Ruling::class);
 
         if (! isset($this->attributes['rulings']) || ! is_array($this->attributes['rulings'])) {
             return $collection;
@@ -149,7 +147,7 @@ class Card extends Part
      */
     public function getForeignNamesAttribute(): ExCollectionInterface
     {
-        $collection = Collection::for(ForeignName::class);
+        $collection = ($this->discord->getCollectionClass())::for(ForeignName::class);
 
         if (! isset($this->attributes['foreignNames']) || ! is_array($this->attributes['foreignNames'])) {
             return $collection;
@@ -171,7 +169,7 @@ class Card extends Part
      */
     public function getLegalitiesAttribute(): ExCollectionInterface
     {
-        $collection = Collection::for(Legality::class);
+        $collection = ($this->discord->getCollectionClass())::for(Legality::class);
 
         if (! isset($this->attributes['legalities']) || ! is_array($this->attributes['legalities'])) {
             return $collection;
@@ -243,7 +241,7 @@ class Card extends Part
      */
     public function normalLayoutContainer(?Interaction $interaction): Container
     {
-        /** @var HelperTrait $mtg */
+        /** @var MTG $mtg */
         $mtg = $this->discord;
 
         $ci_emoji = (($this->colorIdentity) ? implode('', array_map(fn ($c) => $this->discord->emojis->get('name', 'CI_'.$c.'_'), $this->colorIdentity)) : '');
