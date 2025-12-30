@@ -28,6 +28,7 @@
         "php8.2": ["docker-compose run php8.2 sh"],
         "php8.3": ["docker-compose run php8.3 sh"],
         "php8.4": ["docker-compose run php8.4 sh"],
+        "php8.5": ["docker-compose run php8.5 sh"],
         "phpacker": "phpacker build --src=bot.php"
     },
     "minimum-stability": "dev",

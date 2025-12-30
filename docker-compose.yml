@@ -23,3 +23,8 @@ services:
     build: ./docker/php/8.4
     volumes:
      - .:/root/discordphp-mtg
+
+  php8.5:
+    build: ./docker/php/8.5
+    volumes:
+     - .:/root/discordphp-mtg
