@@ -28,6 +28,7 @@ use Discord\Parts\OAuth\Application;
 use Discord\Parts\User\User;
 use Discord\Repository\EmojiRepository;
 use Discord\Repository\Interaction\GlobalCommandRepository;
+use Discord\WebSockets\Event;
 use Discord\WebSockets\Intents;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
@@ -115,6 +116,7 @@ $mtg = new MTG([
     'intents' => Intents::getDefaultIntents() /*| Intents::GUILD_MEMBERS | Intents::GUILD_PRESENCES | Intents::MESSAGE_CONTENT*/,
     'useTransportCompression' => false, // Disable zlib-stream
     'usePayloadCompression' => true, // RFC1950 2.2
+    //'disabledEvents' => [Event::GUILD_CREATE],
     //'loadAllMembers' => true,
     /*
     'cache' => new CacheConfig(
