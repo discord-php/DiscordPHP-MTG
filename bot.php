@@ -99,14 +99,13 @@ $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
 $logger = new Logger('MTGCARDINFOBOT', [$streamHandler]);
 //file_put_contents('output.log', ''); // Clear the contents of 'output.log'
 //$logger->pushHandler(new StreamHandler('output.log', Level::Debug));
-$logger->info('Loading configurations for the bot...');
+$logger->debug('Loading configurations for the bot...');
 set_rejection_handler(function (\Throwable $e) use ($logger): void {
     //if ($e->getMessage() === 'Cannot resume a fiber that is not suspended') return;
     $logger->warning("Unhandled Promise Rejection: {$e->getMessage()} [{$e->getFile()}:{$e->getLine()}] ".str_replace('#', '\n#', $e->getTraceAsString()));
 });
 
 $mtg = new MTG([
-    'loop' => Loop::get(),
     'logger' => $logger,
     'socket_options' => [
         'dns' => '8.8.8.8',
@@ -130,6 +129,7 @@ $mtg = new MTG([
     */
     //'collection' => \MTG\Helpers\Collection::class,
 ]);
+$logger->debug('Bot instance created successfully.');
 
 $webapi = null;
 $socket = null;
@@ -154,6 +154,7 @@ use React\Http\Message\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
+//use React\Sh\Shell;
 
 $socket = new SocketServer(
     sprintf('%s:%s', '0.0.0.0', getenv('http_port') ?: 55555),
@@ -228,7 +229,7 @@ $func = function (MTG $mtg) {
             $mtg->listenCommand(
                 $name,
                 fn (Interaction $interaction) => $interaction->acknowledgeWithResponse(true)
-                ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->toArray())))
+                ->then(fn () => $mtg->cards->getCards(array_map(fn ($option) => $option->value, $interaction->data->options->jsonSerialize())))
                 ->then(function (ExCollectionInterface $cards) use ($mtg, $interaction): PromiseInterface {
                     $builder = MTG::createBuilder();
 
@@ -360,7 +361,7 @@ $func = function (MTG $mtg) {
                     ->addOption($options_multiverseid)
                     ->addOption($options_legality);
                 //$mtg->logger->debug($name, ['command builder ' . $builder::class => json_encode($builder, JSON_PRETTY_PRINT)]);
-                $commands->save($builder->create($commands));
+                $builder->create($commands)->save('card_search initial creation');
             }
             //$mtg->logger->debug($name, ['command ' . $command::class => json_encode($command, JSON_PRETTY_PRINT)]);
             //$commands->delete($command);
@@ -385,5 +386,8 @@ $mtg->once('application-init', function (MTG $mtg) use (&$init_called, &$applica
     $func($mtg);
     unset($func, $init_called, $application_init_called);
 });
+
+//composer$shell = new Shell();
+//$shell->setScope(['mtg' => $mtg]);
 
 $mtg->run();

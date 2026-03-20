@@ -18,6 +18,7 @@ use Discord\Repository\EmojiRepository;
 use Discord\Repository\GuildRepository;
 use Discord\Repository\PrivateChannelRepository;
 use Discord\Repository\SoundRepository;
+use Discord\Repository\StickerPackRepository;
 use Discord\Repository\UserRepository;
 use MTG\Repository\CardRepository;
 use MTG\Repository\SetRepository;
@@ -32,6 +33,7 @@ class Client extends DiscordClient
         'guilds' => GuildRepository::class,
         'private_channels' => PrivateChannelRepository::class,
         'sounds' => SoundRepository::class,
+        'sticker_packs' => StickerPackRepository::class,
         'users' => UserRepository::class,
         'cards' => CardRepository::class,
         'sets' => SetRepository::class,
