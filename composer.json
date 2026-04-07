@@ -15,7 +15,8 @@
         "friendsofphp/php-cs-fixer": "^3",
         "phpunit/phpunit": "^9.4.4",
         "laravel/pint": "^1.21",
-        "wyrihaximus/react-cache-redis": "^4.5"
+        "wyrihaximus/react-cache-redis": "^4.5",
+        "phpacker/phpacker": "^0.6.4"
     },
     "scripts": {
         "pint": ["./vendor/bin/pint --config ./pint.json ./src"],
