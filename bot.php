@@ -54,15 +54,9 @@ ini_set('max_execution_time', 0);
 ini_set('memory_limit', '-1'); // Unlimited memory usage
 define('MAIN_INCLUDED', 1); // Token and SQL credential files may be protected locally and require this to be defined to access
 
-$autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? $autoload_path
-    : (file_exists($autoload_path = dirname(__DIR__).'/vendor/autoload.php') ? $autoload_path
-    : (file_exists($autoload_path = realpath(__DIR__.'/../vendor/autoload.php')) ? $autoload_path
-    : (file_exists($autoload_path = realpath(__DIR__.'/../../vendor/autoload.php')) ? $autoload_path
-    : (file_exists($autoload_path = realpath(dirname(__DIR__).'/../vendor/autoload.php')) ? $autoload_path
-    : (
-        file_exists($autoload_path = realpath(dirname(__DIR__).'/../../vendor/autoload.php')) ? $autoload_path
-    : null
-    )))));
+$autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? $autoload_path // Ran from root directory
+    : (file_exists($autoload_path = dirname(__DIR__).'/vendor/autoload.php') ? $autoload_path // Ran from a subdirectory
+    : null);
 $autoload_path ? require ($autoload_path) : throw new \Exception('Composer autoloader not found. Run `composer update` and try again.');
 
 function loadEnv(string $filePath): void
