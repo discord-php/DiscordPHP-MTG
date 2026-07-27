@@ -78,9 +78,7 @@ function loadEnv(string $filePath): void
 }
 
 $env_path = file_exists($env_path = getcwd().'/.env') ? $env_path // Ran from root directory
-    : (file_exists($env_path = dirname(getcwd()).'/.env') ? $env_path // Ran from a subdirectory
-    : null
-);
+    : (file_exists($env_path = dirname(getcwd()).'/.env') ? $env_path : null); // Ran from a subdirectory
 $env_path ? loadEnv($env_path) : throw new \Exception('The .env file does not exist. Please create one in the root directory.');
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
@@ -210,7 +208,7 @@ $func = function (MTG $mtg) {
     $mtg->emojis->freshen()
         ->then(fn (EmojiRepository $emojis) => $mtg->application->commands->freshen())
         ->then(function (GlobalCommandRepository $commands) use ($mtg): void {
-            if ($names = array_map(fn ($command) => $command->name, iterator_to_array($commands))) {
+            if ($names = array_map(fn (Command $command) => $command->name, iterator_to_array($commands))) {
                 $mtg->logger->debug('[GLOBAL APPLICATION COMMAND LIST] `'.implode('`, `', $names).'`');
             }
 

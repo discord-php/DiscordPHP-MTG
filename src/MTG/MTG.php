@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace MTG;
 
 use Discord\Discord;
+use Discord\MessageCommandClient;
 use Discord\Http\Drivers\React;
 use Discord\Stats;
 use MTG\Http\Http;
@@ -28,7 +29,7 @@ use MTG\Repository\SetRepository;
  * @property CardRepository $cards
  * @property SetRepository  $sets
  */
-class MTG extends Discord
+class MTG extends MessageCommandClient
 {
     use HelperTrait;
 
