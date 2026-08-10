@@ -102,6 +102,7 @@ $mtg = new MTG([
     'intents' => Intents::getDefaultIntents() /*| Intents::GUILD_MEMBERS | Intents::GUILD_PRESENCES | Intents::MESSAGE_CONTENT*/,
     'useTransportCompression' => false, // Disable zlib-stream
     'usePayloadCompression' => true, // RFC1950 2.2
+    'disableVoiceClient' => true, // Disable voice client
     //'disabledEvents' => [Event::GUILD_CREATE],
     //'loadAllMembers' => true,
     /*
