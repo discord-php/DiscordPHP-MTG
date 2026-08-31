@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace MTG\Repository;
 
 use Discord\Discord;
+use Discord\Factory\Factory;
+use Discord\Helpers\CacheWrapper;
 use Discord\Helpers\CollectionTrait;
 use Discord\Helpers\ExCollectionInterface;
 use Discord\Http\Http;

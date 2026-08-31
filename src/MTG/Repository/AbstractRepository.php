@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace MTG\Repository;
 
+use Discord\Discord;
 use Discord\Repository\AbstractRepository as DiscordAbstractRepository;
 use MTG\Http\Http;
 use MTG\MTG;
