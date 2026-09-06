@@ -43,6 +43,13 @@ class Stats
 
     protected Discord $discord;
 
+    /**
+     * Creates a tracker bound to the given client and starts recording metrics.
+     *
+     * @param Discord $discord The client to observe.
+     *
+     * @return static
+     */
     public static function new(Discord &$discord): static
     {
         $instance = new static();
@@ -50,6 +57,13 @@ class Stats
 
         return $instance;
     }
+
+    /**
+     * Records the start time and subscribes to the client's `reconnect` event
+     * so the last-reconnect timestamp stays current.
+     *
+     * @param Discord $discord The client to observe.
+     */
     public function init(Discord &$discord): void
     {
         $this->startTime = $this->lastReconnect = Carbon::now();
@@ -116,6 +130,12 @@ class Stats
         return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$unit[(int) $i];
     }
 
+    /**
+     * Renders the current metrics (versions, uptime, guild/channel/user counts,
+     * memory usage) as an {@see Embed} ready to send.
+     *
+     * @return Embed
+     */
     public function handle(): Embed
     {
         return (new Embed($this->discord))
@@ -132,6 +152,11 @@ class Stats
             ->addFieldValues('Memory usage', $this->getMemoryUsageFriendly());
     }
 
+    /**
+     * One-line description of this command for a help listing.
+     *
+     * @return string
+     */
     public function getHelp(): string
     {
         return 'Provides statistics relating to the bots health.';

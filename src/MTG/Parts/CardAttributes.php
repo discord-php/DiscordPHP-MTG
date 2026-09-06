@@ -276,6 +276,11 @@ trait CardAttributes
         return $this->types ?? null;
     }
 
+    /**
+     * Sets the subtypes of the card (e.g. "Human", "Wizard", "Equipment").
+     *
+     * @param string[]|null $subtypes Subtypes of the card.
+     */
     public function setSubtypes(?array $subtypes): self
     {
         $this->subtypes = $subtypes;
@@ -283,11 +288,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the subtypes of the card.
+     *
+     * @return string[]|null
+     */
     public function getSubtypes(): ?array
     {
         return $this->subtypes ?? null;
     }
 
+    /**
+     * Sets the rarity of the card (e.g. "Common", "Rare", "Mythic Rare").
+     *
+     * @param string|null $rarity Rarity of the card.
+     */
     public function setRarity(?string $rarity): self
     {
         $this->rarity = $rarity;
@@ -295,11 +310,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the rarity of the card.
+     *
+     * @return string|null
+     */
     public function getRarity(): ?string
     {
         return $this->rarity ?? null;
     }
 
+    /**
+     * Sets the code of the set the card belongs to.
+     *
+     * @param string|null $set Set code.
+     */
     public function setSet(?string $set): self
     {
         $this->set = $set;
@@ -307,11 +332,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the code of the set the card belongs to.
+     *
+     * @return string|null
+     */
     public function getSet(): ?string
     {
         return $this->set ?? null;
     }
 
+    /**
+     * Sets the full name of the set the card belongs to.
+     *
+     * @param string|null $setName Set name.
+     */
     public function setSetName(?string $setName): self
     {
         $this->setName = $setName;
@@ -319,11 +354,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the full name of the set the card belongs to.
+     *
+     * @return string|null
+     */
     public function getSetName(): ?string
     {
         return $this->setName ?? null;
     }
 
+    /**
+     * Sets the card's oracle rules text.
+     *
+     * @param string|null $text Rules text.
+     */
     public function setText(?string $text): self
     {
         $this->text = $text;
@@ -331,11 +376,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the card's oracle rules text.
+     *
+     * @return string|null
+     */
     public function getText(): ?string
     {
         return $this->text ?? null;
     }
 
+    /**
+     * Sets the card's flavor text.
+     *
+     * @param string|null $flavor Flavor text.
+     */
     public function setFlavor(?string $flavor): self
     {
         $this->flavor = $flavor;
@@ -343,11 +398,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the card's flavor text.
+     *
+     * @return string|null
+     */
     public function getFlavor(): ?string
     {
         return $this->flavor ?? null;
     }
 
+    /**
+     * Sets the name of the artist who illustrated the card.
+     *
+     * @param string|null $artist Artist name.
+     */
     public function setArtist(?string $artist): self
     {
         $this->artist = $artist;
@@ -355,11 +420,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the name of the artist who illustrated the card.
+     *
+     * @return string|null
+     */
     public function getArtist(): ?string
     {
         return $this->artist ?? null;
     }
 
+    /**
+     * Sets the card's collector number within its set.
+     *
+     * @param string|null $number Collector number.
+     */
     public function setNumber(?string $number): self
     {
         $this->number = $number;
@@ -367,11 +442,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the card's collector number within its set.
+     *
+     * @return string|null
+     */
     public function getNumber(): ?string
     {
         return $this->number ?? null;
     }
 
+    /**
+     * Sets the creature's power. A string because it may be non-numeric (e.g. "*").
+     *
+     * @param string|null $power Power.
+     */
     public function setPower(?string $power): self
     {
         $this->power = $power;
@@ -379,11 +464,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the creature's power.
+     *
+     * @return string|null
+     */
     public function getPower(): ?string
     {
         return $this->power ?? null;
     }
 
+    /**
+     * Sets the creature's toughness. A string because it may be non-numeric (e.g. "*").
+     *
+     * @param string|null $toughness Toughness.
+     */
     public function setToughness(?string $toughness): self
     {
         $this->toughness = $toughness;
@@ -391,11 +486,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the creature's toughness.
+     *
+     * @return string|null
+     */
     public function getToughness(): ?string
     {
         return $this->toughness ?? null;
     }
 
+    /**
+     * Sets the planeswalker's starting loyalty.
+     *
+     * @param int|null $loyalty Starting loyalty.
+     */
     public function setLoyalty(?int $loyalty): self
     {
         $this->loyalty = $loyalty;
@@ -403,11 +508,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the planeswalker's starting loyalty.
+     *
+     * @return int|null
+     */
     public function getLoyalty(): ?int
     {
         return $this->loyalty ?? null;
     }
 
+    /**
+     * Sets the language to match foreign card names against when querying.
+     *
+     * @param string|null $language Language name.
+     */
     public function setLanguage(?string $language): self
     {
         $this->language = $language;
@@ -415,11 +530,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the language used when querying foreign card names.
+     *
+     * @return string|null
+     */
     public function getLanguage(): ?string
     {
         return $this->language ?? null;
     }
 
+    /**
+     * Sets the game format to filter legality against (e.g. "Standard", "Modern").
+     *
+     * @param string|null $gameFormat Game format name.
+     */
     public function setGameFormat(?string $gameFormat): self
     {
         $this->gameFormat = $gameFormat;
@@ -427,11 +552,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the game format used to filter legality.
+     *
+     * @return string|null
+     */
     public function getGameFormat(): ?string
     {
         return $this->gameFormat ?? null;
     }
 
+    /**
+     * Sets the legality status to filter by ("Legal", "Banned" or "Restricted").
+     *
+     * @param string|null $legality Legality status.
+     */
     public function setLegality(?string $legality): self
     {
         $this->legality = $legality;
@@ -439,11 +574,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the legality status used to filter results.
+     *
+     * @return string|null
+     */
     public function getLegality(): ?string
     {
         return $this->legality ?? null;
     }
 
+    /**
+     * Sets the results page number to request (1-based pagination).
+     *
+     * @param int|null $page Page number.
+     */
     public function setPage(?int $page): self
     {
         $this->page = $page;
@@ -451,11 +596,23 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the results page number.
+     *
+     * @return int|null
+     */
     public function getPage(): ?int
     {
         return $this->page ?? null;
     }
 
+    /**
+     * Sets the number of results per page.
+     *
+     * @param int|null $pageSize Page size, 1-100.
+     *
+     * @throws \InvalidArgumentException When outside the 1-100 range.
+     */
     public function setPageSize(?int $pageSize): self
     {
         if ($pageSize !== null && ($pageSize > 100 || $pageSize < 1)) {
@@ -467,11 +624,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the number of results per page.
+     *
+     * @return int|null
+     */
     public function getPageSize(): ?int
     {
         return $this->pageSize ?? null;
     }
 
+    /**
+     * Sets the field to order results by.
+     *
+     * @param string|null $orderBy Field name.
+     */
     public function setOrderBy(?string $orderBy): self
     {
         $this->orderBy = $orderBy;
@@ -479,11 +646,22 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the field results are ordered by.
+     *
+     * @return string|null
+     */
     public function getOrderBy(): ?string
     {
         return $this->orderBy ?? null;
     }
 
+    /**
+     * Requests a single random card matching the other filters. Only a truthy
+     * value has an effect; `false`/`null` leaves the flag unset.
+     *
+     * @param bool|null $random Whether to return a random card.
+     */
     public function setRandom(?bool $random): self
     {
         if ($random) {
@@ -493,11 +671,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets whether a random card was requested.
+     *
+     * @return bool|null
+     */
     public function getRandom(): ?bool
     {
         return $this->random ?? null;
     }
 
+    /**
+     * Restricts results to cards that have the named field(s) present.
+     *
+     * @param string|null $contains Comma-separated field names.
+     */
     public function setContains(?string $contains): self
     {
         $this->contains = $contains;
@@ -505,11 +693,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the "contains" field filter.
+     *
+     * @return string|null
+     */
     public function getContains(): ?string
     {
         return $this->contains ?? null;
     }
 
+    /**
+     * Sets the card's unique id (a hash of set code, name and collector number).
+     *
+     * @param string|null $id Card id.
+     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -517,11 +715,21 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the card's unique id.
+     *
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id ?? null;
     }
 
+    /**
+     * Sets the card's Gatherer multiverse id.
+     *
+     * @param int|null $multiverseid Multiverse id.
+     */
     public function setMultiverseid(?int $multiverseid): self
     {
         $this->multiverseid = $multiverseid;
@@ -529,6 +737,11 @@ trait CardAttributes
         return $this;
     }
 
+    /**
+     * Gets the card's Gatherer multiverse id.
+     *
+     * @return int|null
+     */
     public function getMultiverseid(): ?int
     {
         return $this->multiverseid ?? null;

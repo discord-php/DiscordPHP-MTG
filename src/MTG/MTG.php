@@ -57,6 +57,12 @@ class MTG extends MessageCommandClient
      */
     protected $client;
 
+    /**
+     * @param array $options Options passed straight to the DiscordPHP client, plus
+     *                       `socket_options` for the HTTP driver. After the parent
+     *                       boots, the MTG HTTP client, the {@see Client} part and
+     *                       the {@see Stats} tracker are wired up.
+     */
     public function __construct(array $options = [])
     {
         parent::__construct($options);

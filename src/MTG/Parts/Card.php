@@ -478,6 +478,14 @@ class Card extends Part
             );
     }
 
+    /**
+     * Builds a button that, when clicked, replies with this card's rulings
+     * grouped by date. Returns null when the card has no rulings.
+     *
+     * @param Interaction $interaction The interaction the button will belong to.
+     *
+     * @return Button|null
+     */
     public function getRulingsButton(Interaction $interaction): ?Button
     {
         if (! isset($this->attributes['rulings'])) {
