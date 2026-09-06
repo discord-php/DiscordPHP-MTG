@@ -16,9 +16,16 @@ namespace MTG\Http;
 use Discord\Http\Request as DiscordRequest;
 
 /**
- * Represents an HTTP request.
+ * A single queued HTTP request against the MTG API. Identical in behaviour to
+ * the DiscordPHP request it extends; it exists only so MTG transport code
+ * depends on an MTG-owned type.
+ *
+ * @see \Discord\Http\Request The DiscordPHP request this extends
+ * @see \MTG\Http\Http Where these are created and sorted into rate-limit buckets
  *
  * @author Valithor Obsidion <valithor@discordphp.org>
+ *
+ * @since 0.1.0
  */
 class Request extends DiscordRequest
 {

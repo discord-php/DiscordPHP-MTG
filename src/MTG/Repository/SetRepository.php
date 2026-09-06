@@ -25,7 +25,12 @@ use WeakReference;
 use function Discord\studly;
 
 /**
- * Repository for Magic: The Gathering sets.
+ * Reads the API's `sets` endpoint — list sets, fetch one by code, and
+ * generate a booster pack from a set — hydrating {@see Set} parts.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1sets_list List sets
+ * @link https://docs.magicthegathering.io/#api_v1sets_get Fetch one set by code
+ * @link https://docs.magicthegathering.io/#api_v1booster_get Generate a booster pack
  *
  * @since 0.3.0
  */

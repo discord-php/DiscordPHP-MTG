@@ -27,9 +27,16 @@ use React\Promise\PromiseInterface;
 use SplQueue;
 
 /**
- * Discord HTTP client.
+ * HTTP client for the "Magic: The Gathering Developers" REST API, built the
+ * same way DiscordPHP talks to `discord.com` (rate-limit buckets, driver,
+ * retry) but pointed at `api.magicthegathering.io`. The API is read-only and
+ * unauthenticated, so no token is required.
+ *
+ * @see \Discord\Http\Http The DiscordPHP transport this mirrors
  *
  * @author Valithor Obsidion <valithor@discordphp.org>
+ *
+ * @since 0.1.0
  */
 class Http implements HttpInterface
 {

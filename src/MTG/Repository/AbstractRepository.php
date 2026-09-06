@@ -19,9 +19,17 @@ use MTG\Http\Http;
 use MTG\MTG;
 
 /**
- * Repositories provide a way to store and update parts on the Discord server.
+ * Base class for the MTG read-only repositories: DiscordPHP's
+ * {@see DiscordAbstractRepository} behaviour (keyed, cached collection of
+ * Parts) backed by {@see \MTG\Http\Http} and MTG {@see \MTG\Http\Endpoint}s
+ * instead of the Discord API. Concrete repositories ({@see CardRepository},
+ * {@see SetRepository}) declare their endpoint map and Part class.
+ *
+ * @see \Discord\Repository\AbstractRepository The upstream this extends
  *
  * @author Valithor Obsidion <valithor@discordphp.org>
+ *
+ * @since 0.1.0
  */
 abstract class AbstractRepository extends DiscordAbstractRepository
 {

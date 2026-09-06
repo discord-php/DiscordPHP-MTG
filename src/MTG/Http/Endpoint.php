@@ -16,6 +16,16 @@ namespace MTG\Http;
 use Discord\Http\EndpointInterface;
 use Discord\Http\EndpointTrait;
 
+/**
+ * The route table for the "Magic: The Gathering Developers" API — one constant
+ * per endpoint (`cards`, `sets`, `sets/:id/booster`, `types`, `formats`, …),
+ * with `:param` placeholders bound via {@see EndpointTrait}. Same mechanics as
+ * DiscordPHP's own `Endpoint`, pointed at `api.magicthegathering.io`.
+ *
+ * @see \Discord\Http\EndpointInterface The contract this implements
+ *
+ * @since 0.1.0
+ */
 class Endpoint implements EndpointInterface
 {
     use EndpointTrait;

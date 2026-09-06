@@ -19,7 +19,11 @@ use Discord\Builders\Components\TextDisplay;
 use Discord\Parts\Part;
 
 /**
- * Represents a Magic: The Gathering set.
+ * Represents a Magic: The Gathering set (one object from the API's `sets`
+ * response) — its code, name, release date, block and booster configuration.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1sets_get Set object reference
+ * @link https://docs.magicthegathering.io/#api_v1booster_get Generating a booster pack from a set
  *
  * @since 0.5.0
  */

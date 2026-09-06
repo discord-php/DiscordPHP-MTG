@@ -25,6 +25,7 @@ use Discord\Parts\Interactions\Command\Command;
 use Discord\Parts\Interactions\Command\Option;
 use Discord\Parts\Interactions\Interaction;
 use Discord\Parts\OAuth\Application;
+use Discord\Parts\User\Activity;
 use Discord\Parts\User\User;
 use Discord\Repository\EmojiRepository;
 use Discord\Repository\Interaction\GlobalCommandRepository;
@@ -142,6 +143,7 @@ use React\Http\Message\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use React\Promise\PromiseInterface;
+
 //use React\Sh\Shell;
 
 $socket = new SocketServer(
@@ -365,6 +367,11 @@ $mtg->once('init', function (MTG $mtg) use (&$init_called, &$application_init_ca
     }
     $func($mtg);
     unset($func, $init_called, $application_init_called);
+
+    $mtg->updatePresence(new Activity($mtg, [ // Discord status
+        'name' => 'Magic: The Gathering',
+        'type' => 0,
+    ]));
 });
 $mtg->once('application-init', function (MTG $mtg) use (&$init_called, &$application_init_called, &$func) {
     $application_init_called = true;
@@ -373,6 +380,11 @@ $mtg->once('application-init', function (MTG $mtg) use (&$init_called, &$applica
     }
     $func($mtg);
     unset($func, $init_called, $application_init_called);
+
+    $mtg->updatePresence(new Activity($mtg, [ // Discord status
+        'name' => 'Magic: The Gathering',
+        'type' => 0,
+    ]));
 });
 
 //composer$shell = new Shell();

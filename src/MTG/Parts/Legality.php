@@ -16,7 +16,13 @@ namespace MTG\Parts;
 use Discord\Parts\Part;
 
 /**
- * Represents a legality associated with a card.
+ * One entry from a {@see Card}'s `legalities` array — whether the card is
+ * `Legal` / `Banned` / `Restricted` in a given format. Not a standalone
+ * endpoint; it only appears inside the card response.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1cards_get Card object (see the `legalities` field)
+ *
+ * @see \MTG\Parts\Card The parent object
  *
  * @property string $format   The format of the card.
  * @property string $legality The legality status of the card in the format.

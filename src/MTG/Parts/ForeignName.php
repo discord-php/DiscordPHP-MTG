@@ -18,6 +18,8 @@ use Discord\Parts\Part;
 /**
  * Foreign language names for the card, if this card in this set was printed in another language. Not available for all sets.
  *
+ * @link https://docs.magicthegathering.io/#advancedcards_get_by_language Querying cards by language
+ *
  * @property string $language     The language of the card.
  * @property string $name         The name of the card in the foreign language.
  * @property string $multiverseid The multiverse ID of the card.

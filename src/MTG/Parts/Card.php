@@ -28,7 +28,11 @@ use MTG\MTG;
 use React\Promise\PromiseInterface;
 
 /**
- * Represents a Magic: The Gathering card.
+ * Represents a Magic: The Gathering card (one object from the API's `cards`
+ * response); {@see CardAttributes} declares the raw API fields and this class
+ * adds the collections and Discord render helpers.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1cards_get Card object reference
  *
  * @property ExCollectionInterface<Legality>    $legalities
  * @property ExCollectionInterface<Ruling>      $rulings

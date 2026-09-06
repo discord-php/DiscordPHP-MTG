@@ -22,7 +22,13 @@ use MTG\Repository\CardRepository;
 use MTG\Repository\SetRepository;
 
 /**
- * The MTG client class.
+ * The MTG client class — a DiscordPHP {@see MessageCommandClient} extended with
+ * an async HTTP client for the "Magic: The Gathering Developers" REST API and
+ * the card / set repositories that read it.
+ *
+ * @see \Discord\MessageCommandClient The DiscordPHP client this extends
+ * @see CardRepository
+ * @see SetRepository
  *
  * @version 1.0.0
  *

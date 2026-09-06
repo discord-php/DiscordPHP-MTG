@@ -30,7 +30,13 @@ use function React\Promise\reject;
 use function React\Promise\resolve;
 
 /**
- * Provides common functionality for all repositories.
+ * Shared implementation for every MTG repository: DiscordPHP's
+ * `AbstractRepositoryTrait` ported so the collection is keyed and cached the
+ * same way, but backed by {@see \MTG\Http\Http} and MTG
+ * {@see \MTG\Http\Endpoint}s. Consumed by {@see AbstractRepository}.
+ *
+ * @see \Discord\Repository\AbstractRepositoryTrait The upstream this is ported from
+ * @see \MTG\Repository\AbstractRepository The base class that consumes this trait
  *
  * @property MTG|Discord  $discord   The Discord client instance.
  * @property string       $discrim   The collection discriminator.

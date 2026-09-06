@@ -18,6 +18,16 @@ use Discord\Parts\Channel\Message\AllowedMentions;
 use Discord\Parts\Guild\Emoji;
 use Discord\Repository\EmojiRepository;
 
+/**
+ * Small presentation helpers shared by {@see MTG} and its command handlers for
+ * turning MTG API data into Discord output: a mention-safe
+ * {@see MessageBuilder} factory and emoji lookup helpers. Pure formatting — no
+ * API or model concerns live here.
+ *
+ * @see \Discord\Builders\MessageBuilder Discord message builder this wraps
+ *
+ * @since 0.1.0
+ */
 trait HelperTrait
 {
     /**

@@ -26,7 +26,11 @@ use function React\Promise\reject;
 use function React\Promise\resolve;
 
 /**
- * Repository for managing Magic: The Gathering cards.
+ * Reads the API's `cards` endpoint — list/search with query filters and
+ * pagination, and fetch a single card by id — hydrating {@see Card} parts.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1cards_list List / search cards
+ * @link https://docs.magicthegathering.io/#api_v1cards_get Fetch one card by id
  *
  * @since 0.3.0
  */

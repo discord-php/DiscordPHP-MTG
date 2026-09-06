@@ -23,6 +23,15 @@ use Discord\Repository\UserRepository;
 use MTG\Repository\CardRepository;
 use MTG\Repository\SetRepository;
 
+/**
+ * The DiscordPHP {@see \Discord\Parts\User\Client} extended so the MTG
+ * repositories ({@see CardRepository}, {@see SetRepository}) hang off the same
+ * client the rest of the bot uses. Held by {@see MTG} as `$client`.
+ *
+ * @see \Discord\Parts\User\Client The DiscordPHP client this extends
+ *
+ * @since 0.1.0
+ */
 class Client extends DiscordClient
 {
     /**

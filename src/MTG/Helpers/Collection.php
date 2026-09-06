@@ -18,7 +18,12 @@ use Discord\Helpers\ExCollectionInterface;
 use JsonSerializable;
 
 /**
- * Collection of items. Inspired by Laravel Collections.
+ * Collection of items. Inspired by Laravel Collections. A local copy of
+ * DiscordPHP's `Collection` so MTG code has an `MTG\Helpers`-namespaced type;
+ * behaviour comes entirely from {@see CollectionTrait}.
+ *
+ * @see \Discord\Helpers\Collection The upstream this mirrors
+ * @see \Discord\Helpers\CollectionTrait The shared implementation
  *
  * @since 5.0.0 No longer extends Laravel's BaseCollection
  * @since 4.0.0

@@ -16,7 +16,13 @@ namespace MTG\Parts;
 use Discord\Parts\Part;
 
 /**
- * Represents a ruling associated with a card.
+ * One entry from a {@see Card}'s `rulings` array — an official clarification,
+ * with the date it was issued. Not a standalone endpoint; it only appears
+ * inside the card response.
+ *
+ * @link https://docs.magicthegathering.io/#api_v1cards_get Card object (see the `rulings` field)
+ *
+ * @see \MTG\Parts\Card The parent object
  *
  * @property string $date The date the ruling was issued.
  * @property string $text The text content of the ruling.

@@ -16,6 +16,15 @@ namespace Discord;
 use Discord\Parts\Embed\Embed;
 use Carbon\Carbon;
 
+/**
+ * Tracks bot runtime metrics — start time, last reconnect, message/event
+ * counters — and renders them as an {@see Embed} for a `!stats` style command.
+ * Not tied to any external API.
+ *
+ * @see \Discord\Discord The client these metrics describe
+ *
+ * @since 0.1.0
+ */
 class Stats
 {
     /**
@@ -104,7 +113,7 @@ class Stats
         $size = memory_get_usage(true);
         $unit = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
-        return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$unit[$i];
+        return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$unit[(int) $i];
     }
 
     public function handle(): Embed
