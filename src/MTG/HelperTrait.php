@@ -52,27 +52,25 @@ trait HelperTrait
     }
 
     /**
-     * Converts a card's encapsulated name to its corresponding emoji representation.
-     * The name of the emoji should be stored in the application with a trailing underscore, e.g. U_.
+     * Replaces every `{X}` mana/symbol token in a string with the matching
+     * application emoji (stored under the name `X_`, e.g. `{U}` → emoji `U_`).
+     * Tokens with no matching emoji are left as-is.
      *
-     * @param string $name The encapsulated name to convert, e.g. {U}.
+     * @param string $subject Card text containing `{...}` symbol tokens.
      *
-     * @return string The emoji representation of the encapsulated name.
+     * @return string The text with known symbols replaced by emojis.
      *
      * @since 0.4.0
      */
     public function encapsulatedSymbolsToEmojis(string $subject): string
     {
-        preg_match_all('/\{([a-zA-Z0-9]+)\}/', $subject, $matches);
-        foreach ($matches as $array) {
-            foreach ($array as $search) {
-                if (str_starts_with($search, '{')) {
-                    continue;
-                }
-                if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
-                    $subject = $replaced;
-                    continue;
-                }
+        if (! preg_match_all('/\{([a-zA-Z0-9]+)\}/', $subject, $matches)) {
+            return $subject;
+        }
+
+        foreach (array_unique($matches[1]) as $search) {
+            if ($replaced = $this->__encapsulatedSymbolsToEmojis($subject, $search)) {
+                $subject = $replaced;
             }
         }
 

@@ -17,9 +17,12 @@ use Discord\Discord;
 use Discord\MessageCommandClient;
 use Discord\Http\Drivers\React;
 use Discord\Stats;
+use MTG\Http\Endpoint;
 use MTG\Http\Http;
 use MTG\Repository\CardRepository;
 use MTG\Repository\SetRepository;
+use Psr\Log\NullLogger;
+use React\Promise\PromiseInterface;
 
 /**
  * The MTG client class — a DiscordPHP {@see MessageCommandClient} extended with
@@ -59,22 +62,73 @@ class MTG extends MessageCommandClient
 
     /**
      * @param array $options Options passed straight to the DiscordPHP client, plus
-     *                       `socket_options` for the HTTP driver. After the parent
-     *                       boots, the MTG HTTP client, the {@see Client} part and
-     *                       the {@see Stats} tracker are wired up.
+     *                       `socket_options` for the HTTP driver and an optional
+     *                       `mtg_api_key` (`X-Api-Key`, raises the MTG API rate
+     *                       limit). After the parent boots, the MTG HTTP client,
+     *                       the {@see Client} part and the {@see Stats} tracker
+     *                       are wired up.
      */
     public function __construct(array $options = [])
     {
         parent::__construct($options);
 
         $this->mtg_http = new Http(
-            'Bot '.$this->token,
+            '', // The MTG API is unauthenticated — never forward the Discord bot token to it.
             $this->loop,
-            $this->options['logger'] ?? null,
-            new React($this->loop, $options['socket_options'] ?? [])
+            $this->options['logger'] ?? new NullLogger(),
+            new React($this->loop, $options['socket_options'] ?? []),
+            $options['mtg_api_key'] ?? null,
         );
         $this->client = $this->factory->part(Client::class, (array) $this->client);
         $this->stats = Stats::new($this);
+    }
+
+    /**
+     * Fetches the API's list of all card types (e.g. `Creature`, `Instant`).
+     *
+     * @link https://docs.magicthegathering.io/#api_v1types_list
+     *
+     * @return PromiseInterface<string[]>
+     */
+    public function getTypes(): PromiseInterface
+    {
+        return $this->mtg_http->get(new Endpoint(Endpoint::TYPES))->then(static fn ($response) => (array) ($response->types ?? []));
+    }
+
+    /**
+     * Fetches the API's list of all card subtypes (e.g. `Elf`, `Equipment`).
+     *
+     * @link https://docs.magicthegathering.io/#api_v1subtypes_list
+     *
+     * @return PromiseInterface<string[]>
+     */
+    public function getSubtypes(): PromiseInterface
+    {
+        return $this->mtg_http->get(new Endpoint(Endpoint::SUBTYPES))->then(static fn ($response) => (array) ($response->subtypes ?? []));
+    }
+
+    /**
+     * Fetches the API's list of all card supertypes (e.g. `Legendary`, `Snow`).
+     *
+     * @link https://docs.magicthegathering.io/#api_v1supertypes_list
+     *
+     * @return PromiseInterface<string[]>
+     */
+    public function getSupertypes(): PromiseInterface
+    {
+        return $this->mtg_http->get(new Endpoint(Endpoint::SUPERTYPES))->then(static fn ($response) => (array) ($response->supertypes ?? []));
+    }
+
+    /**
+     * Fetches the API's list of all game formats (e.g. `Standard`, `Commander`).
+     *
+     * @link https://docs.magicthegathering.io/#api_v1formats_list
+     *
+     * @return PromiseInterface<string[]>
+     */
+    public function getFormats(): PromiseInterface
+    {
+        return $this->mtg_http->get(new Endpoint(Endpoint::FORMATS))->then(static fn ($response) => (array) ($response->formats ?? []));
     }
 
     /**

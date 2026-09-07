@@ -23,6 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use WeakReference;
 
 use function Discord\studly;
+use function React\Promise\reject;
 
 /**
  * Reads the API's `sets` endpoint — list sets, fetch one by code, and
@@ -122,6 +123,46 @@ class SetRepository extends AbstractRepository
                 $this->items[$set->{$this->discrim}] = WeakReference::create($set);
                 $this->cache->set($set->{$this->discrim}, $set);
                 $collection->pushItem($set);
+            }
+
+            return $collection;
+        });
+    }
+
+    /**
+     * Opens a booster pack for a set (`GET /sets/:id/booster`): the API rolls a
+     * pack against that set's booster configuration and returns the cards.
+     *
+     * Note: the public `api.magicthegathering.io` host currently answers this
+     * route with HTTP 400 (its dataset no longer carries booster configs); the
+     * call is correct and works against a self-hosted mtg-api instance.
+     *
+     * @param Set|string $set A {@see Set} or a set code (e.g. `"KTK"`).
+     *
+     * @return PromiseInterface<ExCollectionInterface<Card>> The rolled cards. Never cached — a pack is random.
+     *
+     * @link https://docs.magicthegathering.io/#api_v1booster_get
+     *
+     * @since 1.1.0
+     */
+    public function generateBooster(Set|string $set): PromiseInterface
+    {
+        $code = $set instanceof Set ? (string) $set->code : $set;
+
+        if ($code === '') {
+            return reject(new \InvalidArgumentException('A set code is required to generate a booster.'));
+        }
+
+        $endpoint = new HttpEndpoint(HttpEndpoint::SETS_BOOSTER);
+        $endpoint->bindAssoc(['id' => $code]);
+
+        return $this->mtg_http->get($endpoint)->then(function ($response): ExCollectionInterface {
+            // No discriminator: a pack can contain duplicate cards (basic lands),
+            // and keying by `id` would silently collapse them.
+            $collection = ($this->discord->getCollectionClass())::for(Card::class, null);
+
+            foreach ($response->cards ?? [] as $cardData) {
+                $collection->pushItem($this->factory->create(Card::class, array_merge($this->vars, (array) $cardData), true));
             }
 
             return $collection;

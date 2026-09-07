@@ -38,9 +38,7 @@ use React\Promise\PromiseInterface;
  * @property ExCollectionInterface<Ruling>      $rulings
  * @property ExCollectionInterface<ForeignName> $foreignNames
  *
- * @property-read Embed|null  $image_embed       The image for the card as an embed.
- * @property-read Button      $json_button       The button to view the card as JSON.
- * @property-read Button|null $view_image_button The button to view the card image.
+ * @property-read Embed|null $image_embed The card image as an embed, or null when the card has no `imageUrl`.
  *
  * @since 0.4.0
  */
@@ -199,14 +197,16 @@ class Card extends Part
             return null;
         }
 
-        if (isset($this->attributes['layout'])) {
-            switch ($this->layout) {
-                case 'normal':
-                case 'meld':
-                case 'transform':
-                case 'default':
-                    return $this->normalLayoutContainer($interaction);
-            }
+        // Text-forward layouts all render well as a titled component block. Only
+        // the purely visual layouts (token/plane/scheme/phenomenon/vanguard…)
+        // fall through to an image, and only if the card carries one.
+        $textLayouts = [
+            'normal', 'split', 'flip', 'double-faced', 'transform', 'meld',
+            'aftermath', 'leveler', 'default',
+        ];
+
+        if (! isset($this->attributes['layout']) || in_array($this->layout, $textLayouts, true)) {
+            return $this->normalLayoutContainer($interaction);
         }
 
         if (isset($this->attributes['imageUrl'])) {
@@ -289,7 +289,7 @@ class Card extends Part
                 ')'
             );
         }
-        if (isset($this->attributes['loyalty'], $this->attributes['loyalty'])) {
+        if (isset($this->attributes['loyalty'])) {
             $components[] = Separator::new();
             $components[] = TextDisplay::new("[{$this->loyalty}]");
         }

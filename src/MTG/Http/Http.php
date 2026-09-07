@@ -64,11 +64,20 @@ class Http implements HttpInterface
     public const BASE_URL = 'https://api.magicthegathering.io/v'.self::HTTP_API_VERSION;
 
     /**
-     * Authentication token.
+     * Authentication token. Empty for the MTG API, which is unauthenticated —
+     * kept only so the shared {@see HttpTrait} plumbing has something to read.
      *
      * @var string
      */
     private $token;
+
+    /**
+     * Optional `X-Api-Key` for the MTG API. Supplying one raises the per-hour
+     * request allowance; without it the API still works at the anonymous limit.
+     *
+     * @var string|null
+     */
+    private ?string $apiKey;
 
     /**
      * Logger for HTTP requests.
@@ -143,18 +152,30 @@ class Http implements HttpInterface
     /**
      * Http wrapper constructor.
      *
-     * @param string               $token
+     * @param string               $token  Unused by the MTG API; pass `''`.
      * @param LoopInterface        $loop
+     * @param LoggerInterface      $logger
      * @param DriverInterface|null $driver
+     * @param string|null          $apiKey Optional MTG API key (`X-Api-Key`) for a higher rate limit.
      */
-    public function __construct(string $token, LoopInterface $loop, LoggerInterface $logger, ?DriverInterface $driver = null)
+    public function __construct(string $token, LoopInterface $loop, LoggerInterface $logger, ?DriverInterface $driver = null, ?string $apiKey = null)
     {
         $this->token = $token;
         $this->loop = $loop;
         $this->logger = $logger;
         $this->driver = $driver;
+        $this->apiKey = ($apiKey === null || $apiKey === '') ? null : $apiKey;
         $this->queue = new SplQueue();
         $this->unboundQueue = new SplQueue();
+    }
+
+    /**
+     * Identifies this client to the MTG API as DiscordPHP-MTG rather than
+     * borrowing the generic DiscordPHP-HTTP agent string.
+     */
+    public function getUserAgent(): string
+    {
+        return 'DiscordPHP-MTG (https://github.com/discord-php/DiscordPHP-MTG, '.self::VERSION.')';
     }
 
     /**
@@ -177,25 +198,22 @@ class Http implements HttpInterface
             return $deferred->promise();
         }
 
-        $headers = array_merge($headers, [
-            'User-Agent' => $this->getUserAgent(),
-            'Authorization' => $this->token,
-            'X-Ratelimit-Precision' => 'millisecond',
-        ]);
+        $baseHeaders = ['User-Agent' => $this->getUserAgent()];
 
-        $baseHeaders = [
-            'User-Agent' => $this->getUserAgent(),
-            'Authorization' => $this->token,
-            'X-Ratelimit-Precision' => 'millisecond',
-        ];
-
-        if (! is_null($content) && ! isset($headers['Content-Type'])) {
-            $baseHeaders = array_merge(
-                $baseHeaders,
-                $this->guessContent($content)
-            );
+        // The MTG API is unauthenticated; only send auth headers when a value is
+        // actually present so the Discord bot token never leaks to a third party.
+        if ($this->token !== '') {
+            $baseHeaders['Authorization'] = $this->token;
+        }
+        if ($this->apiKey !== null) {
+            $baseHeaders['X-Api-Key'] = $this->apiKey;
         }
 
+        if (! is_null($content) && ! isset($headers['Content-Type'])) {
+            $baseHeaders = array_merge($baseHeaders, $this->guessContent($content));
+        }
+
+        // Caller-supplied headers win over the defaults.
         $headers = array_merge($baseHeaders, $headers);
 
         $request = new Request($deferred, $method, $url, $content ?? '', $headers);

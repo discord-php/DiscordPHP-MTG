@@ -31,8 +31,6 @@ class Endpoint implements EndpointInterface
     use EndpointTrait;
 
     // GET
-    public const GATEWAY = 'gateway';
-    // GET
     public const CARDS = 'cards';
     // GET
     public const CARD = self::CARDS.'/:id';
