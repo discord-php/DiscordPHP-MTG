@@ -17,8 +17,16 @@ use MTG\Parts\Card;
 use MTG\Parts\Set;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Live end-to-end tests against api.magicthegathering.io — network-bound, so
+ * they exercise the whole request path rather than isolating a unit.
+ */
 final class MTGTest extends TestCase
 {
+    /**
+     * @covers \MTG\Repository\CardRepository
+     * @covers \MTG\Parts\Card
+     */
     public function testCardInfoRetrieval()
     {
         wait(function (MTG $mtg, $resolve) {
@@ -32,6 +40,10 @@ final class MTGTest extends TestCase
         }, 10);
     }
 
+    /**
+     * @covers \MTG\Repository\SetRepository
+     * @covers \MTG\Parts\Set
+     */
     public function testSetLookupByCode()
     {
         wait(function (MTG $mtg, $resolve) {
@@ -42,6 +54,12 @@ final class MTGTest extends TestCase
         }, 10);
     }
 
+    /**
+     * @covers \MTG\MTG::getTypes
+     * @covers \MTG\MTG::getSubtypes
+     * @covers \MTG\MTG::getSupertypes
+     * @covers \MTG\MTG::getFormats
+     */
     public function testReferenceListsAreNonEmpty()
     {
         wait(function (MTG $mtg, $resolve) {
