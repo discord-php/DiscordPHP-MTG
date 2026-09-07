@@ -55,10 +55,41 @@ ini_set('max_execution_time', 0);
 ini_set('memory_limit', '-1'); // Unlimited memory usage
 define('MAIN_INCLUDED', 1); // Token and SQL credential files may be protected locally and require this to be defined to access
 
-$autoload_path = file_exists($autoload_path = __DIR__.'/vendor/autoload.php') ? $autoload_path // Ran from root directory
-    : (file_exists($autoload_path = dirname(__DIR__).'/vendor/autoload.php') ? $autoload_path // Ran from a subdirectory
-    : null);
-$autoload_path ? require ($autoload_path) : throw new \Exception('Composer autoloader not found. Run `composer update` and try again.');
+/**
+ * The project base directory. Works when run as `php bot.php` from the repo, and
+ * when run as a phpacker/phpmicro binary (which lands nested under
+ * `bin/build/<name>/<platform>/`) launched directly or from a shortcut, from any
+ * working directory: walk up from the real executable path, then the working
+ * directory, to the first ancestor with `vendor/autoload.php` or a `.env`.
+ */
+$baseDir = (static function (): string {
+    $seen = [];
+    foreach ([\Phar::running(false) ?: null, __FILE__, \getcwd() ?: null] as $start) {
+        if ($start === null) {
+            continue;
+        }
+        $dir = \is_dir($start) ? $start : \dirname((string) \preg_replace('#^phar://#', '', $start));
+        for ($i = 0; $i < 12; $i++) {
+            if (isset($seen[$dir])) {
+                break;
+            }
+            $seen[$dir] = true;
+            if (\is_file($dir.'/vendor/autoload.php') || \is_file($dir.'/.env')) {
+                return $dir;
+            }
+            if (($up = \dirname($dir)) === $dir) {
+                break;
+            }
+            $dir = $up;
+        }
+    }
+
+    return \getcwd() ?: __DIR__;
+})();
+
+$autoload_path = file_exists(__DIR__.'/vendor/autoload.php') ? __DIR__.'/vendor/autoload.php'
+    : (file_exists($baseDir.'/vendor/autoload.php') ? $baseDir.'/vendor/autoload.php' : null);
+$autoload_path ? require ($autoload_path) : throw new \Exception('Composer autoloader not found. Run `composer install`, or keep the binary inside the project directory.');
 
 function loadEnv(string $filePath): void
 {
@@ -78,9 +109,9 @@ function loadEnv(string $filePath): void
     });
 }
 
-$env_path = file_exists($env_path = getcwd().'/.env') ? $env_path // Ran from root directory
-    : (file_exists($env_path = dirname(getcwd()).'/.env') ? $env_path : null); // Ran from a subdirectory
-$env_path ? loadEnv($env_path) : throw new \Exception('The .env file does not exist. Please create one in the root directory.');
+$env_path = file_exists($baseDir.'/.env') ? $baseDir.'/.env'
+    : (file_exists(getcwd().'/.env') ? getcwd().'/.env' : null);
+$env_path ? loadEnv($env_path) : throw new \Exception('The .env file does not exist. Create one in the project directory ('.$baseDir.').');
 
 $streamHandler = new StreamHandler('php://stdout', Level::Debug);
 $streamHandler->setFormatter(new LineFormatter(null, null, true, true, true));
