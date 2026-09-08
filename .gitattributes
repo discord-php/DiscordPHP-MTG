@@ -6,3 +6,5 @@
 /windows           export-ignore
 /phpacker.json     export-ignore
 /phpacker.ini      export-ignore
+/phpdoc.dist.xml     export-ignore
+/.github             export-ignore
