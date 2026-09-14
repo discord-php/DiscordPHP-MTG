@@ -157,179 +157,10 @@
 
                                     </dd>
                                 <dt class="phpdocumentor-tag-list__entry">
-                <span class="phpdocumentor-tag__name">@property</span>
-            </dt>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $name          The card name. For split, double-faced and flip cards, just the name of one side of the card. Each ‘sub-card’ has its own record.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $layout        The card layout. Possible values: normal, split, flip, double-faced, token, plane, scheme, phenomenon, leveler, vanguard, aftermath.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string[]|null $colors        The card colors. Usually derived from the casting cost, but some cards are special (like the back of dual sided cards and Ghostfire).</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string[]|null $colorIdentity The card’s color identity, by color code. E.g., [“Red”, “Blue”] becomes [“R”, “U”]. Includes colors from the card’s rules text.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $type          The card type. This is the type you would see on the card if printed today. Note: The dash is a UTF8 ‘long dash’ as per the MTG rules.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string[]|null $supertypes    The supertypes of the card. These appear to the far left of the card type. Example: Basic, Legendary, Snow, World, Ongoing.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string[]|null $types         The types of the card. These appear to the left of the dash in a card type. Example: Instant, Sorcery, Artifact, Creature, Enchantment, Land, Planeswalker.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string[]|null $subtypes      The subtypes of the card. These appear to the right of the dash in a card type. Each word is its own subtype. Example: Trap, Arcane, Equipment, Aura, Human, Rat, Squirrel, etc.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $rarity        The rarity of the card. Examples: Common, Uncommon, Rare, Mythic Rare, Special, Basic Land.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $set           The set the card belongs to (set code).</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $setName       The set name the card belongs to.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $text          The oracle text of the card. May contain mana symbols and other symbols.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $flavor        The flavor text of the card.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $artist        The artist of the card. May not match what is on the card as MTGJSON corrects many card misprints.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $number        The card number. Printed at the bottom-center of the card in small text. This is a string, not an integer, because some cards have letters in their numbers.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $power         The power of the card. Only present for creatures. This is a string, not an integer, because some cards have powers like: “1+*”.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $toughness     The toughness of the card. Only present for creatures. This is a string, not an integer, because some cards have toughness like: “1+*”.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?int|null      $loyalty       The loyalty of the card. Only present for planeswalkers.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $language      The language the card is printed in. Use this parameter along with the name parameter when searching by foreignName.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $gameFormat    The game format, such as Commander, Standard, Legacy, etc. (when used, legality defaults to Legal unless supplied).</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $legality      The legality of the card for a given format, such as Legal, Banned or Restricted.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?int|null      $page          The page of data to request.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?int|null      $pageSize      The amount of data to return in a single request. The default (and max) is 100.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $orderBy       The field to order by in the response results.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $random        Fetch any number of cards (controlled by pageSize) randomly.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $contains      Filter cards based on whether or not they have a specific field available (like imageUrl).</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null   $id            A unique id for this card. It is made up by doing an SHA1 hash of setCode + cardName + cardImageName.</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?int|null      $multiverseid  The multiverseid of the card on Wizard’s Gatherer web page. Cards from sets that do not exist on Gatherer will NOT have a multiverseid.</p>
-<p>The fields below are also part of the response (if not null), but cannot currently be used as query parameters</p>
-</section>
-
-                                    </dd>
-                                <dt class="phpdocumentor-tag-list__entry">
                 <span class="phpdocumentor-tag__name">@property-read</span>
             </dt>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?array|null                                    $names</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null                                   $manaCost</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?array|null                                    $variations</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null                                   $imageUrl</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                             <section class="phpdocumentor-description"><p>$watermark</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?string|null                                   $border</p>
 </section>
 
                                     </dd>
@@ -354,17 +185,7 @@
 
                                     </dd>
                             <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?Carbon|null                                   $releaseDate</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
                                                                                                             <section class="phpdocumentor-description"><p>$starter</p>
-</section>
-
-                                    </dd>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?ExCollectionInterface&lt;Rulings&gt;|Rulings[]|null $rulings      Array of rulings, each containing &quot;date&quot; and &quot;text&quot;.</p>
 </section>
 
                                     </dd>
@@ -423,9 +244,219 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_artist">$artist</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_border">$border</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a class="" href="classes/MTG-Parts-CardAttributes.html#property_cmc">$cmc</a>
     <span>
                         &nbsp;: int            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_colorIdentity">$colorIdentity</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, string&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_colors">$colors</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, string&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_contains">$contains</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_flavor">$flavor</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_gameFormat">$gameFormat</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_id">$id</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_imageUrl">$imageUrl</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_language">$language</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_layout">$layout</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_legality">$legality</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_loyalty">$loyalty</a>
+    <span>
+                        &nbsp;: ?int|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_manaCost">$manaCost</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_multiverseid">$multiverseid</a>
+    <span>
+                        &nbsp;: ?int|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_name">$name</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_names">$names</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, mixed&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_number">$number</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_orderBy">$orderBy</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_page">$page</a>
+    <span>
+                        &nbsp;: ?int|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_pageSize">$pageSize</a>
+    <span>
+                        &nbsp;: ?int|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_power">$power</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_random">$random</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_rarity">$rarity</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_releaseDate">$releaseDate</a>
+    <span>
+                        &nbsp;: ?<abbr title="\MTG\Parts\Carbon">Carbon</abbr>|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_rulings">$rulings</a>
+    <span>
+                        &nbsp;: ?<abbr title="\MTG\Parts\ExCollectionInterface">ExCollectionInterface</abbr>&lt;string|int, <abbr title="\MTG\Parts\Rulings">Rulings</abbr>&gt;|array&lt;string|int, <abbr title="\MTG\Parts\Rulings">Rulings</abbr>&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_set">$set</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_setName">$setName</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_subtypes">$subtypes</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, string&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_supertypes">$supertypes</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, string&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_text">$text</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_toughness">$toughness</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_type">$type</a>
+    <span>
+                        &nbsp;: ?string|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_types">$types</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, string&gt;|null            </span>
+</dt>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a class="" href="classes/MTG-Parts-CardAttributes.html#property_variations">$variations</a>
+    <span>
+                        &nbsp;: ?array&lt;string|int, mixed&gt;|null            </span>
 </dt>
 
     </dl>
@@ -864,6 +895,82 @@ value has an effect; `false`/`null` leaves the flag unset.</dd>
             -public
                                                                     "
 >
+    <h4 class="phpdocumentor-element__name" id="property_artist">
+        $artist
+        <a href="classes/MTG-Parts-CardAttributes.html#property_artist" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$artist</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The artist of the card. May not match what is on the card as MTGJSON corrects many card misprints.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_border">
+        $border
+        <a href="classes/MTG-Parts-CardAttributes.html#property_border" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$border</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
     <h4 class="phpdocumentor-element__name" id="property_cmc">
         $cmc
         <a href="classes/MTG-Parts-CardAttributes.html#property_cmc" class="headerlink"><i class="fas fa-link"></i></a>
@@ -889,6 +996,1284 @@ value has an effect; `false`/`null` leaves the flag unset.</dd>
         <section class="phpdocumentor-description"><p>Converted mana cost. Always a number.</p>
 </section>
 
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_colorIdentity">
+        $colorIdentity
+        <a href="classes/MTG-Parts-CardAttributes.html#property_colorIdentity" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, string&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$colorIdentity</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card’s color identity, by color code. E.g., [“Red”, “Blue”] becomes [“R”, “U”]. Includes colors from the card’s rules text.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_colors">
+        $colors
+        <a href="classes/MTG-Parts-CardAttributes.html#property_colors" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, string&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$colors</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card colors. Usually derived from the casting cost, but some cards are special (like the back of dual sided cards and Ghostfire).</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_contains">
+        $contains
+        <a href="classes/MTG-Parts-CardAttributes.html#property_contains" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$contains</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>Filter cards based on whether or not they have a specific field available (like imageUrl).</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_flavor">
+        $flavor
+        <a href="classes/MTG-Parts-CardAttributes.html#property_flavor" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$flavor</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The flavor text of the card.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_gameFormat">
+        $gameFormat
+        <a href="classes/MTG-Parts-CardAttributes.html#property_gameFormat" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$gameFormat</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The game format, such as Commander, Standard, Legacy, etc. (when used, legality defaults to Legal unless supplied).</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_id">
+        $id
+        <a href="classes/MTG-Parts-CardAttributes.html#property_id" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$id</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>A unique id for this card. It is made up by doing an SHA1 hash of setCode + cardName + cardImageName.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_imageUrl">
+        $imageUrl
+        <a href="classes/MTG-Parts-CardAttributes.html#property_imageUrl" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$imageUrl</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_language">
+        $language
+        <a href="classes/MTG-Parts-CardAttributes.html#property_language" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$language</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The language the card is printed in. Use this parameter along with the name parameter when searching by foreignName.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_layout">
+        $layout
+        <a href="classes/MTG-Parts-CardAttributes.html#property_layout" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$layout</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card layout. Possible values: normal, split, flip, double-faced, token, plane, scheme, phenomenon, leveler, vanguard, aftermath.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_legality">
+        $legality
+        <a href="classes/MTG-Parts-CardAttributes.html#property_legality" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$legality</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The legality of the card for a given format, such as Legal, Banned or Restricted.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_loyalty">
+        $loyalty
+        <a href="classes/MTG-Parts-CardAttributes.html#property_loyalty" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?int|null</span>
+    <span class="phpdocumentor-signature__name">$loyalty</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The loyalty of the card. Only present for planeswalkers.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_manaCost">
+        $manaCost
+        <a href="classes/MTG-Parts-CardAttributes.html#property_manaCost" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$manaCost</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_multiverseid">
+        $multiverseid
+        <a href="classes/MTG-Parts-CardAttributes.html#property_multiverseid" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?int|null</span>
+    <span class="phpdocumentor-signature__name">$multiverseid</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The multiverseid of the card on Wizard’s Gatherer web page. Cards from sets that do not exist on Gatherer will NOT have a multiverseid.</p>
+<p>The fields below are also part of the response (if not null), but cannot currently be used as query parameters</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_name">
+        $name
+        <a href="classes/MTG-Parts-CardAttributes.html#property_name" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$name</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card name. For split, double-faced and flip cards, just the name of one side of the card. Each ‘sub-card’ has its own record.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_names">
+        $names
+        <a href="classes/MTG-Parts-CardAttributes.html#property_names" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, mixed&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$names</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_number">
+        $number
+        <a href="classes/MTG-Parts-CardAttributes.html#property_number" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$number</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card number. Printed at the bottom-center of the card in small text. This is a string, not an integer, because some cards have letters in their numbers.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_orderBy">
+        $orderBy
+        <a href="classes/MTG-Parts-CardAttributes.html#property_orderBy" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$orderBy</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The field to order by in the response results.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_page">
+        $page
+        <a href="classes/MTG-Parts-CardAttributes.html#property_page" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?int|null</span>
+    <span class="phpdocumentor-signature__name">$page</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The page of data to request.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_pageSize">
+        $pageSize
+        <a href="classes/MTG-Parts-CardAttributes.html#property_pageSize" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?int|null</span>
+    <span class="phpdocumentor-signature__name">$pageSize</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The amount of data to return in a single request. The default (and max) is 100.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_power">
+        $power
+        <a href="classes/MTG-Parts-CardAttributes.html#property_power" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$power</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The power of the card. Only present for creatures. This is a string, not an integer, because some cards have powers like: “1+*”.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_random">
+        $random
+        <a href="classes/MTG-Parts-CardAttributes.html#property_random" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$random</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>Fetch any number of cards (controlled by pageSize) randomly.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_rarity">
+        $rarity
+        <a href="classes/MTG-Parts-CardAttributes.html#property_rarity" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$rarity</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The rarity of the card. Examples: Common, Uncommon, Rare, Mythic Rare, Special, Basic Land.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_releaseDate">
+        $releaseDate
+        <a href="classes/MTG-Parts-CardAttributes.html#property_releaseDate" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?<abbr title="\MTG\Parts\Carbon">Carbon</abbr>|null</span>
+    <span class="phpdocumentor-signature__name">$releaseDate</span>
+    </code>
+
+    
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_rulings">
+        $rulings
+        <a href="classes/MTG-Parts-CardAttributes.html#property_rulings" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?<abbr title="\MTG\Parts\ExCollectionInterface">ExCollectionInterface</abbr>&lt;string|int, <abbr title="\MTG\Parts\Rulings">Rulings</abbr>&gt;|array&lt;string|int, <abbr title="\MTG\Parts\Rulings">Rulings</abbr>&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$rulings</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>Array of rulings, each containing &quot;date&quot; and &quot;text&quot;.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_set">
+        $set
+        <a href="classes/MTG-Parts-CardAttributes.html#property_set" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$set</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The set the card belongs to (set code).</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_setName">
+        $setName
+        <a href="classes/MTG-Parts-CardAttributes.html#property_setName" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$setName</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The set name the card belongs to.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_subtypes">
+        $subtypes
+        <a href="classes/MTG-Parts-CardAttributes.html#property_subtypes" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, string&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$subtypes</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The subtypes of the card. These appear to the right of the dash in a card type. Each word is its own subtype. Example: Trap, Arcane, Equipment, Aura, Human, Rat, Squirrel, etc.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_supertypes">
+        $supertypes
+        <a href="classes/MTG-Parts-CardAttributes.html#property_supertypes" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, string&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$supertypes</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The supertypes of the card. These appear to the far left of the card type. Example: Basic, Legendary, Snow, World, Ongoing.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_text">
+        $text
+        <a href="classes/MTG-Parts-CardAttributes.html#property_text" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$text</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The oracle text of the card. May contain mana symbols and other symbols.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_toughness">
+        $toughness
+        <a href="classes/MTG-Parts-CardAttributes.html#property_toughness" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$toughness</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The toughness of the card. Only present for creatures. This is a string, not an integer, because some cards have toughness like: “1+*”.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_type">
+        $type
+        <a href="classes/MTG-Parts-CardAttributes.html#property_type" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?string|null</span>
+    <span class="phpdocumentor-signature__name">$type</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The card type. This is the type you would see on the card if printed today. Note: The dash is a UTF8 ‘long dash’ as per the MTG rules.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_types">
+        $types
+        <a href="classes/MTG-Parts-CardAttributes.html#property_types" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                            </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, string&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$types</span>
+    </code>
+
+        <section class="phpdocumentor-description"><p>The types of the card. These appear to the left of the dash in a card type. Example: Instant, Sorcery, Artifact, Creature, Enchantment, Land, Planeswalker.</p>
+</section>
+
+    
+    
+
+        
+        
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -public
+                                                -read-only                    "
+>
+    <h4 class="phpdocumentor-element__name" id="property_variations">
+        $variations
+        <a href="classes/MTG-Parts-CardAttributes.html#property_variations" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                        <small class="phpdocumentor-element__modifier">read-only</small>                    </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/MTG/Parts/CardAttributes.php"><a href="files/src-mtg-parts-cardattributes.html"><abbr title="src/MTG/Parts/CardAttributes.php">CardAttributes.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">0</span>
+
+    </aside>
+
+    
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+        <span class="phpdocumentor-signature__visibility">public</span>
+            <span class="phpdocumentor-signature__type">?array&lt;string|int, mixed&gt;|null</span>
+    <span class="phpdocumentor-signature__name">$variations</span>
+    </code>
+
+    
     
     
 
@@ -3552,7 +4937,42 @@ value has an effect; `false`/`null` leaves the flag unset.</p>
                                     <li class="phpdocumentor-on-this-page-section__title">Properties</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_artist">$artist</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_border">$border</a></li>
                                             <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_cmc">$cmc</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_colorIdentity">$colorIdentity</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_colors">$colors</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_contains">$contains</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_flavor">$flavor</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_gameFormat">$gameFormat</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_id">$id</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_imageUrl">$imageUrl</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_language">$language</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_layout">$layout</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_legality">$legality</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_loyalty">$loyalty</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_manaCost">$manaCost</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_multiverseid">$multiverseid</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_name">$name</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_names">$names</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_number">$number</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_orderBy">$orderBy</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_page">$page</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_pageSize">$pageSize</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_power">$power</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_random">$random</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_rarity">$rarity</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_releaseDate">$releaseDate</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_rulings">$rulings</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_set">$set</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_setName">$setName</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_subtypes">$subtypes</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_supertypes">$supertypes</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_text">$text</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_toughness">$toughness</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_type">$type</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_types">$types</a></li>
+                                            <li class=""><a href="classes/MTG-Parts-CardAttributes.html#property_variations">$variations</a></li>
                                     </ul>
             </li>
                                     <li class="phpdocumentor-on-this-page-section__title">Methods</li>

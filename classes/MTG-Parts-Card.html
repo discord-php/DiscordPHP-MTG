@@ -428,7 +428,7 @@ adds the collections and Discord render helpers.</p>
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a class="" href="classes/MTG-Parts-Card.html#method_getReleaseDateAttribute">getReleaseDateAttribute()</a>
     <span>
-                                &nbsp;: <abbr title="\Carbon\Carbon">Carbon</abbr>|null    </span>
+                                &nbsp;: ?<abbr title="\Carbon\Carbon">Carbon</abbr>|null    </span>
 </dt>
 <dd>Gets the release date of the card.</dd>
 
@@ -2197,7 +2197,7 @@ value has an effect; `false`/`null` leaves the flag unset.</dd>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">getReleaseDateAttribute</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Carbon\Carbon">Carbon</abbr>|null</span></code>
+                    <span class="phpdocumentor-signature__name">getReleaseDateAttribute</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">?<abbr title="\Carbon\Carbon">Carbon</abbr>|null</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -2212,14 +2212,6 @@ value has an effect; `false`/`null` leaves the flag unset.</dd>
     </h5>
     <dl class="phpdocumentor-tag-list">
                     <dt class="phpdocumentor-tag-list__entry">
-                <span class="phpdocumentor-tag__name">@return</span>
-            </dt>
-                            <dd class="phpdocumentor-tag-list__definition">
-                                                                                                            <section class="phpdocumentor-description"><p>?Carbon|null</p>
-</section>
-
-                                    </dd>
-                                <dt class="phpdocumentor-tag-list__entry">
                 <span class="phpdocumentor-tag__name">since</span>
             </dt>
                             <dd class="phpdocumentor-tag-list__definition">
@@ -2232,7 +2224,7 @@ value has an effect; `false`/`null` leaves the flag unset.</dd>
     
             <section>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-        <span class="phpdocumentor-signature__response_type"><abbr title="\Carbon\Carbon">Carbon</abbr>|null</span>
+        <span class="phpdocumentor-signature__response_type">?<abbr title="\Carbon\Carbon">Carbon</abbr>|null</span>
             </section>
 
 </article>
@@ -2801,7 +2793,7 @@ grouped by date. Returns null when the card has no rulings.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">normalLayoutContainer</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type"><abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$interaction</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Discord\Builders\Components\Container">Container</abbr></span></code>
+                    <span class="phpdocumentor-signature__name">normalLayoutContainer</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__type">?<abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$interaction</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Discord\Builders\Components\Container">Container</abbr></span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -2811,7 +2803,7 @@ grouped by date. Returns null when the card has no rulings.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-argument-list__argument__name">$interaction</span>
-                : <span class="phpdocumentor-argument-list__argument__type"><abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>|null</span>
+                : <span class="phpdocumentor-argument-list__argument__type">?<abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr></span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
@@ -4360,7 +4352,7 @@ value has an effect; `false`/`null` leaves the flag unset.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                    <span class="phpdocumentor-signature__name">toContainer</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type"><abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$interaction</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Discord\Builders\Components\Container">Container</abbr>|null</span></code>
+                    <span class="phpdocumentor-signature__name">toContainer</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__type">?<abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$interaction</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\Discord\Builders\Components\Container">Container</abbr>|null</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -4370,7 +4362,7 @@ value has an effect; `false`/`null` leaves the flag unset.</p>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-argument-list__argument__name">$interaction</span>
-                : <span class="phpdocumentor-argument-list__argument__type"><abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr>|null</span>
+                : <span class="phpdocumentor-argument-list__argument__type">?<abbr title="\Discord\Parts\Interactions\Interaction">Interaction</abbr></span>
                  = <span class="phpdocumentor-argument-list__argument__default-value">null</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
